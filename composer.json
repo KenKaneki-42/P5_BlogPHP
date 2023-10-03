@@ -13,5 +13,7 @@
             "email": "sylvain.vandermeersch@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "fakerphp/faker": "^1.23"
+    }
 }
