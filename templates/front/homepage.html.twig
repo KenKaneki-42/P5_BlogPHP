@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <h1>Page d'accueil du blog !</h1>
+  <p>Derniers billets du blog :</p>
+  {# afficher les 3 derniers posts #}
+  <div class=" bg-primary news">
+  {% for post in posts %}
+      <div class="bg-white">
+        <p>{{post.id}}<p>
+        <h3>{{ post.title }}</h3>
+        <h4>{{post.tagline}}</h4>
+        <p>{{ post.content }}</p>
+        <p>
+          <em>le {{ post.createdAt|date("Y-m-d à H:i") }}</em>
+          <br />
+          <em>
+            <a href="/posts/{{ post.id }}">Commentaires</a>
+
+            {# ({{ post.comments|length }} commentaires) #}
+            {# {% if post.comments is not empty %}
+            <ul>
+              {% for comment in post.comments %}
+                <li>{{ comment.content }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+              <p>Aucun commentaire pour le moment.</p>
+            {% endif %}
+          </em> #}
+        </p>
+      </div>
+  {% endfor %}
+  </div>
+{% endblock %}

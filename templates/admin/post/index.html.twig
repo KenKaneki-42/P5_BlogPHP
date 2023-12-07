@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+
+{% block style %}
+  {{ parent() }}
+  <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+{% endblock %}
+
+{% block body %}
+<h1>Liste des Posts</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>
+                    {# <a href="{{ 'admin_post_show', {'id': post.id} }}">Voir</a>
+                    <a href="{{ 'admin_post_edit', {'id': post.id} }}">Éditer</a>
+                    <a href="{{ 'admin_post_delete', {'id': post.id} }}">Supprimer</a> #}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block js %}
+{{ parent() }}
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js">
+{% endblock %}
