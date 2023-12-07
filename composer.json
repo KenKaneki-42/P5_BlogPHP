@@ -13,5 +13,9 @@
             "email": "sylvain.vandermeersch@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "fakerphp/faker": "^1.23",
+        "pecee/simple-router": "5.3.0.5",
+        "twig/twig": "^3.8"
+    }
 }
