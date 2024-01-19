@@ -16,6 +16,7 @@
     "require": {
         "fakerphp/faker": "^1.23",
         "pecee/simple-router": "5.3.0.5",
-        "twig/twig": "^3.8"
+        "twig/twig": "^3.8",
+        "cocur/slugify": "^4.5"
     }
 }

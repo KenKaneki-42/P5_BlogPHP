@@ -17,9 +17,7 @@ class HomepageController extends AbstractController {
   public function __construct()
   {
     parent::__construct();
-    // Inject the ConnectionDb instance into PostRepository
-    $connectionDb = new ConnectionDb(); // You might need to adjust this depending on your actual ConnectionDb class
-    $this->postRepository = new PostRepository($connectionDb);
+    $this->postRepository = new PostRepository();
   }
 
   public function homepage()

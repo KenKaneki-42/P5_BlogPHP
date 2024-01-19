@@ -1,40 +1,89 @@
 {% extends 'base.html.twig' %}
 
-
 {% block style %}
-  {{ parent() }}
-  <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+	{{ parent() }}
+	<link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+	<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
 
+		#myDataTable_wrapper {
+			margin-top: 20px;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
-<h1>Liste des Posts</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td>{{ post.title }}</td>
-                <td>
-                    {# <a href="{{ 'admin_post_show', {'id': post.id} }}">Voir</a>
-                    <a href="{{ 'admin_post_edit', {'id': post.id} }}">Éditer</a>
-                    <a href="{{ 'admin_post_delete', {'id': post.id} }}">Supprimer</a> #}
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+	<h1>Liste des Posts</h1>
+  <a href="{{ '/admin/nouvelle-article' }}" class="btn btn-success mb-3">Nouveau Post</a>
+	<table id="myDataTable" class="table table-striped display responsive">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Titre</th>
+				<th>Contenu</th>
+        <th>Date de création</th>
+        <th>Date de mise à jour</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for post in posts %}
+				<tr>
+					<td>{{ post.id }}</td>
+					<td>{{ post.title }}</td>
+					<td>{{ post.content|slice(0,30)|striptags  }}</td>
+          <td>{{ post.createdAt }}</td>
+          <td>{{ post.updatedAt }}</td>
+					<td>
+						<div class="d-flex ">
+							<a href="{{ '/admin/post/edit/' ~ post.id }}" class="btn btn-primary btn-sm me-2 ">Modifier</a>
+            <form action="/admin/post/delete/{{ post.id }}/{{ csrf_token }}" method='POST'>
+            <input type ='hidden'name='csrfToken' value = '{{csrf_token}}'>
+            <button class="btn btn-danger btn-sm" name ='deletePost' value ='deletePost' onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post?')"> Supprimer</button>
+            </form>
+            </div>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}
 
 {% block js %}
-{{ parent() }}
-<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js">
+	{{ parent() }}
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script>
+		$(document).ready(function () { // Initialisez DataTable sur votre table avec l'ID 'myDataTable'
+$('#myDataTable').DataTable({
+responsive: true,
+// Active la prise en charge de la conception réactive
+// Personnalisez les options DataTable selon vos besoins
+language: {
+search: "Rechercher :",
+lengthMenu: "Afficher _MENU_ entrées par page",
+zeroRecords: "Aucun résultat trouvé",
+info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+infoEmpty: "Aucune entrée à afficher",
+infoFiltered: "(filtré sur _MAX_ entrées au total)"
+}
+});
+});
+	{# </script> message d'alert de confirmation de suppresion #}
+<script>
+        {% if app.session.has('delete_result') %}
+            {% if app.session.get('delete_result') %}
+                alert('Suppression réussie');
+            {% else %}
+                alert('Échec de la suppression');
+            {% endif %}
+
+            // Effacez la variable de session après l'affichage du message
+            {% set _ = app.session.remove('delete_result') %}
+        {% endif %}
+    </script>
 {% endblock %}

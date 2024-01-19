@@ -82,7 +82,7 @@ class Comment extends AbstractEntity
     return $this->postId;
   }
 
-  public function setPostId(int $postId): void
+  public function setPostId(?int $postId): void
   {
     $this->postId = $postId;
   }

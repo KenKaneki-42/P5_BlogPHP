@@ -1,3 +1,8 @@
-<h1>Créer un Nouveau Post</h1>
-
-{{ include('_formPost.html.twig', {'form': form}) }}
+{% block body %}
+    {% include 'admin/post/_formPost.html.twig' with {
+        'formTitle': 'Publier un nouvel article',
+        'formAction': 'nouvelle-article',
+        'formButtonLabel': 'sauvegarder',
+        'formBackUrl': '/admin/articles'
+    } %}
+{% endblock %}

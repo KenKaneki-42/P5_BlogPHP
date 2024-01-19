@@ -4,11 +4,18 @@ use Core\Router;
 use Pecee\Http\Request;
 
 Router::setDefaultNamespace("App\Controller");
-// ADMIN
-Router::get("/admin/posts", "PostController@index")->setName('admin_post_index');
-
+// ------ ADMIN -----
+Router::get("/admin/articles", "Admin\PostController@index")->setName('admin_post_index');
+Router::get("/admin/posts/{id}", "Admin\PostController@showPost");
+Router::all("/admin/nouvelle-article", "Admin\PostController@addPost");
+Router::all("/admin/post/edit/{id}", "Admin\PostController@edit")->where(['id' => '[0-9]+'])->setName('posts.edit');
+Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete")->where(['id' => '[0-9]+'])->setName('posts.edit');
 //------ HOME -----//
 Router::get("/", "HomepageController@homepage");
+
+// --- Athentication
+Router::all("/inscription", "admin\RegisterController@register");
+
 
 // Router::get("/", "HomepageController@homepage")->setName('home');
 
@@ -26,8 +33,6 @@ Router::get("/posts/{id}", "PostController@show")->where(['id' => '[0-9]+']);
 // // Stockage d'un nouvel article
 // Router::post("/posts", "PostController@store")->setName('posts.store');
 
-// // Page de modification d'un article
-// Router::get("/posts/{id}/edit", "PostController@edit")->where(['id' => '[0-9]+'])->setName('posts.edit');
 
 // // Mise à jour d'un article existant
 // Router::put("/posts/{id}", "PostController@update")->where(['id' => '[0-9]+'])->setName('posts.update');
