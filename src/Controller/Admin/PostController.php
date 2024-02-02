@@ -124,16 +124,18 @@ class PostController extends AbstractController
   {
     $post = $this->postRepository->findById($id);
     // retrieve comments that are linked to the post
-    $comments = $this->commentRepository->getCommentsByPostId($id);
+    $comments = $this->commentRepository->getCommentsByPostId($id); // ok on trouve 3 objets commentaires lié au post avec l'id 1
 
     // check if post method
     if ($this->isSubmitted('deletePost') && $this->isValid($_POST)) {
       //match value hidden with csrfToken in url
+      // on rentre bien dans la condition
       if ($_POST['csrfToken'] === $csrfToken) {
         foreach ($comments as $comment) {
-          $this->commentRepository->delete($comment->getPostId());
+          // Use the correct method to get the comment ID
+          $this->commentRepository->delete($comment->getId());
         }
-        //
+        // Delete the post after deleting associated comments
         $this->postRepository->delete($post->getId());
       }
       return $this->redirect('/admin/articles');

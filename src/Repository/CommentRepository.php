@@ -76,8 +76,8 @@ class CommentRepository
     $statement->bindParam(':status', $status, PDO::PARAM_STR);
     $statement->bindParam(':createdAt', $createdAt, PDO::PARAM_STR);
     $statement->bindParam(':publishedAt', $publishedAt, PDO::PARAM_STR);
-    $statement->bindParam(':userId', $userId, PDO::PARAM_STR);
-    $statement->bindParam(':postId', $userId, PDO::PARAM_STR);
+    $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
+    $statement->bindParam(':postId', $postId, PDO::PARAM_INT);// il y avait une erreur de variable et pour le typage ( en int)
     // $statement->bindParam(':is_enabled', $isEnabled, PDO::PARAM_STR);
 
     $result = $statement->execute();
@@ -88,13 +88,13 @@ class CommentRepository
       throw new \RuntimeException("Error during execution of SQL statement.");
     }
   }
-  public function delete($idPost): void
+  public function delete($idComment): void
   {
     $sql = "DELETE FROM comment
-            WHERE post_id = :idPost";
+            WHERE id = :id";
 
     $statement = $this->connection->prepare($sql);
-    $statement->bindValue(':idPost', $idPost, PDO::PARAM_INT); // Assurez-vous que $idPost est du type INT, ajustez-le si nécessaire
+    $statement->bindValue(':id', $idComment, PDO::PARAM_INT);
     $result = $statement->execute();
 
     if (!$result) {
