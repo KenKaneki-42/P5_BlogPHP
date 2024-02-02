@@ -93,8 +93,11 @@ class PostRepository
                 tagline = :tagline,
                 created_at = :createdAt,
                 updated_at = :updatedAt,
-                user_id = :userId
+                user_id = :userId,
+                slug = :slug
             ";
+    $slug = strtolower(str_replace(' ', '-', $post->getTitle()));
+    $post->setSlug($slug);
 
     $statement = $this->connection->prepare($sql);
 
@@ -108,6 +111,7 @@ class PostRepository
     $statement->bindValue(':createdAt', $post->getCreatedAt()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
     $statement->bindValue(':updatedAt', $post->getUpdatedAt()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
     $statement->bindValue(':userId', $post->getUserId(), PDO::PARAM_INT);
+    $statement->bindValue(':slug', $post->getSlug(), PDO::PARAM_STR);
 
     $result = $statement->execute();
 
@@ -136,6 +140,7 @@ class PostRepository
     // TODO  replace me
     $post->setUserId($_SESSION['user_id']);
     $post->setUpdatedAt(new \DateTime());
+    // $post->setSlug(strtolower(str_replace(' ', '-', $post->getTitle())));
 
     // send to save it in DB
     $this->flushUpdate($post);
