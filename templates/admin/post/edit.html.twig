@@ -1,5 +1,9 @@
-{# templates/admin/post/edit.html.twig #}
-
-<h1>Éditer le Post {{ post.id }}</h1>
-
-{{ include('_formPost.html.twig', {'form': form}) }}
+{% block body %}
+    {% include 'admin/post/_formPost.html.twig' with {
+        'formTitle': "Edition d'un article",
+        'formAction': '/admin/post/edit/' ~ post.id,
+        'formButtonLabel': 'sauvegarder',
+        'formBackUrl': '/admin/articles',
+        'data': post
+    } %}
+{% endblock %}

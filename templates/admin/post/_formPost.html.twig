@@ -1,9 +1,39 @@
-{{ form_start(form) }}
+{# admin/post/_formPost.html.twig #}
+{% extends 'base.html.twig' %}
 
-{{ form_row(form.title) }}
-{{ form_row(form.content) }}
-{{ form_row(form.tagline) }}
+{% block title %}
+	Formulaire générique du Post
+{% endblock %}
 
-{# Ajoutez d'autres champs selon les besoins #}
+{% block style %}
+	{{ parent() }}
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+	<script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+{% endblock %}
 
-{{ form_end(form) }}
+{% block body %}
+	{{ parent() }}
+	<div class="container mt-5">
+		<h1>{{ formTitle }}</h1>
+
+		<form
+			action="{{ formAction }}" method="post">
+			{# Integrating With Forms : To submit the contents of a <trix-editor> with a form, first define a hidden input field in the form and assign it an id. Then reference that id in the editor’s input attribute. #}
+
+			<label for="title">Title</label>
+			<input type="text" id="title" name="title" class="form-control" value="{{ data.title|default('') }}">
+      <label for="content">Contenu de l'article</label>
+      <input id="content" type="hidden" name="content" value="{{ data.content|default('') }}">
+      <label for="tagline">Chapô</label>
+      <textarea id="tagline" name="tagline" class="form-control">{{ data.tagline|default('') }}</textarea>
+    </br>
+		{# Trix Editor #}
+		<trix-editor input="content"></trix-editor>
+		<button type="submit" name="submitPost" value='submitPost' class="btn btn-primary mt-3">{{ formButtonLabel }}</button>
+	</form>
+
+	<a href="{{ formBackUrl }}" class="btn btn-secondary mt-3">Back to List</a>
+</div>{% endblock %}{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-d2Q93LqD1J9R9P0bcJzWlXPb9PXX6oItz0nFiCEK3txfE4JQAgFgF4BIpAITSMbI" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy60Ll5B/Q6cWOlODFOB/stDpRMO4N/2x1" crossorigin="anonymous"></script>{% endblock %}

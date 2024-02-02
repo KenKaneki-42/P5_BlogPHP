@@ -8,9 +8,9 @@
   {% for post in posts %}
       <div class="bg-white">
         <p>{{post.id}}<p>
-        <h3>{{ post.title }}</h3>
-        <h4>{{post.tagline}}</h4>
-        <p>{{ post.content }}</p>
+        <h3>{{ post.title|raw  }}</h3>
+        <h4>{{post.tagline|raw }}</h4>
+        <p>{{ post.content|raw  }}</p>
         <p>
           <em>le {{ post.createdAt|date("Y-m-d à H:i") }}</em>
           <br />

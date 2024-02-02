@@ -10,9 +10,10 @@ class Post extends AbstractEntity
   private ?string $title = null;
   private ?string $content = null;
   private ?string $tagline = null;
-  private DateTime $createdAt;
-  private ?Datetime $updatedAt = null;
+  private $createdAt;
+  private $updatedAt = null;
   private ?int $userId = null;
+  private ?string $slug;
   // private bool $isEnabled;
 
   public function __construct(array $data = [])
@@ -64,22 +65,22 @@ class Post extends AbstractEntity
     $this->tagline = $tagline;
   }
 
-  public function getCreatedAt(): DateTime
+  public function getCreatedAt()
   {
     return $this->createdAt;
   }
 
-  public function setCreatedAt(DateTime $createdAt): void
+  public function setCreatedAt($createdAt): void
   {
     $this->createdAt = $createdAt;
   }
 
-  public function getUpdatedAt(): ?DateTime
+  public function getUpdatedAt()
   {
     return $this->updatedAt;
   }
 
-  public function setUpdatedAt(DateTime $updatedAt): void
+  public function setUpdatedAt($updatedAt): void
   {
     $this->updatedAt = $updatedAt;
   }
@@ -95,6 +96,16 @@ class Post extends AbstractEntity
     // $lastNameAuthor = $author->getLastName();
     // $this->author = sprintf("%s %s", $firstNameAuthor, $lastNameAuthor);
     $this->userId = $userId;
+  }
+
+  public function getSlug(): ?string
+  {
+    return $this->slug;
+  }
+
+  public function setSlug(string $slug): void
+  {
+    $this->slug = $slug;
   }
 
   // public function getIsEnabled(): bool

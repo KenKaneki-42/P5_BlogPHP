@@ -18,7 +18,7 @@ class UserRepository
   public function getAll(int $limit): ?array
   {
     $statement = $this->connection->prepare(
-      "SELECT * FROM user ORDER BY createdAt DESC LIMIT :limit"
+      "SELECT * FROM user ORDER BY created_at DESC LIMIT :limit"
     );
 
     $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
@@ -72,7 +72,7 @@ class UserRepository
     $isValidated = $user->getIsValidated();
     $profilPicture = $user->getProfilPicture();
 
-    $sql = "INSERT INTO user (role, firstname, lastname, email, password, token, createdAt, updatedAt, isEnabled, isValidated, profilPicture)
+    $sql = "INSERT INTO user (role, firstname, lastname, email, password, token, created_at, updated_at, is_enabled, is_validated, profil_picture)
           VALUES (:role, :firstname, :lastname, :email, :password, :token, :created_at, :updated_at, :is_enabled, :is_validated, :profil_picture)";
 
     $statement = $this->connection->prepare($sql);

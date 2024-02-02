@@ -1,0 +1,12 @@
+{# errors.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Erreurs de validation</h1>
+    <ul>
+        {% for field, error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {# TODO include form ? #}
+{% endblock %}

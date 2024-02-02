@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Core\component\ConsoleIO;
+use Cocur\Slugify\Slugify;
 
 class PostFixtures extends AbstractFixturesFactory
 
@@ -31,11 +32,16 @@ class PostFixtures extends AbstractFixturesFactory
 
     if ($randomUser !== null) {
 
+      $title = $this->faker->sentence(6);
+      $slugify = new Slugify();
+      $slugTitle = $slugify->slugify($title);
+
       $post = new Post([
-        'title' => $this->faker->title,
+        'title' => $title,
         'content' => $this->faker->paragraph,
         'tagline' => $this->faker->text(50),
-        'userId' => $randomUserId
+        'userId' => $randomUserId,
+        'slug' => $slugTitle
       ]);
       $postRepository->save($post);
       $userRepository = new UserRepository();
