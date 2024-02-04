@@ -8,13 +8,15 @@ Router::setDefaultNamespace("App\Controller");
 Router::get("/admin/articles", "Admin\PostController@index")->setName('admin_post_index');
 Router::get("/admin/posts/{id}", "Admin\PostController@showPost");
 Router::all("/admin/nouvelle-article", "Admin\PostController@addPost");
-Router::all("/admin/post/edit/{id}", "Admin\PostController@edit")->where(['id' => '[0-9]+'])->setName('posts.edit');
-Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete")->where(['id' => '[0-9]+'])->setName('posts.edit');
+// Router::all("/admin/post/edit/{id}/{csrfToken}", "Admin\PostController@edit")->where(['id' => '[0-9]+']);
+Router::all("/admin/post/edit/{id}", "Admin\PostController@edit")->where(['id' => '[0-9]+']);
+Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete")->where(['id' => '[0-9]+']);
 //------ HOME -----//
-Router::get("/", "HomepageController@homepage");
+Router::get("/homepage", "HomepageController@homepage");
 
-// --- Athentication
-Router::all("/inscription", "admin\RegisterController@register");
+// --- Authentication
+Router::all("/inscription", "RegisterController@register")->setName('inscription');
+Router::all("/connexion", "admin\RegisterController@login");
 
 
 // Router::get("/", "HomepageController@homepage")->setName('home');
