@@ -34,16 +34,36 @@
 					<td>{{ post.id }}</td>
 					<td>{{ post.title }}</td>
 					<td>{{ post.content|slice(0,30)|striptags  }}</td>
-          <td>{{ post.createdAt }}</td>
-          <td>{{ post.updatedAt }}</td>
+          <td>{{ post.createdAt|date("Y-m-d à H:i") }}</td>
+          <td>{{ post.updatedAt|date("Y-m-d à H:i") }}</td>
 					<td>
-						<div class="d-flex ">
-							<a href="{{ '/admin/post/edit/' ~ post.id }}" class="btn btn-primary btn-sm me-2 ">Modifier</a>
+          <div class="d-flex justify-content-evenly">
+
+            <a href="{{ '/admin/post/edit/' ~ post.id }}" class="btn btn-primary btn-sm me-2 ">Modifier</a>
+
+            {# <form action="/admin/post/edit/{{ post.id }}/{{ csrf_token }}" method='POST'>
+              <input type='hidden' name='csrfToken' value='{{csrf_token}}'>
+              <button class="btn btn-primary btn-sm" name='submitPost' value='submitPost' onclick="return confirm('Êtes-vous sûr de vouloir modifier ce post?')">
+                Modifier
+              </button>
+            </form> #}
+            {# <form action="/admin/post/edit/{{ post.id }}" method="POST">
+              <input type="hidden" name="csrfToken" value="{{ csrf_token }}">
+              <!-- Autres champs du formulaire -->
+              <button class="btn btn-primary btn-sm" name="submitPost" value="submitPost" onclick="return confirm('Êtes-vous sûr de vouloir modifier ce post?')">
+                  Modifier
+              </button>
+            </form> #}
+
+
             <form action="/admin/post/delete/{{ post.id }}/{{ csrf_token }}" method='POST'>
-            <input type ='hidden'name='csrfToken' value = '{{csrf_token}}'>
-            <button class="btn btn-danger btn-sm" name ='deletePost' value ='deletePost' onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post?')"> Supprimer</button>
+              <input type='hidden' name='csrfToken' value='{{csrf_token}}'>
+              <button class="btn btn-danger btn-sm ms-3" name='deletePost' value='deletePost' onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post?')">
+                Supprimer
+              </button>
             </form>
-            </div>
+
+          </div>
 					</td>
 				</tr>
 			{% endfor %}

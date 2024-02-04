@@ -7,26 +7,29 @@ use App\Repository\UserRepository;
 use App\Entity\User;
 use Core\database\ConnectionDb; // Import the ConnectionDb class
 use Core\Router;
+use App\Service\Handler\RegisterHandler;
 
-class RegisterController extends AbstractController {
+class RegisterController extends AbstractController
+{
 
   protected UserRepository $userRepository;
+  protected RegisterHandler $registerHandler;
 
   public function __construct()
   {
     parent::__construct();
     $this->userRepository = new UserRepository();
+    $this->registerHandler = new RegisterHandler();
   }
 
   public function register()
   {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      // $username = $_POST['username'];
+    if ($this->isSubmitted('submit') && $this->isValid($_POST))
+    {
       $firstName = $_POST['firstname'];
       $lastName = $_POST['lastname'];
       $password = $_POST['password'];
       $email = $_POST['email'];
-
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
       $newUser = new User();
@@ -35,19 +38,17 @@ class RegisterController extends AbstractController {
       $newUser->setPassword($hashedPassword);
       $newUser->setEmail($email);
 
-      // $validationErrors = $this->validateUserData($firstName, $lastName, $hashedPassword, $email);
+      $validationErrors = $this->registerHandler->validateUserData($lastName, $firstName, $password, $_POST['confirm-password'] , $email);
 
-      // Connexion à la base de données et enregistrement de l'utilisateur (utilise des requêtes préparées pour des raisons de sécurité)
-      // $pdo = new PDO("mysql:host=localhost;dbname=nom_de_ta_base_de_donnees", "utilisateur", "mot_de_passe");
+      if (!empty($validationErrors)) {
+        // render error page or same form with indicate which field isn't adapt
+        return $this->render('registration/errors', ['errors' => $validationErrors]);
+      }
+
       $this->userRepository->save($newUser);
-      // $stmt = $pdo->prepare("INSERT INTO users (username, password, email) VALUES (?, ?, ?)");
-      // $stmt->execute([$username, $hashedPassword, $email]);
-
-      // Redirection vers une page de confirmation ou autre
-      header('Location: registration_success.php');
-      exit;
-  }
-    return $this->render("front/register",['user'=> $newUser]);
+      $this->redirect("connexion");
+    }
+    return $this->render("front/register");
   }
 
 }

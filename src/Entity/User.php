@@ -171,8 +171,14 @@ class User extends AbstractEntity
   {
     $this->profilPicture = $profilPicture;
   }
+  public function generateToken(): string
+    {
+        $randomBytes = bin2hex(random_bytes(32));
+        $hashedToken = hash('sha256', $randomBytes);
+        return $hashedToken;
+    }
 
-  // public function getConfirmationToken(): ?string
+    // public function getConfirmationToken(): ?string
   // {
   //   return $this->confirmationToken;
   // }

@@ -72,8 +72,8 @@ class PostController extends AbstractController
     if (!$post) {
       // handle with rendering in error page?
     }
-
     if ($this->isSubmitted('submitPost') && $this->isValid($_POST)) {
+      // && $_POST['csrfToken'] === $csrfToken
       $title = $_POST['title'] ?? '';
       $content = htmlspecialchars($_POST['content']) ?? '';
       $tagline = $_POST['tagline'] ?? '';
@@ -87,39 +87,10 @@ class PostController extends AbstractController
       $this->postRepository->persistUpdate($post, $_POST);
       // TODO add success message for creation popup
 
-      // return $this->redirect('admin_post_index');  Route not found: "/admin/admin_post_index/"
       return $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/edit', ['post' => $post]);
   }
-
-  // A externaliser dans un service. PostHandler
-  private function validatePostData(string $title, string $content, string $tagline, int $userId): array
-  {
-    $errors = [];
-
-    if (empty($title)) {
-      $errors['title'] = 'Le titre ne peut pas être vide.';
-    }
-    if (strlen($title) < 3) {
-      $errors['title'] = 'Le titre doit faire plus de 3 caractères.';
-    }
-    if (empty($content)) {
-      $errors['content'] = 'Le contenu ne peut pas être vide.';
-    }
-    if (strlen($content) < 10) {
-      $errors['content'] = "Le contenu de l'article doit faire plus de 10 caractères.";
-    }
-    // if (empty($tagline)) {
-    //   $errors['tagline'] = 'La tagline ne peut pas être vide.';
-    // }
-    // if (empty($userId)) {
-    //   $errors['userId'] = "L'identifiant de l'utilisateur ne peut pas être vide.";
-    // }
-
-    return $errors;
-  }
-
   public function delete(int $id, string $csrfToken)
   {
     $post = $this->postRepository->findById($id);
@@ -141,5 +112,35 @@ class PostController extends AbstractController
       return $this->redirect('/admin/articles');
     }
     return $this->redirect('/not-found');
+  }
+
+  // A externaliser dans un service. PostHandler
+  private function validatePostData(string $title, string $content, string $tagline, int $userId): array
+  {
+    $errors = [];
+
+    if (empty($title)) {
+      $errors['title'] = 'Le titre ne peut pas être vide.';
+    }
+    if (strlen($title) < 3) {
+      $errors['title'] = 'Le titre doit faire plus de 3 caractères.';
+    }
+    if (empty($content)) {
+      $errors['content'] = 'Le contenu ne peut pas être vide.';
+    }
+    // var_dump($content);
+    // die;
+    if (strlen($content) < 53) {
+      // 23 caractères de bases avec trix
+      $errors['content'] = "Le contenu de l'article doit faire plus de 10 caractères.";
+    }
+    // if (empty($tagline)) {
+    //   $errors['tagline'] = 'La tagline ne peut pas être vide.';
+    // }
+    // if (empty($userId)) {
+    //   $errors['userId'] = "L'identifiant de l'utilisateur ne peut pas être vide.";
+    // }
+
+    return $errors;
   }
 }
