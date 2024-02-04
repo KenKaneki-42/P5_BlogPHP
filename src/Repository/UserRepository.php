@@ -57,7 +57,6 @@ class UserRepository
     return new User($userData);
 }
 
-
   public function save(User $user): void
   {
     $role = json_encode($user->getRole());
@@ -65,6 +64,12 @@ class UserRepository
     $lastName = $user->getLastName();
     $email = $user->getEmail();
     $password = $user->getPassword();
+
+    if(null === $user->getToken()){
+      $newToken = $user->generateToken();
+      $user->setToken($newToken);
+    }
+
     $token = $user->getToken();
     $createdAt = $user->getCreatedAt()->format('Y-m-d H:i:s');
     $updatedAt = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : $createdAt;
@@ -97,4 +102,5 @@ class UserRepository
       throw new \RuntimeException("Error during SQL query execution.");
     }
   }
+
 }

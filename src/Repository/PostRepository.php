@@ -24,13 +24,21 @@ class PostRepository
   public function getAll(int $limit): ?array
   {
     $statement = $this->connection->prepare(
-      "SELECT * FROM post ORDER BY created_at DESC LIMIT :limit"
+      "SELECT
+        id,
+        title,
+        content,
+        tagline,
+        user_id as userId,
+        updated_at as updatedAt,
+        created_at as createdAt
+      FROM post ORDER BY created_at DESC LIMIT :limit"
     );
 
     $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 
-    $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $posts = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     // TODO: $posts = array_reverse($posts) ne fonctionne pas :/
 
     return $posts ?: null;
@@ -40,11 +48,19 @@ class PostRepository
   {
 
     $statement = $this->connection->prepare(
-      "SELECT * FROM post WHERE id = :id"
+      "SELECT
+        id,
+        title,
+        content,
+        tagline,
+        user_id as userId,
+        updated_at as updatedAt,
+        created_at as createdAt
+      FROM post WHERE id = :id"
     );
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
-    $statement->setFetchMode(PDO::FETCH_CLASS, Post::class);
+    $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     return $statement->fetch() ?: null;
   }
 
@@ -140,7 +156,7 @@ class PostRepository
     // TODO  replace me
     $post->setUserId($_SESSION['user_id']);
     $post->setUpdatedAt(new \DateTime());
-    // $post->setSlug(strtolower(str_replace(' ', '-', $post->getTitle())));
+    $post->setSlug(strtolower(str_replace(' ', '-', $post->getTitle())));
 
     // send to save it in DB
     $this->flushUpdate($post);
@@ -154,13 +170,16 @@ class PostRepository
     $tagline = $post->getTagline();
     $updatedAt = $post->getUpdatedAt()->format('Y-m-d H:i:s');
     $userId = $post->getUserId();
+    $slug = strtolower(str_replace(' ', '-', $post->getTitle()));
+    $post->setSlug($slug);
 
     $sql = "UPDATE post
             SET title = :title,
                 content = :content,
                 tagline = :tagline,
                 updated_at = :updatedAt,
-                user_id = :userId
+                user_id = :userId,
+                slug = :slug
             WHERE id = :id";
 
     $statement = $this->connection->prepare($sql);
@@ -175,6 +194,7 @@ class PostRepository
     $statement->bindValue(':tagline', $tagline, PDO::PARAM_STR);
     $statement->bindValue(':updatedAt', $updatedAt, PDO::PARAM_STR);
     $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $statement->bindValue(':slug',$slug, PDO::PARAM_STR);
 
     $result = $statement->execute();
 
@@ -190,7 +210,7 @@ class PostRepository
             WHERE id = :id";
 
     $statement = $this->connection->prepare($sql);
-    $statement->bindValue(':id', $idPost, PDO::PARAM_INT); // Assurez-vous que $idPost est du type INT, ajustez-le si nécessaire
+    $statement->bindValue(':id', $idPost, PDO::PARAM_INT);
     $result = $statement->execute();
     $statement->closeCursor();
     if (!$result) {
