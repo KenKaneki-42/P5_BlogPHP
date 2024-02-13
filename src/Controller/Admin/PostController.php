@@ -6,28 +6,38 @@ use Core\Component\AbstractController;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 
 class PostController extends AbstractController
 {
   private PostRepository $postRepository;
   private CommentRepository $commentRepository;
+  private UserRepository $userRepository;
 
   public function __construct()
   {
     parent::__construct();
     $this->postRepository = new PostRepository;
     $this->commentRepository = new CommentRepository;
+    $this->userRepository = new UserRepository;
+    // middleware avec le router mais pas avec simpleRouter pour protéger les routes
+    // ici on veut protéger toutes les méthodes pour les utilisateurs qui ont le role administrative
+    // pose un soucis pour les tests ? inversion de dépendance?
+    if (isset($_SESSION['user_email'])){
+      $user = $this->userRepository->findByEmail($_SESSION['user_email']);
+    }
+    $this->checkAdminAccess($user);
   }
   public function index()
   {
     $csrfToken = bin2hex(random_bytes(32));
-    $posts = $this->postRepository->getAll(20);
+    $posts = $this->postRepository->getAll(100);
     return $this->render('admin/post/index', [
       'posts' => $posts,
       'csrf_token' => $csrfToken
     ]);
   }
-  public function showPost(int $id): void
+  public function show(int $id): void
   {
     $post = $this->postRepository->findById($id);
 
@@ -42,7 +52,7 @@ class PostController extends AbstractController
     $this->render('admin/post/show', ['post' => $post, 'comments' => $comments]);
   }
 
-  public function addPost()
+  public function add()
   {
     if ($this->isSubmitted('submitPost') && $this->isValid($_POST)) {
       $title = $_POST['title'] ?? '';
@@ -128,8 +138,6 @@ class PostController extends AbstractController
     if (empty($content)) {
       $errors['content'] = 'Le contenu ne peut pas être vide.';
     }
-    // var_dump($content);
-    // die;
     if (strlen($content) < 53) {
       // 23 caractères de bases avec trix
       $errors['content'] = "Le contenu de l'article doit faire plus de 10 caractères.";

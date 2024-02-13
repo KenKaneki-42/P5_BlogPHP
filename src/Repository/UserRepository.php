@@ -43,18 +43,57 @@ class UserRepository
   }
 
   public function findById(int $id): ?User
-{
+  {
     $statement = $this->connection->prepare(
-        "SELECT * FROM user WHERE id = :id"
+      "SELECT * FROM user WHERE id = :id"
     );
     $statement->bindParam(":id", $id, PDO::PARAM_INT);
     $statement->execute();
     $userData = $statement->fetch(PDO::FETCH_ASSOC);
-    // var_dump($userData);
+
     if (!$userData) {
-        return null;
+      return null;
     }
     return new User($userData);
+  }
+
+  public function findByEmail(string $email): ?User
+  {
+    $statement = $this->connection->prepare(
+      "SELECT * FROM user WHERE email = :email"
+    );
+    $statement->bindParam(":email", $email, PDO::PARAM_STR);
+    $statement->execute();
+    $userData = $statement->fetch(PDO::FETCH_ASSOC);
+    if (!$userData) {
+      return null;
+    }
+    return new User($userData);
+  }
+
+  public function findBytoken(string $token): ?User
+  {
+    $statement = $this->connection->prepare(
+      "SELECT * FROM user WHERE token = :token"
+    );
+    $statement->bindParam(":token", $token, PDO::PARAM_STR);
+    $statement->execute();
+    $userData = $statement->fetch(PDO::FETCH_ASSOC);
+    if (!$userData) {
+      return null;
+    }
+    return new User($userData);
+  }
+
+  public function emailExists(string $email): bool
+{
+    $statement = $this->connection->prepare("SELECT COUNT(*) as count FROM user WHERE email = :email");
+    $statement->bindParam(":email", $email, PDO::PARAM_STR);
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+    // Si le nombre d'enregistrements avec cette adresse email est supérieur à zéro, l'email existe
+    return ($result['count'] > 0);
 }
 
   public function save(User $user): void
@@ -65,7 +104,7 @@ class UserRepository
     $email = $user->getEmail();
     $password = $user->getPassword();
 
-    if(null === $user->getToken()){
+    if (null === $user->getToken()) {
       $newToken = $user->generateToken();
       $user->setToken($newToken);
     }
@@ -77,8 +116,19 @@ class UserRepository
     $isValidated = $user->getIsValidated();
     $profilPicture = $user->getProfilPicture();
 
+    // Utilisation de la syntaxe INSERT INTO pour insérer ou mettre à jour en fonction de l'existence de l'utilisateur
     $sql = "INSERT INTO user (role, firstname, lastname, email, password, token, created_at, updated_at, is_enabled, is_validated, profil_picture)
-          VALUES (:role, :firstname, :lastname, :email, :password, :token, :created_at, :updated_at, :is_enabled, :is_validated, :profil_picture)";
+            VALUES (:role, :firstname, :lastname, :email, :password, :token, :created_at, :updated_at, :is_enabled, :is_validated, :profil_picture)
+            ON DUPLICATE KEY UPDATE
+                role = :role,
+                firstname = :firstname,
+                lastname = :lastname,
+                password = :password,
+                token = :token,
+                updated_at = :updated_at,
+                is_enabled = :is_enabled,
+                is_validated = :is_validated,
+                profil_picture = :profil_picture";
 
     $statement = $this->connection->prepare($sql);
 
@@ -102,5 +152,4 @@ class UserRepository
       throw new \RuntimeException("Error during SQL query execution.");
     }
   }
-
 }

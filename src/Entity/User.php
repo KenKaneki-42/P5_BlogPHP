@@ -33,22 +33,31 @@ class User extends AbstractEntity
     return $this->id;
   }
 
+  public function setId(?int $id): void
+  {
+    $this->id = $id;
+  }
+
   public function getRole(): ?array
   {
     return $this->role ?? ['ROLE_USER'];
   }
 
-  // public function setRole(?array $role): void
-  // {
-  //   // $this->role = json_decode($role);
-  //   $this->role = $role;
-  // }
-
   public function setRole(?string $role): void
   {
-      if ($role !== null) {
-          $this->role = json_decode($role, true);
+    if ($role !== null) {
+      $this->role = json_decode($role, true);
+    }
+  }
+
+  public function setAsAdmin(User $user): void
+  {
+    if ($user) {
+      if(!in_array('ROLE_ADMIN', $user->getRole()))
+      {
+        $this->role[] = 'ROLE_ADMIN';
       }
+    }
   }
   public function getFirstname(): ?string
   {
@@ -105,44 +114,34 @@ class User extends AbstractEntity
     return $this->createdAt;
   }
 
-  // public function setCreatedAt(DateTime $createdAt): void
-  // {
-  //   $this->createdAt = $createdAt;
-  // }
   public function setCreatedAt($createdAt): void
-    {
-        if (!$createdAt instanceof DateTime) {
-            if (is_string($createdAt)) {
-                $createdAt = new DateTime($createdAt);
-
-            } else {
-                throw  new \InvalidArgumentException('Invalid value provided for createdAt');
-            }
-        }
-        $this->createdAt = $createdAt;
+  {
+    if (!$createdAt instanceof DateTime) {
+      if (is_string($createdAt)) {
+        $createdAt = new DateTime($createdAt);
+      } else {
+        throw  new \InvalidArgumentException('Invalid value provided for createdAt');
+      }
     }
+    $this->createdAt = $createdAt;
+  }
 
   public function getUpdatedAt(): DateTime
   {
     return $this->updatedAt;
   }
 
-  // public function setUpdatedAt(DateTime $updatedAt): void
-  // {
-  //   $this->updatedAt = $updatedAt;
-  // }
   public function setUpdatedAt($updatedAt): void
-    {
-        if (!$updatedAt instanceof DateTime) {
-            if (is_string($updatedAt)) {
-                $updatedAt = new DateTime($updatedAt);
-
-            } else {
-                throw  new \InvalidArgumentException('Invalid value provided for createdAt');
-            }
-        }
-        $this->updatedAt = $updatedAt;
+  {
+    if (!$updatedAt instanceof DateTime) {
+      if (is_string($updatedAt)) {
+        $updatedAt = new DateTime($updatedAt);
+      } else {
+        throw  new \InvalidArgumentException('Invalid value provided for createdAt');
+      }
     }
+    $this->updatedAt = $updatedAt;
+  }
 
   public function getIsEnabled(): bool
   {
@@ -172,13 +171,13 @@ class User extends AbstractEntity
     $this->profilPicture = $profilPicture;
   }
   public function generateToken(): string
-    {
-        $randomBytes = bin2hex(random_bytes(32));
-        $hashedToken = hash('sha256', $randomBytes);
-        return $hashedToken;
-    }
+  {
+    $randomBytes = bin2hex(random_bytes(32));
+    $hashedToken = hash('sha256', $randomBytes);
+    return $hashedToken;
+  }
 
-    // public function getConfirmationToken(): ?string
+  // public function getConfirmationToken(): ?string
   // {
   //   return $this->confirmationToken;
   // }

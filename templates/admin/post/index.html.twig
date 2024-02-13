@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Liste des Posts</h1>
+	<h1>Liste des Articles</h1>
   <a href="{{ '/admin/nouvelle-article' }}" class="btn btn-success mb-3">Nouveau Post</a>
 	<table id="myDataTable" class="table table-striped display responsive">
 		<thead>
@@ -101,7 +101,6 @@ infoFiltered: "(filtré sur _MAX_ entrées au total)"
             {% else %}
                 alert('Échec de la suppression');
             {% endif %}
-
             // Effacez la variable de session après l'affichage du message
             {% set _ = app.session.remove('delete_result') %}
         {% endif %}

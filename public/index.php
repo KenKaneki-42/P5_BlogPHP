@@ -20,3 +20,7 @@ session_start();
 
 // Start the routing
 Router::start();
+
+if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['flash_message'])){
+  unset($_SESSION['flash_message']);
+}

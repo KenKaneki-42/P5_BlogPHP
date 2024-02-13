@@ -1,7 +1,67 @@
 p {
-  color: red;
+  color: black;
 }
 
 /* #myDataTable_wrapper .row:first-child .col-sm-12 {
   display: flex;
 } */
+
+.profil-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profil-image-border {
+  border: 3px solid #fff;
+}
+
+/* posts */
+.blog-post {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-post-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.blog-post-tagline {
+  font-style: italic;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.blog-post-content {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.blog-post-meta {
+  font-size: 14px;
+  color: #999999;
+}
+/* .blog-post-meta em {
+  text-decoration: none;
+  color: inherit;
+} */
+.blog-post-meta a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.blog-post-meta a:hover {
+  text-decoration: underline;
+}
+
+.card-link,
+.card-link em {
+    text-decoration: none;
+    color: inherit;
+}

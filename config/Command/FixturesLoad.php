@@ -1,8 +1,7 @@
 <?php
 
 namespace Core\Command;
-
-require_once __DIR__ . '/../../vendor/autoload.php';
+// require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Fixtures\CommentFixtures;
 use App\Fixtures\PostFixtures;

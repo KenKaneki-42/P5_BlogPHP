@@ -2,18 +2,22 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\Handler\RegisterHandler;
 use Core\Component\AbstractController;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Controller\RegisterController;
 
 class UserController extends AbstractController
 {
 private UserRepository $userRepository;
+private RegisterHandler $registerHandler;
 
 public function __construct()
 {
   parent::__construct();
   $this->userRepository = new UserRepository;
+  $this->registerHandler = new RegisterHandler;
 }
 
 public function addUser()
@@ -24,7 +28,7 @@ public function addUser()
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirmedPassword = $_POST['confirmed-password'];
-    $validationErrors = $this->validateUserData($lastName, $firstName, $password, $confirmedPassword);
+    $validationErrors = $this->registerHandler->validateUserData($lastName, $firstName, $password, $confirmedPassword, $email);
 
     if (!empty($validationErrors)) {
       // render error page or same form with indicate which field isn't adapt
@@ -37,20 +41,6 @@ public function addUser()
   }
 }
 
-public function validateUserData(string $lastName, string $firstName, string $password, string $confirmedPassword) {
-    $errors = [];
 
-    if (empty($lastName)) {
-      $errors['lastName'] = 'Le nom ne peut pas être vide.';
-    }
-    if (empty($firstName)) {
-      $errors['firstName'] = 'Le prénom ne peut pas être vide.';
-    }
-    if ($password !== $confirmedPassword){
-      $errors['password'] = 'Les mots de passes ne correspondent pas';
-    }
-
-    return $errors;
-}
 
 }
