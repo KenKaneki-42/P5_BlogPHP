@@ -1,3 +1,4 @@
 /vendor/
 /.idea
 /config/database/DbConfig.php
+/config/Mailer/MailerConfig.php

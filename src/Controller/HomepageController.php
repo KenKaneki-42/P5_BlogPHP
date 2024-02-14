@@ -23,7 +23,6 @@ class HomepageController extends AbstractController {
   public function homepage()
   {
     $posts = $this->postRepository->getAll(5);
-    // var_dump($posts);
     return $this->render("front/homepage",['posts'=> $posts]);
   }
 

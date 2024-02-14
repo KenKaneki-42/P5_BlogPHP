@@ -20,7 +20,7 @@
 			action="{{ formAction }}" method="post">
 			{# Integrating With Forms : To submit the contents of a <trix-editor> with a form, first define a hidden input field in the form and assign it an id. Then reference that id in the editor’s input attribute. #}
 
-			<label for="title">Title</label>
+			<label for="title">Titre de l'artcile</label>
 			<input type="text" id="title" name="title" class="form-control" value="{{ data.title|default('') }}">
       <label for="content">Contenu de l'article</label>
       <input id="content" type="hidden" name="content" value="{{ data.content|default('') }}">

@@ -11,10 +11,6 @@ class PostRepository
 {
   private PDO $connection;
 
-  // Utilise une dépendance directe sur ConnectionDb.
-  // Initialise la connexion directement dans le constructeur.
-  // private ConnectionDB $connectionDb;
-
   public function __construct()
   {
     // $this->connection = $connectionDb->getConnection();
@@ -34,19 +30,16 @@ class PostRepository
         created_at as createdAt
       FROM post ORDER BY created_at DESC LIMIT :limit"
     );
-
     $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 
     $posts = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
-    // TODO: $posts = array_reverse($posts) ne fonctionne pas :/
 
     return $posts ?: null;
   }
 
   public function findById(int $id): ?Post
   {
-
     $statement = $this->connection->prepare(
       "SELECT
         id,
@@ -61,6 +54,7 @@ class PostRepository
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
     $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
+
     return $statement->fetch() ?: null;
   }
 
@@ -80,24 +74,18 @@ class PostRepository
     $statement->bindValue(':createdAt', $post->getCreatedAt()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
     $statement->bindValue(':updatedAt', $updatedAt, PDO::PARAM_STR);
     $statement->bindValue(':userId', $post->getUserId(), PDO::PARAM_STR);
-    // $statement->bindValue(':is_enabled', $isEnabled, PDO::PARAM_STR);
     $statement->bindValue(':slug', $post->getSlug(), PDO::PARAM_STR);
     $result = $statement->execute();
 
     // check execution succes
     if (!$result) {
-      // $errorInfos = $statement->errorInfo(); foreach on errors array??
       throw new RuntimeException("Error during execution of SQL statement.");
     }
   }
 
   public function persistCreate(Post $post): void
   {
-    // TODO  set userId ( modify it when authentication system i)
-    $_SESSION['user_id'] = 4;
-
     $post->setUserId($_SESSION['user_id']);
-    // send to save it in DB
     $this->flushCreate($post);
   }
 
@@ -140,9 +128,6 @@ class PostRepository
 
   public function persistUpdate(Post $post, array $data): void
   {
-    // TODO  set userId ( modify it when authentication system i)
-    $_SESSION['user_id'] = 4;
-
     if (!$post) {
       // handle when we can't retrieve the post
       throw new RuntimeException("Post with ID " . $post->getId() . "not found.");
@@ -194,11 +179,10 @@ class PostRepository
     $statement->bindValue(':tagline', $tagline, PDO::PARAM_STR);
     $statement->bindValue(':updatedAt', $updatedAt, PDO::PARAM_STR);
     $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
-    $statement->bindValue(':slug',$slug, PDO::PARAM_STR);
+    $statement->bindValue(':slug', $slug, PDO::PARAM_STR);
 
     $result = $statement->execute();
 
-    // Vérifiez si la mise à jour s'est bien déroulée
     if (!$result) {
       throw new RuntimeException("Error during execution of SQL update statement.");
     }

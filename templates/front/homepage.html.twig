@@ -1,35 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-  <h1>Page d'accueil du blog !</h1>
-  <p>Derniers billets du blog :</p>
-  {# afficher les 3 derniers posts #}
-  <div class=" bg-primary news">
-  {% for post in posts %}
-      <div class="bg-white">
-        <p>{{post.id}}<p>
-        <h3>{{ post.title|raw  }}</h3>
-        <h4>{{post.tagline|raw }}</h4>
-        <p>{{ post.content|raw  }}</p>
-        <p>
-          <em>le {{ post.createdAt|date("Y-m-d à H:i") }}</em>
-          <br />
-          <em>
-            <a href="/posts/{{ post.id }}">Commentaires</a>
+{% block title %}homepage{% endblock %}
 
-            {# ({{ post.comments|length }} commentaires) #}
-            {# {% if post.comments is not empty %}
-            <ul>
-              {% for comment in post.comments %}
-                <li>{{ comment.content }}</li>
-              {% endfor %}
-            </ul>
-            {% else %}
-              <p>Aucun commentaire pour le moment.</p>
-            {% endif %}
-          </em> #}
-        </p>
-      </div>
-  {% endfor %}
-  </div>
+{% block style %}
+  {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  <section class="presentation container d-flex flex-column align-items-center ">
+    <img class="profil-image profil-image-border" src="https://media.licdn.com/dms/image/C4D03AQEgxSkEJmko9A/profile-displayphoto-shrink_800_800/0/1537731189034?e=1712793600&v=beta&t=RGMpFAxoa4FPk6e5EZ21AKIyMY9dvZMYltxfT0LZ6Q4" alt="profil picture">
+    <div class="text-center">
+      <p><strong>VANDERMEERSCH Sylvain</strong></p>
+      <p>Le Web Developpeur qui prone le besoin client avant tout!</p>
+      <a href="mailto:<EMAIL>"><EMAIL>lien CV en PDF</a>
+    </div>
+  </section>
+
+  <section class="contact-form container">
+
+  </section>
+
+  <section class="links container">
+
+  </section>
+
+{% endblock %}
+
+{% block modal %}
+  {{ parent() }}
+{% endblock %}
+
+{% block js %}
+  {{ parent() }}
 {% endblock %}

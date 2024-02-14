@@ -7,6 +7,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use App\Entity\User;
 
 class AbstractController
 {
@@ -33,13 +34,9 @@ class AbstractController
     }
 
     try {
-      // var_dump($template);
-      // die;
+      $this->twig->addGlobal("session", $_SESSION);
       return $this->twig->render($template . ".html.twig", $data);
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
-      // var_dump('enter catch abstract');
-      // die;
-      // handle Twig erros
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     } catch (\Exception $e) {
       // Gérez d'autres erreurs ici (par exemple, journalisez-la ou lancez une nouvelle exception)
@@ -54,28 +51,56 @@ class AbstractController
     exit();
   }
 
-  public function isSubmitted($submitButton) : bool
+  public function isSubmitted($submitButton): bool
   {
-    if (isset($_POST[$submitButton])){
+    if (isset($_POST[$submitButton])) {
       return true;
     }
     return false;
   }
 
-  public function isValid(array $data) : bool
+  public function isValid(array $data): bool
   {
     $isValid = true;
     foreach ($data as $datum) {
-      if(null === $datum  || !isset($datum) || $datum === ''){
+      if (null === $datum  || !isset($datum) || $datum === '') {
         $isValid = false;
       }
     }
     return $isValid;
   }
 
-  //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
-  public function success($key,$message): void
+  public function isAdmin(User $user = null): bool
   {
-    
+    $isAdmin = false;
+    if (null !== $user) {
+      $Roles = $user->getRole();
+      if (in_array('ROLE_ADMIN', $Roles)) {
+        $isAdmin = true;
+      }
+    }
+    return $isAdmin;
+  }
+
+  public function isAdminPage(): bool
+  {
+    // Retrieve url of current page
+    $currentPageUrl = $_SERVER['REQUEST_URI'];
+
+    // check if URL starts with '/admin/'
+    return strpos($currentPageUrl, "/admin/") === 0;
+  }
+
+  public function checkAdminAccess(User $user = null): void
+  {
+    if ($this->isAdminPage() && !$this->isAdmin($user)) {
+      // Redirige l'utilisateur vers une page d'erreur ou d'accueil
+      $this->redirect('/forbidden');
+    }
+  }
+
+  //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
+  public function success($key, $message): void
+  {
   }
 }

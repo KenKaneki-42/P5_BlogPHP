@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Repository\CommentRepository;
 use App\Entity\Comment;
 use Core\component\AbstractController;
-
 
 class  CommentController extends AbstractController
 {
@@ -18,6 +17,7 @@ class  CommentController extends AbstractController
 
   public function index(): void
   {
+    // TODO : $this->isAdmin();
     // $posts = $this->commentRepository->getAll(10);
     // $this->render('home/index.html.twig', ['posts' => $posts]);
   }
