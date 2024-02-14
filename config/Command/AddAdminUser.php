@@ -3,8 +3,9 @@
 namespace Core\Command;
 
 use App\Repository\UserRepository;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 use Exception;
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 try{
   $consoleIO = new ConsoleIO();

@@ -5,8 +5,10 @@ namespace Core\Command;
 use App\Fixtures\CommentFixtures;
 use App\Fixtures\PostFixtures;
 use App\Fixtures\UserFixtures;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 use Exception;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $consoleIO = new ConsoleIO();
 // Instantiate and execute the Fixtures classes in this order: User, Post, Comment.

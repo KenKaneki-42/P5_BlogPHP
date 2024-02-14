@@ -46,7 +46,7 @@ class PostController extends AbstractController
     }
 
     // Récupérez les commentaires liés au post (vous devez implémenter cette fonction)
-    $comments = $this->commentRepository->getCommentsByPostId($id);
+    $comments = $this->commentRepository->findByPostId($id);
 
     // Utilisez la méthode render pour afficher la vue avec les données du post et des commentaires
     $this->render('admin/post/show', ['post' => $post, 'comments' => $comments]);
@@ -105,7 +105,7 @@ class PostController extends AbstractController
   {
     $post = $this->postRepository->findById($id);
     // retrieve comments that are linked to the post
-    $comments = $this->commentRepository->getCommentsByPostId($id); // ok on trouve 3 objets commentaires lié au post avec l'id 1
+    $comments = $this->commentRepository->findByPostId($id); // ok on trouve 3 objets commentaires lié au post avec l'id 1
 
     // check if post method
     if ($this->isSubmitted('deletePost') && $this->isValid($_POST)) {

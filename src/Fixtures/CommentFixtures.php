@@ -31,7 +31,7 @@ class CommentFixtures extends AbstractFixturesFactory
     // select a random post to associate the comment
     $randomPostIndex = array_rand($posts);
     $randomPost = $posts[$randomPostIndex];
-    $randomPostId = $randomPost['id'];
+    $randomPostId = $randomPost->getId();
     //select a random user to associate the author of the comment
     $randomUserIndex = array_rand($users);
     $randomUser = $users[$randomUserIndex];
@@ -47,7 +47,7 @@ class CommentFixtures extends AbstractFixturesFactory
       ]);
       $commentRepository->save($comment);
       $commentRepository = new CommentRepository();
-      $lastCommentId = $commentRepository->getAll(1)[0]['id'];
+      $lastCommentId = $commentRepository->findAll(1)[0]['id'];
       return $lastCommentId;
     } else {
       $this->io->writeLine('Could not retrieve a valid userId and postId. Post creation aborted.');

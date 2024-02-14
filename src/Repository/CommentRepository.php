@@ -15,7 +15,7 @@ class CommentRepository
     $this->connection = ConnectionDb::getConnection();
   }
 
-  public function getAll(int $limit): ?array
+  public function findAll(int $limit): ?array
   {
     $statement = $this->connection->prepare(
       "SELECT * FROM comment ORDER BY created_at DESC LIMIT :limit"
@@ -39,7 +39,7 @@ class CommentRepository
     return $statement->fetchObject(Comment::class) ?: null;
   }
 
-  public function getCommentsByPostId(int $postId): array
+  public function findByPostId(int $postId): array
   {
     $statement = $this->connection->prepare(
       "SELECT * FROM comment WHERE post_id = :postId ORDER BY created_at DESC"

@@ -9,10 +9,13 @@ use Core\component\AbstractController;
 class  CommentController extends AbstractController
 {
 
-  public CommentRepository $commentRepository;
-  public function __construct()
+  private CommentRepository $commentRepository;
+  private UserRepository $userRepository;
+  private PostRepository $postRepository;
+  public function __construct(CommentRepository $commentRepository)
   {
     parent::__construct();
+    $this->commentRepository = $commentRepository;
   }
 
   public function index(): void
@@ -29,6 +32,25 @@ class  CommentController extends AbstractController
     // $comments = $this->getComments($id);
 
     // $this->render('post/show.html.twig', ['post' => $post, 'comments' => $comments]);
+  }
+
+  public function create() : Comment
+  {
+    if ($this->isSubmitted('submitComment') && $this->isValid($_POST)) {
+      $content = $_POST['content']?? '';
+      $postId = $_POST['postId']?? 0;
+      $userId = $_POST['userId']?? 0;
+      $validationErrors = $this->validateCommentData($content, $postId, $userId);
+
+      if (!empty($validationErrors)) {
+        // render error page or same form with indicate which field isn't adapt
+        return $this->render('admin/post/errors', ['errors' => $validationErrors]);
+      }
+      $comment = $this->commentRepository->persistCreate($content, $postId, $userId);
+      // TODO add success message for creation popup
+
+      return $comment;
+    }
   }
 
   public function update(string $id, Comment $comment): void
