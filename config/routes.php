@@ -15,6 +15,7 @@ Router::all("/inscription-confirmation/{token}", "RegisterController@validationT
 
 // ------ FRONT POSTS -----
 Router::get("/articles", "Front\PostController@index");
+Router::get("/articles/{id}", "Front\PostController@show");
 // ------ ADMIN POSTS -----
 
 // Router::get("/admin/posts", "Admin\PostController@index")->setName('admin_post_index');
@@ -25,15 +26,14 @@ Router::get("/articles", "Front\PostController@index");
 // Router::delete("/admin/posts/{id}", "Admin\PostController@destroy")->setName('admin_post_destroy');
 
 Router::get("/admin/articles", "Admin\PostController@index")->setName('admin_post_index');
-Router::get("/admin/posts/{id}", "Admin\PostController@show");
+Router::get("/admin/articles/{id}", "Admin\PostController@show");
 Router::all("/admin/nouvelle-article", "Admin\PostController@add");
 // Router::all("/admin/post/edit/{id}/{csrfToken}", "Admin\PostController@edit")->where(['id' => '[0-9]+']);
 Router::all("/admin/post/edit/{id}", "Admin\PostController@edit")->where(['id' => '[0-9]+']);
 Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete")->where(['id' => '[0-9]+']);
 // ------ COMMENTS -----
-// Router::get("/", "HomepageController@homepage")->setName('home');
-
-
+Router::all("/articles/{id}/commentaires", "Front\CommentController@index")->where(['id' => '[0-9]+']);
+Router::all("/articles/{id}/commentaires/create", "Front\CommentController@create")->where(['id' => '[0-9]+']);
 // // Affichage d'un article spécifique
 Router::get("/posts/{id}", "PostController@show")->where(['id' => '[0-9]+']);
 // Router::get("/posts/{id}", "PostController@show")->where(['id' => '[0-9]+'])->setName('posts.show');

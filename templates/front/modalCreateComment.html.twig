@@ -1,0 +1,33 @@
+
+<!-- button to open modal -->
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCommentModal">
+	+
+</button>
+
+<!-- modal structure -->
+<div class="modal" id="newCommentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nouveau commentaire</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/articles/{{post.id}}/commentaires/create" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="commentContent">Contenu du commentaire :</label>
+                        <textarea class="form-control" id="commentContent" name="content" rows="3"></textarea>
+                        <input type="hidden" name="postId" value="{{post.id}}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" name="submitComment" value = 'submitComment'class="btn btn-primary">Poster</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

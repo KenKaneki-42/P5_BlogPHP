@@ -21,7 +21,7 @@ class CommentRepository
       "SELECT * FROM comment ORDER BY created_at DESC LIMIT :limit"
     );
 
-    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 
     $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +33,7 @@ class CommentRepository
     $statement = $this->connection->prepare(
       "SELECT * FROM comment WHERE id = :id"
     );
-    $statement->bindParam(':id', $id, PDO::PARAM_INT);
+    $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
 
     return $statement->fetchObject(Comment::class) ?: null;
@@ -42,13 +42,21 @@ class CommentRepository
   public function findByPostId(int $postId): array
   {
     $statement = $this->connection->prepare(
-      "SELECT * FROM comment WHERE post_id = :postId ORDER BY created_at DESC"
+      "SELECT
+        id,
+        content,
+        moderate,
+        status,
+        created_at as createdAt,
+        published_at as publishedAt,
+        post_id as postId,
+        user_id as userId
+      FROM comment WHERE post_id = :postId ORDER BY created_at DESC"
     );
-    $statement->bindParam(':postId', $postId, PDO::PARAM_INT);
-    $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Entity\Comment'); // initialiser le construct
+    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);
     $statement->execute();
 
-    $comments = $statement->fetchAll();
+    $comments = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Comment::class);
 
     return $comments ?: [];
   }
@@ -71,14 +79,14 @@ class CommentRepository
     if (!$statement) {
       throw new \RuntimeException("Error on preparation SQL statement.");
     }
-    $statement->bindParam(':content', $content, PDO::PARAM_STR);
-    $statement->bindParam(':moderate', $moderate, PDO::PARAM_BOOL);
-    $statement->bindParam(':status', $status, PDO::PARAM_STR);
-    $statement->bindParam(':createdAt', $createdAt, PDO::PARAM_STR);
-    $statement->bindParam(':publishedAt', $publishedAt, PDO::PARAM_STR);
-    $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $statement->bindParam(':postId', $postId, PDO::PARAM_INT);// il y avait une erreur de variable et pour le typage ( en int)
-    // $statement->bindParam(':is_enabled', $isEnabled, PDO::PARAM_STR);
+    $statement->bindValue(':content', $content, PDO::PARAM_STR);
+    $statement->bindValue(':moderate', $moderate, PDO::PARAM_BOOL);
+    $statement->bindValue(':status', $status, PDO::PARAM_STR);
+    $statement->bindValue(':createdAt', $createdAt, PDO::PARAM_STR);
+    $statement->bindValue(':publishedAt', $publishedAt, PDO::PARAM_STR);
+    $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);// il y avait une erreur de variable et pour le typage ( en int)
+    // $statement->bindValue(':is_enabled', $isEnabled, PDO::PARAM_STR);
 
     $result = $statement->execute();
 
@@ -108,5 +116,39 @@ class CommentRepository
     //   // Échec
     //   echo "<script>alert('Échec de la suppression');</script>";
     // }
+  }
+
+  public function flush(Comment $comment) : void
+  {
+    $sql = "INSERT INTO comment
+            SET content = :content,
+                moderate = :moderate,
+                status = :status,
+                created_at = :createdAt,
+                published_at = :publishedAt,
+                post_id = :postId,
+                user_id = :userId
+                ";
+
+    $statement = $this->connection->prepare($sql);
+
+    if (!$statement) {
+      throw new \RuntimeException("Error on preparation SQL statement.");
+    }
+    $statement->bindValue(':content', $comment->getContent(), PDO::PARAM_STR);
+    $statement->bindValue(':moderate', $comment->getModerate(), PDO::PARAM_BOOL);
+    $statement->bindValue(':status', $comment->getStatus(), PDO::PARAM_STR);
+    $statement->bindValue(':createdAt', $comment->getCreatedAt()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+    $statement->bindValue(':publishedAt', $comment->getPublishedAt(), PDO::PARAM_STR);
+    $statement->bindValue(':postId', $comment->getPostId(), PDO::PARAM_INT);
+    $statement->bindValue(':userId', $comment->getUserId(), PDO::PARAM_INT);
+
+    $result = $statement->execute();
+
+    // check execution succes
+    if (!$result) {
+      // $errorInfos = $statement->errorInfo(); foreach on errors array??
+      throw new \RuntimeException("Error during execution of SQL statement.");
+    }
   }
 }
