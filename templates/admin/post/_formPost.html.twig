@@ -22,11 +22,11 @@
 
 			<label for="title">Titre de l'artcile</label>
 			<input id="title" type="text" name="title" value="{{ data.title|default('') }}" class="form-control">
-      <label for="content">Contenu de l'article</label>
-      <input id="content" type="hidden" name="content" value="{{ data.content|default('') }}">
-      <label for="tagline">Chapô</label>
-      <textarea id="tagline" name="tagline" class="form-control">{{ data.tagline|default('') }}</textarea>
-    </br>
+			<label for="content">Contenu de l'article</label>
+			<input id="content" type="hidden" name="content" value="{{ data.content|default('') }}">
+			<label for="tagline">Chapô</label>
+			<textarea id="tagline" name="tagline" class="form-control">{{ data.tagline|default('') }}</textarea>
+		</br>
 		{# Trix Editor #}
 		<trix-editor input="content"></trix-editor>
 		<button type="submit" name="submitPost" value='submitPost' class="btn btn-primary mt-3">{{ formButtonLabel }}</button>

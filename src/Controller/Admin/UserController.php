@@ -6,7 +6,6 @@ use App\Service\Handler\RegisterHandler;
 use Core\Component\AbstractController;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Controller\RegisterController;
 
 class UserController extends AbstractController
 {

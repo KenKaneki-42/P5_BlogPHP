@@ -14,13 +14,11 @@ class Post extends AbstractEntity
   private $updatedAt = null;
   private ?int $userId = null;
   private ?string $slug;
-  // private bool $isEnabled;
 
   public function __construct(array $data = [])
   {
     $this->createdAt = new DateTime();
     $this->updatedAt = $this->createdAt;
-    // $this->isEnabled = false;
     parent::__construct($data);
   }
 
@@ -92,9 +90,6 @@ class Post extends AbstractEntity
 
   public function setUserId(int $userId): void
   {
-    // $firstNameAuthor = $author->getFirstName();
-    // $lastNameAuthor = $author->getLastName();
-    // $this->author = sprintf("%s %s", $firstNameAuthor, $lastNameAuthor);
     $this->userId = $userId;
   }
 
@@ -107,14 +102,4 @@ class Post extends AbstractEntity
   {
     $this->slug = $slug;
   }
-
-  // public function getIsEnabled(): bool
-  // {
-  //   return $this->isEnabled;
-  // }
-
-  // public function setIsEnabled(bool $isEnabled): void
-  // {
-  //   $this->isEnabled = $isEnabled;
-  // }
 }

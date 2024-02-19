@@ -38,11 +38,11 @@ for ($i = 0; $i < 15; $i++) {
 for ($i = 0; $i < 15; $i++) {
   try {
     $consoleIO->writeLine('Starting to load a new comment');
-      $commentFixtures = new CommentFixtures();
-      $commentIdGenerated = $commentFixtures->load();
-      $consoleIO->writeLine(sprintf('New comment generated and loaded in database with id: %s', $commentIdGenerated));
+    $commentFixtures = new CommentFixtures();
+    $commentIdGenerated = $commentFixtures->load();
+    $consoleIO->writeLine(sprintf('New comment generated and loaded in database with id: %s', $commentIdGenerated));
   } catch (Exception $e) {
-      echo "Error during the execution CommentFixtures : " . $e->getMessage() . "\n";
+    echo "Error during the execution CommentFixtures : " . $e->getMessage() . "\n";
   }
 }
 

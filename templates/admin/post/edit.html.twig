@@ -1,5 +1,5 @@
 {% block body %}
-    {% include 'admin/post/_formPost.html.twig' with {
+	{% include 'admin/post/_formPost.html.twig' with {
         'formTitle': "Edition d'un article",
         'formAction': '/admin/post/edit/' ~ post.id,
         'formButtonLabel': 'sauvegarder',

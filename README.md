@@ -1,51 +1,56 @@
-Une description générale du système ou du projet.
-Le statut du projet, qui est surtout utile lorsqu’il est encore en stade du développement. Évoquez les modifications prévues et l’objectif du développement ou signalez clairement que le développement du projet est terminé.
-Les exigences concernant l’environnement de développement en vue de son intégration.
-Une instruction pour l’installation et l’utilisation.
-Une liste des technologies utilisées et, le cas échéant, des liens vers d’autres informations sur ces technologies.
-Les projets open source que les développeurs modifient ou complètent par eux-mêmes doivent être complétés par un paragraphe « collaboration souhaitée » dans leur fichier readme.md. Comment contourner un problème ? Comment les développeurs doivent-ils appliquer les modifications ?
-Bugs connus et corrections éventuelles apportées.
-Section FAQ reprenant toutes les questions posées jusqu’à présent.
-Droits d’auteurs et informations sur la licence.
-
-***
-
-# Headline H1
-## Headline H2
-### Headline H3
-#### Headline H4
-##### Headline H5
-###### Headline H6
-
-***
+# BlogPhp
 
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Collaboration](#collaboration)
-5. [FAQs](#faqs)
+1. [Description](#description)
+2. [Main Features](#main-features)
+3. [Technologies Used](#technologies-used)
+4. [Installation](#installation)
+5. [Contributing](#contributing)
+6. [FAQ](#faq)
 
-***
+## Description
 
-## Table of Contents
-<a name="general-info"></a>
-### General Info
+BlogPhp is a web application for article blogging with administrator and user management. The goal is to provide a platform for article and comment publication, with moderation features.
 
-***
+## Main Features
 
-## General Info
-***
-Write down the general informations of your project. It is worth to always put a project status in the Readme file. This is where you can add it.
+- CRUD (Create, Read, Update, Delete) for articles and comments
+- User management with different roles (administrator, user)
+- Article publishing by administrators and users
+- Comments on articles with moderation capability
+- Form security against CSRF (Cross-Site Request Forgery) attacks
 
-***
+## Technologies Used
 
-### Screenshot
-![Image text](/path/to/the/screenshot.png)
+- PHP 8.2.10
+- MySQL (or another relational database)
+- HTML
+- CSS
+- JavaScript
 
-## Technologies
-***
-A list of technologies used within the project:
-* [Technologie name](https://example.com): Version 12.3
-* [Technologie name](https://example.com): Version 2.34
-* [Library name](https://example.com): Version 1234
+## Installation
+
+1. Clone the GitHub repository: `git clone https://github.com/your-username/BlogPhp.git`
+2. Install PHP dependencies with Composer: `composer install`
+3. Import the provided database in the `database` folder or run migrations and seeds
+4. Configure the database connection information in the `config/database.php` file
+5. Start the built-in PHP server: `php -S localhost:8000`
+6. Access the application in your browser at `http://localhost:8000`
+
+## Contributing
+
+If you want to contribute to BlogPhp, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -am 'Add a new feature'`)
+4. Push the branch (`git push origin feature/new-feature`)
+5. Create a pull request
+
+## FAQ
+
+### Q: How can I create a new article?
+A: To create a new article, log in as an administrator or authenticated user, then navigate to the article creation page.
+
+### Q: Are comments moderated?
+A: Yes, comments undergo moderation by administrators before being published on the blog.

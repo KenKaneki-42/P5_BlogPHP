@@ -53,8 +53,7 @@ class User extends AbstractEntity
   public function setAsAdmin(User $user): void
   {
     if ($user) {
-      if(!in_array('ROLE_ADMIN', $user->getRole()))
-      {
+      if (!in_array('ROLE_ADMIN', $user->getRole())) {
         $this->role[] = 'ROLE_ADMIN';
       }
     }
@@ -176,9 +175,4 @@ class User extends AbstractEntity
     $hashedToken = hash('sha256', $randomBytes);
     return $hashedToken;
   }
-
-  // public function getConfirmationToken(): ?string
-  // {
-  //   return $this->confirmationToken;
-  // }
 }

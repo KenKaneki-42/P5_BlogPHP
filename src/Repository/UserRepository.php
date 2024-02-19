@@ -23,21 +23,7 @@ class UserRepository
 
     $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
     $statement->execute();
-
-    // Utilisez FETCH_ASSOC car vous ne souhaitez pas remplir un objet User avec un tableau associatif
     $users = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-    // Vérifiez si $users n'est pas vide avant de traiter les données
-    // if ($users) {
-    //     foreach ($users as &$user) {
-    //         // PDO devrait automatiquement convertir la colonne role au format JSON
-    //         // Vous pouvez laisser la colonne role en tant que chaîne dans votre classe User
-    //         $user['role'] = json_decode($user['role'], true);
-    //     }
-    // }
-
-    // var_dump($users);
-    // die;
 
     return $users ?: null;
   }
@@ -86,15 +72,14 @@ class UserRepository
   }
 
   public function emailExists(string $email): bool
-{
+  {
     $statement = $this->connection->prepare("SELECT COUNT(*) as count FROM user WHERE email = :email");
     $statement->bindParam(":email", $email, PDO::PARAM_STR);
     $statement->execute();
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    // Si le nombre d'enregistrements avec cette adresse email est supérieur à zéro, l'email existe
     return ($result['count'] > 0);
-}
+  }
 
   public function save(User $user): void
   {
@@ -116,7 +101,6 @@ class UserRepository
     $isValidated = $user->getIsValidated();
     $profilPicture = $user->getProfilPicture();
 
-    // Utilisation de la syntaxe INSERT INTO pour insérer ou mettre à jour en fonction de l'existence de l'utilisateur
     $sql = "INSERT INTO user (role, firstname, lastname, email, password, token, created_at, updated_at, is_enabled, is_validated, profil_picture)
             VALUES (:role, :firstname, :lastname, :email, :password, :token, :created_at, :updated_at, :is_enabled, :is_validated, :profil_picture)
             ON DUPLICATE KEY UPDATE

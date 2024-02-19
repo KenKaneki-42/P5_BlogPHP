@@ -59,20 +59,21 @@
 									<a class="nav-link" href="/inscription">Inscription</a>
 								</li>
 							{% endif %}
-							{# <li class="nav-item">
-							                <a class="nav-link" href="#">Roles:
-							                  {% for role in session.user_role %}
-							                      {{ role }}{% if not loop.last %}, {% endif %}
-							                  {% endfor %}
-							                </a>
-							              </li> #}
+							{#
+							              <li class="nav-item">
+							                  <a class="nav-link" href="#">Roles:
+							                    {% for role in session.user_role %}
+							                        {{ role }}{% if not loop.last %}, {% endif %}
+							                    {% endfor %}
+							                  </a>
+							                </li>
+							              #}
 						</ul>
 					</div>
 				</nav>
 			{% endblock %}
 
-			<div class="container mt-4"> {% block body %}{% endblock %}
-				</div>
+			<div class="container mt-4"> {% block body %}{% endblock %}</div>
 
 				{% if session.flash_message %}
 					{{ session.flash_message }};
@@ -89,4 +90,3 @@
 			{% endblock %}
 		</body>
 	</html>
-</div></html>

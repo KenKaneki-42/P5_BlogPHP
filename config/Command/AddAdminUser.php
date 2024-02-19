@@ -5,9 +5,10 @@ namespace Core\Command;
 use App\Repository\UserRepository;
 use Core\Component\ConsoleIO;
 use Exception;
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-try{
+try {
   $consoleIO = new ConsoleIO();
   $consoleIO->writeLine("Please write the email of the user you want to add role as ROLE_ADMIN");
   $email = $consoleIO->readLine("email");
@@ -18,8 +19,8 @@ try{
   } else {
     $user->setAsAdmin($user);
     $userRepository->save($user);
-    $consoleIO->writeLine("User with email ". $email. " has been added as admin");
+    $consoleIO->writeLine("User with email " . $email . " has been added as admin");
   }
-}catch(Exception $e){
+} catch (Exception $e) {
   echo "Error during the execution UserFixtures : " . $e->getMessage() . "\n";
 }
