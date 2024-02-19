@@ -74,7 +74,7 @@ class MailerHandler extends MailerConfig
       // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
       // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
       $confirmationUrl = sprintf('%s://%s:%s/%s',self::PROTOCOLE,self::HOST, self::PORT, self::PATH);
-      $body = sprintf("<p>Voici le contenu du message: %s, </br> il provient de %s : </p>", $message, $senderEmail,);
+      $body = sprintf("<p>Voici le contenu du message:</br> %s, </br> il provient de %s : </p>", $message, $senderEmail,);
       http://127.0.0.1/
       //Content
       $this->mail->isHTML(true);                                  //Set email format to HTML
