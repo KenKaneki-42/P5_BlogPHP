@@ -8,12 +8,13 @@ use Core\Mailer\MailerConfig;
 use PHPMailer\PHPMailer\Exception;
 use App\Repository\UserRepository;
 
-class RegisterHandler extends MailerConfig
+class MailerHandler extends MailerConfig
 {
   const PROTOCOLE = 'http';
   const HOST = '127.0.0.1';
   const PORT = '8000';
-  const PATH = 'inscription-confirmation';
+  const PATH = 'send-email-contact';
+  const CONTACT_EMAIL = 'sylvain.vandermeersch@gmail.com';
 
   public function __construct(){
     parent::__construct();
@@ -55,14 +56,14 @@ class RegisterHandler extends MailerConfig
     return $errors;
   }
 
-  public function sendEmailConfirmation(string $recipient, string $token)
+  public function sendEmailContact(string $senderEmail, string $message)
   {
     //Create an instance; passing `true` enables exceptions
 
     try {
       //Recipients
-      $this->mail->setFrom('sylvain.vandermeersch@gmail.com', 'Dono');
-      $this->mail->addAddress($recipient);     //Add a recipient
+      $this->mail->setFrom(self::CONTACT_EMAIL);
+      $this->mail->addAddress(self::CONTACT_EMAIL);     //Add a recipient
 
       // $this->mail->addAddress('ellen@example.com');               //Name is optional
       // $this->mail->addReplyTo('info@example.com', 'Information');
@@ -72,12 +73,12 @@ class RegisterHandler extends MailerConfig
       //Attachments
       // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
       // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-      $confirmationUrl = sprintf('%s://%s:%s/%s/%s',self::PROTOCOLE,self::HOST, self::PORT, self::PATH,$token);
-      $body = sprintf("<p>Bonjour, afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $confirmationUrl);
+      $confirmationUrl = sprintf('%s://%s:%s/%s',self::PROTOCOLE,self::HOST, self::PORT, self::PATH);
+      $body = sprintf("<p>Voici le contenu du message, il provient de %s, %s : </p>", $senderEmail, $message);
       http://127.0.0.1/
       //Content
       $this->mail->isHTML(true);                                  //Set email format to HTML
-      $this->mail->Subject = 'Confirmation de demande de création de compte';
+      $this->mail->Subject = 'Demande de contact';
       $this->mail->Body    = $body;
       $this->mail->AltBody = strip_tags($body);
 

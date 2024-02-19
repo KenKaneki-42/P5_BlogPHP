@@ -11,8 +11,8 @@ class Comment extends AbstractEntity
   private ?string $content = null;
   private bool $moderate = false;
   private ?string $status = null;
-  private DateTime $createdAt;
-  private ?DateTime $publishedAt = null;
+  private $createdAt = null;
+  private $publishedAt = null;
   private ?int $postId = null;
   private ?int $userId = null;
 
@@ -46,7 +46,7 @@ class Comment extends AbstractEntity
 
   public function setModerate(bool $moderate): void
   {
-    $moderate = true ? $this->moderate = $moderate : $this->moderate = false;
+    $this->moderate = $moderate;
   }
 
   public function getStatus(): ?string
@@ -58,17 +58,17 @@ class Comment extends AbstractEntity
   {
     $this->status = $status;
   }
-  public function getCreatedAt(): DateTime
+  public function getCreatedAt()
   {
     return $this->createdAt;
   }
 
-  public function setCreatedAt(DateTime $createdAt): void
+  public function setCreatedAt($createdAt): void
   {
     $this->createdAt = $createdAt;
   }
 
-  public function getPublishedAt(): ?DateTime
+  public function getPublishedAt()
   {
     return $this->publishedAt;
   }

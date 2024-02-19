@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Formulaire générique du Post
+	Formulaire générique d'un article
 {% endblock %}
 
 {% block style %}
@@ -21,7 +21,7 @@
 			{# Integrating With Forms : To submit the contents of a <trix-editor> with a form, first define a hidden input field in the form and assign it an id. Then reference that id in the editor’s input attribute. #}
 
 			<label for="title">Titre de l'artcile</label>
-			<input type="text" id="title" name="title" class="form-control" value="{{ data.title|default('') }}">
+			<input id="title" type="text" name="title" value="{{ data.title|default('') }}" class="form-control">
       <label for="content">Contenu de l'article</label>
       <input id="content" type="hidden" name="content" value="{{ data.content|default('') }}">
       <label for="tagline">Chapô</label>

@@ -1,4 +1,7 @@
 @import "style.css";
+@import "layout.css";
 @import "mediaQueries.css";
 @import "normalize.css";
+@import "navbar.css";
+@import "contactForm.css";
 /* @import "modal.css"; */
