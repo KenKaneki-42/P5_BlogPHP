@@ -1,6 +1,7 @@
 # BlogPhp
 
 ## Table of Contents
+
 1. [Description](#description)
 2. [Main Features](#main-features)
 3. [Technologies Used](#technologies-used)
@@ -30,7 +31,7 @@ BlogPhp is a web application for article blogging with administrator and user ma
 
 ## Installation
 
-1. Clone the GitHub repository: `git clone https://github.com/your-username/BlogPhp.git`
+1. Clone the GitHub repository: `git clone https://github.com/KenKaneki-42/P5_BlogPHP.git`
 2. Install PHP dependencies with Composer: `composer install`
 3. Import the provided database in the `database` folder or run migrations and seeds
 4. Configure the database connection information in the `config/database.php` file
@@ -50,7 +51,9 @@ If you want to contribute to BlogPhp, please follow these steps:
 ## FAQ
 
 ### Q: How can I create a new article?
+
 A: To create a new article, log in as an administrator or authenticated user, then navigate to the article creation page.
 
 ### Q: Are comments moderated?
+
 A: Yes, comments undergo moderation by administrators before being published on the blog.
