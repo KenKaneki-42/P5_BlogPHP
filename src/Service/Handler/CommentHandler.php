@@ -8,7 +8,6 @@ class CommentHandler {
     $errors = [];
 
     if (strlen($content) < 3) {
-      // 23 caractères de bases avec trix
       $errors['content'] = "Le contenu du commentaire doit faire plus de 3 caractères.";
     }
 
