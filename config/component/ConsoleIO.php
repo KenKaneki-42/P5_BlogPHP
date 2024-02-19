@@ -15,8 +15,3 @@ class ConsoleIO
         echo $message . PHP_EOL;
     }
 }
-
-// Exemple
-// $consoleIO = new ConsoleIO();
-// $input = $consoleIO->readLine();
-// $consoleIO->writeLine('Vous avez saisi : ' . $input);
