@@ -5,16 +5,18 @@
 
 	<div class="news">
 		{% for post in posts %}
-    {# /articles/{id} #}
+			{# /articles/{id} #}
 			<a href="/articles/{{ post.id }}" class="card-link">
 				<div class="blog-post">
 					<h2 class="blog-post-title">{{ post.title }}</h2>
 					<p class="blog-post-tagline">{{ post.tagline }}</p>
-          <div class="blog-post-content">
-					  <p>{{ post.content|raw }}</p>
-          </div>
+					<div class="blog-post-content">
+						<p>{{ post.content|raw }}</p>
+					</div>
 					<div class="blog-post-meta d-flex justify-content-between">
-						<em>Publié le {{ post.createdAt|date("Y-m-d à H:i") }} </em>
+						<em>Publié le
+							{{ post.createdAt|date("Y-m-d à H:i") }}
+						</em>
 					</div>
 				</div>
 			</a>

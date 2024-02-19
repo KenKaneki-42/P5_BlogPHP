@@ -5,8 +5,6 @@ namespace App\Controller;
 use Core\component\AbstractController;
 use App\Repository\UserRepository;
 use App\Entity\User;
-use Core\database\ConnectionDb; // Import the ConnectionDb class
-use Core\Router;
 use App\Service\Handler\RegisterHandler;
 
 class RegisterController extends AbstractController
@@ -53,7 +51,8 @@ class RegisterController extends AbstractController
     return $this->render("front/register");
   }
 
-  public function login(){
+  public function login()
+  {
     if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
       $email = $_POST['email'];
       $password = $_POST['password'];
@@ -75,7 +74,8 @@ class RegisterController extends AbstractController
     return $this->render("front/login");
   }
 
-  public function logout(){
+  public function logout()
+  {
     session_destroy();
     return $this->redirect('connexion');
   }
@@ -85,7 +85,7 @@ class RegisterController extends AbstractController
     $errors = [];
     $user = $this->userRepository->findByToken($token);
 
-    if(!$user){
+    if (!$user) {
       // FIXME : changement en base ok pour la validation du compte mais pourtant on a ce message d'erreur ...
       $errors[] = "L'utilisateur n'existe pas avec le token fourni.";
       return $this->render('front/errors', ['errors' => $errors]);

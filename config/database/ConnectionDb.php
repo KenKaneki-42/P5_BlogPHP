@@ -1,12 +1,15 @@
 <?php
 // pdo, call in differents manangers to execute SQL queries
 namespace Core\database;
+
 use PDO;
+
 class ConnectionDb
 {
   private static $database;
 
-  public function __construct(){
+  public function __construct()
+  {
     // eviter une instanciation de classe, souhaiter juste utiliser la méthode static
   }
   public static function getConnection(): PDO

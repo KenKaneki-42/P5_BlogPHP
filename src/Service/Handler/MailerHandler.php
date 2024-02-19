@@ -2,8 +2,6 @@
 
 namespace App\Service\Handler;
 
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
 use Core\Mailer\MailerConfig;
 use PHPMailer\PHPMailer\Exception;
 use App\Repository\UserRepository;
@@ -16,7 +14,8 @@ class MailerHandler extends MailerConfig
   const PATH = 'send-email-contact';
   const CONTACT_EMAIL = 'sylvain.vandermeersch@gmail.com';
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
   }
 
@@ -36,7 +35,7 @@ class MailerHandler extends MailerConfig
     if (!isset($confirmedPassword) || empty($confirmedPassword)) {
       $errors['confirmedPassword'] = 'La confirmation du mot de passe ne peut pas être vide';
     }
-    if ($password !== $confirmedPassword){
+    if ($password !== $confirmedPassword) {
       $errors['matching password'] = 'les mots de passes ne correspondent pas';
     }
 
@@ -47,7 +46,7 @@ class MailerHandler extends MailerConfig
     }
 
     $userRepository = new UserRepository;
-    if ($userRepository->emailExists($email) >0){
+    if ($userRepository->emailExists($email) > 0) {
       $errors['email'] = "L'email existe déjà en base de donnée";
     }
 
@@ -73,9 +72,9 @@ class MailerHandler extends MailerConfig
       //Attachments
       // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
       // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-      $confirmationUrl = sprintf('%s://%s:%s/%s',self::PROTOCOLE,self::HOST, self::PORT, self::PATH);
+      $confirmationUrl = sprintf('%s://%s:%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH);
       $body = sprintf("<p>Voici le contenu du message:</br> %s, </br> il provient de %s : </p>", $message, $senderEmail,);
-      http://127.0.0.1/
+      http: //127.0.0.1/
       //Content
       $this->mail->isHTML(true);                                  //Set email format to HTML
       $this->mail->Subject = 'Demande de contact';
@@ -83,17 +82,8 @@ class MailerHandler extends MailerConfig
       $this->mail->AltBody = strip_tags($body);
 
       $this->mail->send();
-      //TODO historiser l'envoie du mail?
     } catch (Exception $e) {
       echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
     }
   }
-
-  // public function activeAccount($email){
-  //   // find user by email and request to update the status of the user
-  //   $userRepository = new UserRepository();
-  //   $user = $userRepository->findByEmail($email);
-
-
-  // }
 }

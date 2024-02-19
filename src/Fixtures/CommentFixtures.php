@@ -11,7 +11,6 @@ use Core\component\ConsoleIO;
 class CommentFixtures extends AbstractFixturesFactory
 
 {
-  // private Comment $comment;
   public ConsoleIO $io;
   public function __construct(array $attributes = [])
   {
@@ -37,13 +36,11 @@ class CommentFixtures extends AbstractFixturesFactory
     $randomUser = $users[$randomUserIndex];
     $randomUserId = $randomUser['id'];
 
-    if(($randomUser !== null) && ($randomPost !== null))
-    {
-      // $commentRepository = new CommentRepository();
+    if (($randomUser !== null) && ($randomPost !== null)) {
       $comment =  new Comment([
-      'content' => $this->faker->paragraph,
-      'userId' => $randomUserId,
-      'postId' => $randomPostId
+        'content' => $this->faker->paragraph,
+        'userId' => $randomUserId,
+        'postId' => $randomPostId
       ]);
       $commentRepository->save($comment);
       $commentRepository = new CommentRepository();
@@ -53,6 +50,5 @@ class CommentFixtures extends AbstractFixturesFactory
       $this->io->writeLine('Could not retrieve a valid userId and postId. Post creation aborted.');
       return null;
     }
-
   }
 }

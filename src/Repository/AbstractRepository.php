@@ -6,19 +6,20 @@ use PDO;
 
 class AbstractRepository
 {
-  public function __construct(){
-  //   $this->pdo = new PDO("","","");
+  public function __construct()
+  {
+    //   $this->pdo = new PDO("","","");
   }
 
-  public function findById(){
-
+  public function findById()
+  {
   }
 
-  public function getAll(){
-
+  public function getAll()
+  {
   }
 
-  public function save(){
-    
+  public function save()
+  {
   }
 }

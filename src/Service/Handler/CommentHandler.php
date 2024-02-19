@@ -2,7 +2,8 @@
 
 namespace App\Service\Handler;
 
-class CommentHandler {
+class CommentHandler
+{
   public function validateCommentData(string $content, int $postId, int $userId): array
   {
     $errors = [];

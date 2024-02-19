@@ -94,18 +94,18 @@ class CommentRepository
     $statement->bindValue(':createdAt', $createdAt, PDO::PARAM_STR);
     $statement->bindValue(':publishedAt', $publishedAt, PDO::PARAM_STR);
     $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
-    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);// il y avait une erreur de variable et pour le typage ( en int)
-    // $statement->bindValue(':is_enabled', $isEnabled, PDO::PARAM_STR);
+    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);
+
     $result = $statement->execute();
 
     // check execution succes
     if (!$result) {
-      // $errorInfos = $statement->errorInfo(); foreach on errors array??
       throw new \RuntimeException("Error during execution of SQL statement.");
     }
   }
 
-  public function update(Comment $comment): void {
+  public function update(Comment $comment): void
+  {
     $id = $comment->getId();
     $content = $comment->getContent();
     $status = $comment->getStatus();
@@ -128,7 +128,7 @@ class CommentRepository
     $statement = $this->connection->prepare($sql);
 
     if (!$statement) {
-        throw new \RuntimeException("Error on preparation SQL statement.");
+      throw new \RuntimeException("Error on preparation SQL statement.");
     }
 
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
@@ -142,11 +142,10 @@ class CommentRepository
 
     $result = $statement->execute();
 
-    // Vérifier si la mise à jour s'est bien déroulée
     if (!$result) {
-        throw new \RuntimeException("Error during execution of SQL statement.");
+      throw new \RuntimeException("Error during execution of SQL statement.");
     }
-}
+  }
 
   public function delete($idComment): void
   {
@@ -160,17 +159,9 @@ class CommentRepository
     if (!$result) {
       throw new \RuntimeException("Error during execution of SQL delete statement.");
     }
-
-    // if ($result) {
-    //   // Succès
-    //   echo "<script>alert('Suppression réussie'); setTimeout(function(){ location.reload(); }, 1000);</script>";
-    // } else {
-    //   // Échec
-    //   echo "<script>alert('Échec de la suppression');</script>";
-    // }
   }
 
-  public function flush(Comment $comment) : void
+  public function flush(Comment $comment): void
   {
     $sql = "INSERT INTO comment
             SET content = :content,
@@ -199,7 +190,6 @@ class CommentRepository
 
     // check execution succes
     if (!$result) {
-      // $errorInfos = $statement->errorInfo(); foreach on errors array??
       throw new \RuntimeException("Error during execution of SQL statement.");
     }
   }

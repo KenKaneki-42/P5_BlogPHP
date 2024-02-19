@@ -33,6 +33,5 @@ class MailerController extends AbstractController
     }
     // erreur
     // email envoyé confirmation
-
   }
 }

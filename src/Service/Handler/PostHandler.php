@@ -2,7 +2,8 @@
 
 namespace App\Service\Handler;
 
-class PostHandler {
+class PostHandler
+{
   public function validatePostData(string $title, string $content, string $tagline, int $userId): array
   {
     $errors = [];

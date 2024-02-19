@@ -25,7 +25,7 @@ use Pecee\Http\Request;
  */
 function url(?string $name = null, $parameters = null, ?array $getParams = null): Url
 {
-    return Router::getUrl($name, $parameters, $getParams);
+  return Router::getUrl($name, $parameters, $getParams);
 }
 
 /**
@@ -33,7 +33,7 @@ function url(?string $name = null, $parameters = null, ?array $getParams = null)
  */
 function response(): Response
 {
-    return Router::response();
+  return Router::response();
 }
 
 /**
@@ -41,7 +41,7 @@ function response(): Response
  */
 function request(): Request
 {
-    return Router::request();
+  return Router::request();
 }
 
 /**
@@ -53,11 +53,11 @@ function request(): Request
  */
 function input($index = null, $defaultValue = null, ...$methods)
 {
-    if ($index !== null) {
-        return request()->getInputHandler()->value($index, $defaultValue, ...$methods);
-    }
+  if ($index !== null) {
+    return request()->getInputHandler()->value($index, $defaultValue, ...$methods);
+  }
 
-    return request()->getInputHandler();
+  return request()->getInputHandler();
 }
 
 /**
@@ -66,11 +66,11 @@ function input($index = null, $defaultValue = null, ...$methods)
  */
 function redirect(string $url, ?int $code = null): void
 {
-    if ($code !== null) {
-        response()->httpCode($code);
-    }
+  if ($code !== null) {
+    response()->httpCode($code);
+  }
 
-    response()->redirect($url);
+  response()->redirect($url);
 }
 
 /**
@@ -79,10 +79,10 @@ function redirect(string $url, ?int $code = null): void
  */
 function csrf_token(): ?string
 {
-    $baseVerifier = Router::router()->getCsrfVerifier();
-    if ($baseVerifier !== null) {
-        return $baseVerifier->getTokenProvider()->getToken();
-    }
+  $baseVerifier = Router::router()->getCsrfVerifier();
+  if ($baseVerifier !== null) {
+    return $baseVerifier->getTokenProvider()->getToken();
+  }
 
-    return null;
+  return null;
 }

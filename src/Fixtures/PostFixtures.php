@@ -20,7 +20,6 @@ class PostFixtures extends AbstractFixturesFactory
 
   public function load(): int|null
   {
-    // $this->io->writeLine('Start of loading a new post.');
     $postRepository = new PostRepository();
     $userRepository = new UserRepository();
     $users = $userRepository->getAll(5);
