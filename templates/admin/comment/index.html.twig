@@ -1,0 +1,134 @@
+{% extends 'base.html.twig'%}
+
+{% block style %}
+	{{ parent() }}
+	<link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+	<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+
+		#myDataTable_wrapper {
+			margin-top: 20px;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des commentaires</h1>
+
+  {# filtre #}
+  <div class="d-flex justify-content-between mb-3">
+    {# <label for="moderate-filter" class="form-label">Filtrer par modération :</label>
+    <select id="moderate-filter" class="form-select">
+        <option value="">Tous</option>
+        <option value="true">Modéré</option>
+        <option value="false">Non modéré</option>
+    </select> #}
+    <label for="status-filter" class="form-label">Filtrer par status :</label>
+    <select id="status-filter" class="form-select">
+        <option value="">Tous</option>
+        <option value="accept">Accepté</option>
+        <option value="refuse">Refusé</option>
+        <option value="pending">En attente</option>
+    </select>
+  </div>
+
+
+	<table id="myDataTable" class="table table-striped display responsive">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Contenu</th>
+        <th>Moderé</th>
+				<th>Status</th>
+        <th>Date de création</th>
+        <th>Date de publication</th>
+        <th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for comment in comments %}
+				<tr>
+					<td>{{ comment.id }}</td>
+					<td>{{ comment.content }}</td>
+					{# <td>{{ comment.moderate }}</td> #}
+          <td>
+              {% if comment.moderate == 0 %}
+                  Non modéré
+              {% elseif comment.moderate == 1 %}
+                  Modéré
+              {% else %}
+                  <!-- Gérer le cas où la valeur est différente de 0 ou 1 -->
+                  {{ comment.moderate }}
+              {% endif %}
+          </td>
+          <td>{{ comment.status }}</td>
+          <td>{{ comment.createdAt|date("Y-m-d à H:i") }}</td>
+          <td>{{ comment.publishedAt|date("Y-m-d à H:i") }}</td>
+					<td>
+            <div class="d-flex justify-content-evenly">
+              <form action="/admin/commentaire/{{ comment.id }}/accepted/{{ csrf_token }}" method='POST'>
+                <input type='hidden' name='csrfToken' value='{{csrf_token}}'>
+                <input type='hidden' name='status' value='accepted'>
+                <button class="btn btn-primary btn-sm ms-3" name='moderateComment' value='acceptComment' onclick="return confirm('Êtes-vous sûr de vouloir accepter ce commentaire?')">
+                  Accepté
+                </button>
+              </form>
+              <form action="/admin/commentaire/{{ comment.id }}/refused/{{ csrf_token }}" method='POST'>
+                <input type='hidden' name='csrfToken' value='{{csrf_token}}'>
+                <input type='hidden' name='status' value='refused'>
+                <button class="btn btn-danger btn-sm ms-3" name='moderateComment' value='refuseComment' onclick="return confirm('Êtes-vous sûr de vouloir refuser ce commentaire?')">
+                  Refusé
+                </button>
+              </form>
+            </div>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block modal %}{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        // Initialisez DataTable sur votre table avec l'ID 'myDataTable'
+        var table = $('#myDataTable').DataTable({
+            responsive: true,
+            // Active la prise en charge de la conception réactive
+            // Personnalisez les options DataTable selon vos besoins
+            language: {
+                search: "Rechercher :",
+                lengthMenu: "Afficher _MENU_ entrées par page",
+                zeroRecords: "Aucun résultat trouvé",
+                info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                infoEmpty: "Aucune entrée à afficher",
+                infoFiltered: "(filtré sur _MAX_ entrées au total)"
+            },
+            // Spécifiez la colonne ID (index 0) et le tri décroissant
+            order: [[0, 'desc']]
+        });
+
+        // Appliquer le filtre de modération
+        /*
+        $('#moderate-filter').on('change', function () {
+            var value = $(this).val();
+            table.column(2).search(value).draw();
+        });
+        */
+        // Appliquer le filtre de statut
+        $('#status-filter').on('change', function () {
+            var value = $(this).val();
+            table.column(3).search(value).draw();
+        });
+    });
+    </script>
+{% endblock %}

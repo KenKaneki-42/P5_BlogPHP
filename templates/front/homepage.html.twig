@@ -1,35 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}homepage{% endblock %}
+{% block title %}homepage
+{% endblock %}
 
 {% block style %}
-  {{ parent() }}
+{{parent()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-FhPyaCQfNSvXPMCEb0m70k0oebPVD6TJxLzG11s3VPlUpv4/v/DcZvzctZXCeON9D2KuZSUobrjL59LqvcgjFw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block body %}
-  <section class="presentation container d-flex flex-column align-items-center ">
-    <img class="profil-image profil-image-border" src="https://media.licdn.com/dms/image/C4D03AQEgxSkEJmko9A/profile-displayphoto-shrink_800_800/0/1537731189034?e=1712793600&v=beta&t=RGMpFAxoa4FPk6e5EZ21AKIyMY9dvZMYltxfT0LZ6Q4" alt="profil picture">
-    <div class="text-center">
-      <p><strong>VANDERMEERSCH Sylvain</strong></p>
-      <p>Le Web Developpeur qui prone le besoin client avant tout!</p>
-      <a href="mailto:<EMAIL>"><EMAIL>lien CV en PDF</a>
-    </div>
-  </section>
+	<section class="presentation container d-flex flex-column align-items-center">
+		<img class="profil-image profil-image-border" src="https://media.licdn.com/dms/image/C4D03AQEgxSkEJmko9A/profile-displayphoto-shrink_800_800/0/1537731189034?e=1712793600&v=beta&t=RGMpFAxoa4FPk6e5EZ21AKIyMY9dvZMYltxfT0LZ6Q4" alt="profil picture">
+		<div class="text-center">
+			<p><strong>VANDERMEERSCH Sylvain</strong></p>
+			<p>Le Web Developpeur qui prone le besoin client avant tout!</p>
+			<a href="mailto:sylvain.vandermeersch@gmail.com">lien CV en PDF</a>
+			</div>
+		</section>
 
-  <section class="contact-form container">
+		<section class="container contact-form-container">
+			{% include 'front/formContact.html.twig' %}
+			{# {% include "front/modalSuccessEmail.html.twig" %} #}
+			<!-- success modal -->
+				{% if emailSent %}
+					<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true"> <div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="successModalLabel">E-mail envoyé avec succès</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Votre e-mail a été envoyé avec succès.
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		</section>
 
-  </section>
+		<section class="links container">
+			<ul class="list-unstyled d-flex justify-content-center">
+				<li class="me-3">
+					<a href="https://www.linkedin.com/in/vandermeersch-sylvain-developer-back-end/" target="_blank" class="text-decoration-none">
+						<i class="fa-brands fa-linkedin"></i>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/KenKaneki-42" target="_blank" class="text-decoration-none">
+						<i class="fab fa-github fa-2x"></i>
+					</a>
+				</li>
+			</ul>
+		</section>
 
-  <section class="links container">
 
-  </section>
+	{% endblock %}
 
-{% endblock %}
-
-{% block modal %}
-  {{ parent() }}
-{% endblock %}
-
-{% block js %}
-  {{ parent() }}
-{% endblock %}
+	{# {% block modal %}
+		{% endblock %} #}

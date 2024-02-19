@@ -31,7 +31,16 @@ class CommentRepository
   public function findById(int $id): ?Comment
   {
     $statement = $this->connection->prepare(
-      "SELECT * FROM comment WHERE id = :id"
+      "SELECT
+      id,
+      content,
+      moderate,
+      status,
+      created_at as createdAt,
+      published_at as publishedAt,
+      post_id as postId,
+      user_id as userId
+      FROM comment WHERE id = :id"
     );
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
@@ -87,7 +96,6 @@ class CommentRepository
     $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
     $statement->bindValue(':postId', $postId, PDO::PARAM_INT);// il y avait une erreur de variable et pour le typage ( en int)
     // $statement->bindValue(':is_enabled', $isEnabled, PDO::PARAM_STR);
-
     $result = $statement->execute();
 
     // check execution succes
@@ -96,6 +104,50 @@ class CommentRepository
       throw new \RuntimeException("Error during execution of SQL statement.");
     }
   }
+
+  public function update(Comment $comment): void {
+    $id = $comment->getId();
+    $content = $comment->getContent();
+    $status = $comment->getStatus();
+    $moderate = $comment->getModerate();
+    $createdAt = $comment->getCreatedAt()->format('Y-m-d H:i:s');
+    $publishedAt = $comment->getPublishedAt();
+    $userId = $comment->getUserId();
+    $postId = $comment->getPostId();
+
+    $sql = "UPDATE comment SET
+                content = :content,
+                status = :status,
+                moderate = :moderate,
+                created_at = :createdAt,
+                published_at = :publishedAt,
+                user_id = :userId,
+                post_id = :postId
+            WHERE id = :id";
+
+    $statement = $this->connection->prepare($sql);
+
+    if (!$statement) {
+        throw new \RuntimeException("Error on preparation SQL statement.");
+    }
+
+    $statement->bindValue(':id', $id, PDO::PARAM_INT);
+    $statement->bindValue(':content', $content, PDO::PARAM_STR);
+    $statement->bindValue(':status', $status, PDO::PARAM_STR);
+    $statement->bindValue(':moderate', $moderate, PDO::PARAM_BOOL);
+    $statement->bindValue(':createdAt', $createdAt, PDO::PARAM_STR);
+    $statement->bindValue(':publishedAt', $publishedAt, PDO::PARAM_STR);
+    $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);
+
+    $result = $statement->execute();
+
+    // Vérifier si la mise à jour s'est bien déroulée
+    if (!$result) {
+        throw new \RuntimeException("Error during execution of SQL statement.");
+    }
+}
+
   public function delete($idComment): void
   {
     $sql = "DELETE FROM comment

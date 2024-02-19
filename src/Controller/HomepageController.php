@@ -10,7 +10,8 @@ use Core\Router;
 // require_once('../CORE/database.php');
 // require_once('../entity/post.php');
 
-class HomepageController extends AbstractController {
+class HomepageController extends AbstractController
+{
 
   protected PostRepository $postRepository;
 
@@ -23,7 +24,12 @@ class HomepageController extends AbstractController {
   public function homepage()
   {
     $posts = $this->postRepository->getAll(5);
-    return $this->render("front/homepage",['posts'=> $posts]);
-  }
 
+    // check if emailSent is set
+    $emailSent = isset($_GET['emailSent']) && $_GET['emailSent'] === 'true';
+    return $this->render("front/homepage", [
+      'posts' => $posts,
+      'emailSent' => $emailSent
+    ]);
+  }
 }
