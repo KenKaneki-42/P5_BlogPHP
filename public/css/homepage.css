@@ -1,0 +1,18 @@
+.bg-img-wood {
+  position: relative; /* Ajoute une position relative */
+}
+
+.bg-img-wood::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/wood-2045380_1920.jpg');
+  background-size:cover; /* Ajuste la taille de l'image pour qu'elle couvre entièrement l'arrière-plan */
+  background-position: center; /* Centre l'image horizontalement et verticalement */
+  filter: brightness(0.5); /* Réglage de la luminosité à 50%, rendant l'image plus sombre */
+  /* transform: rotate(90deg); Rotation de l'image de 90 degrés */
+  z-index: -1; /* Assure que l'élément pseudo soit en arrière-plan */
+}

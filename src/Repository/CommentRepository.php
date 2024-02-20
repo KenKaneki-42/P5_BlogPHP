@@ -70,6 +70,32 @@ class CommentRepository
     return $comments ?: [];
   }
 
+  public function findValidatedByPostId(int $postId): array
+{
+    $statement = $this->connection->prepare(
+        "SELECT
+            id,
+            content,
+            moderate,
+            status,
+            created_at as createdAt,
+            published_at as publishedAt,
+            post_id as postId,
+            user_id as userId
+        FROM comment
+        WHERE post_id = :postId
+        AND status = 'accepted'
+        ORDER BY created_at DESC"
+    );
+    $statement->bindValue(':postId', $postId, PDO::PARAM_INT);
+    $statement->execute();
+
+    $comments = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Comment::class);
+
+    return $comments ?: [];
+}
+
+
   public function save(Comment $comment): void
   {
     $content = $comment->getContent();

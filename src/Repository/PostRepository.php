@@ -38,7 +38,7 @@ class PostRepository
     return $posts ?: null;
   }
 
-  public function findById(int $id): ?Post
+  public function findById(int $id, bool $commentsPrensence = false): ?Post
   {
     $statement = $this->connection->prepare(
       "SELECT
