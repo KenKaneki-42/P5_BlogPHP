@@ -1,7 +1,8 @@
 .contact-form-container {
   max-width: 600px;
   margin-top: 10px;
-  background-color: #f9f9f9;
+  background-color: var(--light-color);
+  color: var(--dark-color);
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -25,16 +26,16 @@
   height: 150px;
 }
 
-.contact-form-container button[type="submit"] {
-  background-color: #007bff;
+/* .contact-form-container button[type="submit"] {
+  background-color: var(--primary-color);
   color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
+} */
 
-.contact-form-container button[type="submit"]:hover {
-  background-color: #0056b3;
-}
+/* .contact-form-container button[type="submit"]:hover {
+  background-color: var(--light-color);
+} */

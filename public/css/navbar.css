@@ -1,3 +1,54 @@
 .navbar-nav{
   align-items: center;
 }
+
+.navbar{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.nav-link {
+  color: var(--text-color);
+}
+
+.nav-link:hover{
+  color: var(--light-color);
+}
+
+/* Styles pour l'animation du soulignement */
+.nav-item a::after {
+  content: '';
+  display: block;
+  width: 0%;
+  height: 2px;
+  background-color: var(--light-color); /* Couleur du soulignement */
+  transition: width 0.4s ease; /* Animation de la progression */
+}
+
+/* Lorsque le lien est survolé ou reçoit le focus */
+.nav-item a:hover::after,
+.nav-item a:focus::after {
+  width: 100%; /* Soulignement complet lors du survol ou du clic */
+}
+
+/* Pour le lien actif */
+.nav-item.active-link a::after {
+  width: 100%; /* Soulignement complet pour le lien actif */
+}
+
+.active-link {
+  color: var(--light-color);
+}
+
+/* .nav-item .active-link::after{
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--light-color);
+  transition: width 0.4s ease;
+} */

@@ -31,8 +31,9 @@ class PostController extends AbstractController
 
   public function show(int $id)
   {
-    $post = $this->postRepository->findById($id);
-    $comments = $this->commentRepository->findByPostId($id);
+    $post = $this->postRepository->findById($id, true);
+    // $comments = $this->commentRepository->findByPostId($id);
+    $comments = $this->commentRepository->findValidatedByPostId($id);
 
     // retrieve username from the comment by userId associate with the comment
     foreach ($comments as $comment) {

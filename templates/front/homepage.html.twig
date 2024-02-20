@@ -10,18 +10,19 @@
 {% endblock %}
 
 {% block body %}
-	<section class="presentation container d-flex flex-column align-items-center">
+	<section class="d-flex flex-column align-items-center py-3 bg-img-wood ">
 		<img class="profil-image profil-image-border" src="https://media.licdn.com/dms/image/C4D03AQEgxSkEJmko9A/profile-displayphoto-shrink_800_800/0/1537731189034?e=1712793600&v=beta&t=RGMpFAxoa4FPk6e5EZ21AKIyMY9dvZMYltxfT0LZ6Q4" alt="profil picture">
 		<div class="text-center">
-			<p>
+			<p class="mt-3">
 				<strong>VANDERMEERSCH Sylvain</strong>
 			</p>
-			<p>Le Web Developpeur qui prone le besoin client avant tout!</p>
-			<a href="mailto:sylvain.vandermeersch@gmail.com">lien CV en PDF</a>
+			<p>Le Web Developpeur avec un MMR de folie!</p>
+      <i class="fas fa-arrow-right"></i>
+			<a href="mailto:sylvain.vandermeersch@gmail.com">CV en PDF</a>
 		</div>
 	</section>
 
-	<section class="container d-flex flex-column mt-4">
+	<section class=" d-flex flex-column py-3 txt-primary-color ">
 		<h2 class="text-center">Contact</h2>
 		<div class="container contact-form-container">
 			{% include 'front/formContact.html.twig' %}
@@ -65,4 +66,23 @@
 			</li>
 		</ul>
 	</section>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+	<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    // Analyser les paramètres d'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get('emailSent') === 'true') {
+      var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+        keyboard: false
+      });
+      myModal.show();
+      urlParams.delete('emailSent');
+      const newUrl = window.location.pathname;
+      history.pushState({}, '', newUrl);
+    }
+    });
+	</script>
 {% endblock %}

@@ -1,10 +1,23 @@
-p {
-  color: black;
-}
-
 /* #myDataTable_wrapper .row:first-child .col-sm-12 {
   display: flex;
 } */
+body {
+  padding-top: 8.5vh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+/* icons */
+.fa-linkedin{
+  color:#FFFFFF;
+}
+
+.fa-github{
+  color:#FFFFFF;
+}
 
 .profil-image {
   width: 200px;
@@ -15,23 +28,24 @@ p {
 }
 
 .profil-image-border {
-  border: 3px solid #fff;
+  border: 3px solid var(--primary-color);
 }
 
 /* posts */
 .blog-post {
-  background-color: #ffffff;
+  color: var(--dark-color);
+  background-color: var(--light-color);
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 2px solid var(--dark-color);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .blog-post:hover {
-  border-color: #007bff; /* Couleur du contour au survol */
-  box-shadow: 0 0 20px rgba(0, 123, 255, 0.5); /* Ombre portée au survol */
+  border-color: var(--bright-color);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
 }
 
 .blog-post-title {
@@ -102,4 +116,87 @@ margin-right: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* color set */
+
+.background-color {
+  background-color: #051622;
+}
+
+.bg-dark-custom{
+  background-color: var(--dark-color);
+}
+
+.bg-light-custom{
+  background-color: var(--light-color);
+}
+
+.third-color {
+  color: #6F6866;
+  }
+
+p, .txt-primary-color {
+  color: #1BA098;
+}
+
+.seconday-color {
+  color: #DEB992;
+}
+
+.contrast-color{
+  color: #F06C9B;
+}
+
+/* Definition custom variables  */
+:root {
+  /* Couleurs principales */
+  --primary-color: #1BA098;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #DEB992;
+  --dark-color: #6F6866;
+  --bright-color: #F06C9B;
+
+  /* Autres couleurs */
+  --text-color: #1BA098;
+  --background-color: #051622;
+
+  /* */
+  /* --bs-nav-link-hover-color:#DEB992; */
+  --nav-link-hover-color: #DEB992;
+}
+
+/* Utilisation des variables pour personnaliser Bootstrap */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+
+
+/* ... Autres styles de bouton personnalisés ... */
+
+/* Utilisation des variables pour personnaliser d'autres composants Bootstrap */
+.card {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+.navbar {
+  background-color: var(--dark-color);
+  color: var(--light-color);
 }
