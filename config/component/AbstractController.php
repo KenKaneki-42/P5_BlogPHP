@@ -62,13 +62,23 @@ class AbstractController
   public function isValid(array $data): bool
   {
     $isValid = true;
-    foreach ($data as $datum) {
-      if (null === $datum  || !isset($datum) || $datum === '') {
-        $isValid = false;
+    foreach ($data as $key => $value) {
+      // Vérifiez si le champ est le champ honeypot
+      if ($key === 'honeypot') {
+        // S'il est rempli, le formulaire est considéré comme invalide
+        if (!empty($value)) {
+          $isValid = false;
+        }
+      } else {
+        // Vérifiez les autres champs normalement
+        if ($value === null || !isset($value) || $value === '') {
+          $isValid = false;
+        }
       }
     }
     return $isValid;
   }
+
 
   public function isAdmin(User $user = null): bool
   {
@@ -98,6 +108,21 @@ class AbstractController
       $this->redirect('/forbidden');
     }
   }
+  public function validateCaptcha($captchaResponse): bool
+  {
+    $secretKey = "VOTRE_SECRET_KEY";
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse");
+    $responseKeys = json_decode($response, true);
+
+    if (intval($responseKeys["success"]) === 1) {
+      // return ['success' => true, 'message' => 'reCAPTCHA validé'];
+      return true;
+    } else {
+      // return ['success' => false, 'message' => 'reCAPTCHA non validé'];
+      return false;
+    }
+  }
+
 
   //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
   public function success($key, $message): void

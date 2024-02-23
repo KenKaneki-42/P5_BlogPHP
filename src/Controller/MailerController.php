@@ -19,7 +19,7 @@ class MailerController extends AbstractController
   public function sendContentContactForm()
   {
 
-    if ($this->isSubmitted('submitContactForm') && $this->isValid($_POST)) {
+    if ($this->isSubmitted('submitContactForm') && $this->isValid($_POST) && $this->validateCaptcha($_POST['g-recaptcha-response'])) {
       $senderEmail = $_POST['email'];
       $message = $_POST['message'];
       $firstname = $_POST['firstname'];

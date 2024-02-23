@@ -70,6 +70,7 @@
 
 {% block js %}
 	{{ parent() }}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script>
     document.addEventListener('DOMContentLoaded', (event) => {
     // Analyser les paramètres d'URL
