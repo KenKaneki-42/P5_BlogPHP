@@ -153,8 +153,8 @@ p, .txt-primary-color {
   color: #1BA098;
 }
 
-.seconday-color {
-  color: #DEB992;
+.txt-secondary-color {
+  color: var(--light-color);
 }
 
 .contrast-color{

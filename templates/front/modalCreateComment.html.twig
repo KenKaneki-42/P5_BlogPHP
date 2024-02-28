@@ -1,8 +1,11 @@
-<!-- button to open modal -->
+<!-- button to open modal (show if user is connected) -->
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCommentModal">
-	+
-</button>
+{% if 'ROLE_USER' in session.user_role %}
+    <!-- button to open modal (show if user is connected) -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCommentModal">
+        +
+    </button>
+{% endif %}
 
 <!-- modal structure -->
 <div class="modal" id="newCommentModal" tabindex="-1" role="dialog">
