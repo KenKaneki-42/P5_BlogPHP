@@ -18,20 +18,36 @@ class MailerController extends AbstractController
 
   public function sendContentContactForm()
   {
+    if ($this->isSubmitted('submitContactForm')) {
+      $errors = [];
+      if(!isset($_POST["checkbox-legal-infos"])){
+        $errors["checkbox-legal-infos"] = "Vous devez accepter les informations légales";
+      }
+      // Validation form
+      if (!$this->isValid($_POST)) {
+        $errors[] = "Tous les champs du formulaire sont obligatoires.";
+      }
 
-    if ($this->isSubmitted('submitContactForm') && $this->isValid($_POST) && $this->validateCaptcha($_POST['g-recaptcha-response'])) {
-      $senderEmail = $_POST['email'];
-      $message = $_POST['message'];
-      $firstname = $_POST['firstname'];
-      $lastname = $_POST['lastname'];
-      // $validationErrors = $this->validateContactFormData($senderEmail, $firstname, $lastname, $message);
+      // Validation captcha
+      if (!$this->validateCaptcha($_POST['g-recaptcha-response'])) {
+        $errors[] = "Le captcha n'a pas été validé.";
+      }
 
-      // if(!empty($validationErrors)){
-      $this->mailerHandler->sendEmailContact($senderEmail, $message);
-      // }
-      return $this->redirect("/homepage?emailSent=true");
+      // no error send email
+      if (empty($errors)) {
+        $senderEmail = $_POST['email'];
+        $message = $_POST['message'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+
+        $this->mailerHandler->sendEmailContact($senderEmail, $message);
+
+        return $this->redirect("/homepage?emailSent=true");
+      }
+
+      return $this->render("front/errors", ['errors' => $errors]);
     }
-    // erreur
-    // email envoyé confirmation
+
+    return $this->redirect("/homepage");
   }
 }

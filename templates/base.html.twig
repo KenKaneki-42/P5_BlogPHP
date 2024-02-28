@@ -12,113 +12,130 @@
 			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 			<link
 			rel="stylesheet" href="/css/index.css">
-		{# <link href="/css/meadiaQueries.css" rel="stylesheet"> #}
+			{# <link href="/css/meadiaQueries.css" rel="stylesheet"> #}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous">
 		{% endblock %}
 	</head>
 	<body class="background-color">
-			{% block navbar %}
-				<nav class="navbar navbar-expand-lg">
-					<a class="navbar-brand" href="/homepage">BlogPhp</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-
-					<div class="collapse navbar-collapse" id="navbarNav">
-						<ul class="navbar-nav">
-							<li class="nav-item ">
-								<a id="accueil-link" class="nav-link" href="/homepage">Accueil</a>
+		{% block navbar %}
+			<nav class="navbar navbar-expand-lg">
+				<a class="navbar-brand" href="/homepage">BlogPhp</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav">
+						<li class="nav-item ">
+							<a id="accueil-link" class="nav-link" href="/homepage">Accueil</a>
+						</li>
+						<li class="nav-item">
+							<a id="articles-link" class="nav-link" href="/articles">Articles</a>
+						</li>
+						{% if 'ROLE_ADMIN' in session.user_role %}
+							<li class="nav-item">
+								<a id="admin-articles-link" class="nav-link" href="/admin/articles">Admin Articles</a>
 							</li>
 							<li class="nav-item">
-								<a id="articles-link" class="nav-link" href="/articles">Articles</a>
+								<a id="admin-commentaires-link" class="nav-link" href="/admin/commentaires">Admin Commentaires</a>
 							</li>
-							{% if 'ROLE_ADMIN' in session.user_role %}
-								<li class="nav-item">
-									<a id="admin-articles-link" class="nav-link" href="/admin/articles">Admin Articles</a>
-								</li>
-								<li class="nav-item">
-									<a id="admin-commentaires-link" class="nav-link" href="/admin/commentaires">Admin Commentaires</a>
-								</li>
-							{% endif %}
-							{% if session.user_id %}
-								<li class="nav-item">
-									<a id="deconnexion-link" class="nav-link" href="/deconnexion">Déconnexion</a>
-								</li>
-								<li class="nav-item">
-									{{ session.user_email }}
-								</li>
-							{% else %}
-								<li class="nav-item">
-									<a id="connexion-link" class="nav-link" href="/connexion">Connexion</a>
-								</li>
-								<li class="nav-item">
-									<a id="inscription-link" class="nav-link" href="/inscription">Inscription</a>
-								</li>
-							{% endif %}
-						</ul>
-					</div>
-				</nav>
-			{% endblock %}
+						{% endif %}
+						{% if session.user_id %}
+							<li class="nav-item">
+								<a id="deconnexion-link" class="nav-link" href="/deconnexion">Déconnexion</a>
+							</li>
+							<li class="nav-item">
+								{{ session.user_email }}
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a id="connexion-link" class="nav-link" href="/connexion">Connexion</a>
+							</li>
+							<li class="nav-item">
+								<a id="inscription-link" class="nav-link" href="/inscription">Inscription</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</nav>
+		{% endblock %}
 
-			{% block body %}{% endblock %}
+		{% block body %}{% endblock %}
 
-				{% if session.flash_message %}
-					{{ session.flash_message }};
-				{% endif %}
+		{% if session.flash_message %}
+			{{ session.flash_message }};
+		{% endif %}
 
-				<footer class="mt-4 text-center"></footer>
-				{% block footer %}
-				<p class="text-center">&copy; 2023 BlogPhp Sylvain VDM. Tous droits réservés.</p>
-        {# TODO mention légales #}
-        {% endblock %}
+		{% block footer %}
+			<footer class="mt-4 text-center">
+				<section class="links container mt-5">
+					<ul class="list-unstyled d-flex justify-content-center">
+						<li class="me-3">
+							<a href="https://www.linkedin.com/in/vandermeersch-sylvain-developer-back-end/" target="_blank" class="text-decoration-none">
+								<i class="fab fa-linkedin fa-2x"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://github.com/KenKaneki-42" target="_blank" class="text-decoration-none">
+								<i class="fab fa-github fa-2x"></i>
+							</a>
+						</li>
+					</ul>
+				</section>
+        <p>
+          <a href="/legal-infos"> Mentions légales</a>
+          -
+          <a href="/admin/articles" target="_blank">admin</a>
+        </p>
+        <p class="text-center">&copy; 2023 BlogPhp Sylvain VDM. Tous droits réservés.</p>
 			</footer>
+		{% endblock %}
 
-			{% block js %}
-				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        {# <script>
-        // JavaScript pour ajouter les classes active-link et selected-link au lien cliqué
-        document.querySelectorAll('.nav-item a').forEach(link => {
-          link.addEventListener('click', function() {
-            // Supprimer la classe active-link de tous les liens
-            document.querySelectorAll('.nav-item').forEach(item => {
-              item.classList.remove('active-link');
-            });
-            // Ajouter la classe active-link au parent du lien cliqué
-            this.parentNode.classList.add('active-link');
-          });
-        });
-        </script> #}
+	</body>
+</html>
+{% block js %}
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	{# <script>
+		        // JavaScript pour ajouter les classes active-link et selected-link au lien cliqué
+		        document.querySelectorAll('.nav-item a').forEach(link => {
+		          link.addEventListener('click', function() {
+		            // Supprimer la classe active-link de tous les liens
+		            document.querySelectorAll('.nav-item').forEach(item => {
+		              item.classList.remove('active-link');
+		            });
+		            // Ajouter la classe active-link au parent du lien cliqué
+		            this.parentNode.classList.add('active-link');
+		          });
+		        });
+		        </script> #}
 
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Récupérer l'ID ou la classe du lien actif depuis le stockage local
-            const activeLinkId = localStorage.getItem('activeLinkId');
+	<script>
+		document.addEventListener('DOMContentLoaded', function () { // Récupérer l'ID ou la classe du lien actif depuis le stockage local
+const activeLinkId = localStorage.getItem('activeLinkId');
 
-            // Appliquer la classe active-link au lien correspondant
-            if (activeLinkId) {
-                const activeLink = document.getElementById(activeLinkId);
-                if (activeLink) {
-                    activeLink.classList.add('active-link');
-                }
-            }
+// Appliquer la classe active-link au lien correspondant
+if (activeLinkId) {
+const activeLink = document.getElementById(activeLinkId);
+if (activeLink) {
+activeLink.classList.add('active-link');
+}
+}
 
-            // Ajouter un gestionnaire d'événement pour chaque lien
-            document.querySelectorAll('.nav-item a').forEach(link => {
-                link.addEventListener('click', function() {
-                    // Supprimer la classe active-link de tous les liens
-                    document.querySelectorAll('.nav-item a').forEach(link => {
-                        link.classList.remove('active-link');
-                    });
+// Ajouter un gestionnaire d'événement pour chaque lien
+document.querySelectorAll('.nav-item a').forEach(link => {
+link.addEventListener('click', function () { // Supprimer la classe active-link de tous les liens
+document.querySelectorAll('.nav-item a').forEach(link => {
+link.classList.remove('active-link');
+});
 
-                    // Ajouter la classe active-link au lien cliqué
-                    this.classList.add('active-link');
+// Ajouter la classe active-link au lien cliqué
+this.classList.add('active-link');
 
-                    // Stocker l'ID ou la classe du lien actif dans le stockage local
-                    localStorage.setItem('activeLinkId', this.id); // Vous pouvez utiliser un autre attribut unique du lien pour l'identifier
-                });
-            });
-        });
-        </script>
-      {% endblock %}
-		</body>
-	</html>
+// Stocker l'ID ou la classe du lien actif dans le stockage local
+localStorage.setItem('activeLinkId', this.id); // Vous pouvez utiliser un autre attribut unique du lien pour l'identifier
+});
+});
+});
+	</script>
+{% endblock %}</body></html>

@@ -110,7 +110,7 @@ class AbstractController
   }
   public function validateCaptcha($captchaResponse): bool
   {
-    $secretKey = "VOTRE_SECRET_KEY";
+    $secretKey = "6LfpGH0pAAAAANlX10w1MD_edoPWgxt1LEbSo8oF";
     $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse");
     $responseKeys = json_decode($response, true);
 
@@ -122,7 +122,6 @@ class AbstractController
       return false;
     }
   }
-
 
   //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
   public function success($key, $message): void

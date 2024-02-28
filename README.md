@@ -38,6 +38,10 @@ BlogPhp is a web application for article blogging with administrator and user ma
 5. Start the built-in PHP server: `php -S localhost:8000`
 6. Access the application in your browser at `http://localhost:8000`
 
+## Configuration
+1. For Database configuration, please refer to ConnectionDbSample.php erase the suffixe Sample for the file name and the class name et set up it with your own credentials.
+2. For Mailer configuration, please refer to MailerConfigSample.php erase the suffixe Sample for the file name and the class name et set up it with your own credentials.
+
 ## Contributing
 
 If you want to contribute to BlogPhp, please follow these steps:
