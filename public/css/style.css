@@ -200,3 +200,11 @@ p, .txt-primary-color {
   background-color: var(--dark-color);
   color: var(--light-color);
 }
+
+.form-link {
+  color: var(--text-color);
+}
+
+.form-link:hover{
+  font-weight: bold;
+}
