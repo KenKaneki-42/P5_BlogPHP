@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<section class="container txt-secondary-color">
 	<h1>{{post.title}}</h1>
 	<h4>{{post.tagline}}</h4>
 	<p>{{ post.content|raw  }}</p>
@@ -20,6 +21,7 @@
 			<div
 				class="container-cards">
 				{# <a href="/posts/{{ post.id }}">Commentaires</a> #}
+        {# commentaires : {{ comments }} #}
 				{% if comments is not empty %}
 					{% for comment in comments %}
 						<div class="comment-card {% if loop.index is even %}even{% else %}odd{% endif %}">
@@ -43,7 +45,7 @@
 		</div>
 		{# </em> #}
 	</p>
-
+</section>
 {% endblock %}
 
 {% block modal %}{% endblock %}
