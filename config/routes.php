@@ -12,6 +12,7 @@ Router::all("/inscription", "RegisterController@register")->setName('inscription
 Router::all("/connexion", "RegisterController@login");
 Router::all("/deconnexion", "RegisterController@logout");
 Router::all("/inscription-confirmation/{token}", "RegisterController@validationToken");
+Router::all("mot-de-passe-oublié", "RegisterController@fogotPassword");
 // ---- CONTACT EMAIL ---- //
 // un controller ou un handler mail ou les deux?
 Router::post("/send-email-contact", "MailerController@sendContentContactForm");

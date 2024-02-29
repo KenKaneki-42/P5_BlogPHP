@@ -100,4 +100,19 @@ class RegisterController extends AbstractController
       return $this->redirect("connexion");
     }
   }
+
+  public function forgotPassword(){
+    if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
+      $email = $_POST['email'];
+      $user = $this->userRepository->findByEmail($email);
+      if ($user) {
+        $this->registerHandler->sendEmailResetPassword($email, $user->getToken());
+        $_SESSION['flash_message'] = "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail";
+        return $this->redirect('connexion');
+      }
+      $_SESSION['flash_message'] = 'Invalid email or password';
+      return $this->redirect('connexion');
+    }
+    return $this->render("front/forgot-password");
+  }
 }
