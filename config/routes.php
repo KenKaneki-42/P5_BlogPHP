@@ -7,7 +7,7 @@ Router::setDefaultNamespace("App\Controller");
 
 //------ HOME -----//
 Router::get("/homepage", "HomepageController@homepage");
-// --- Authentication
+//------ Authentication
 Router::all("/inscription", "RegisterController@register")->setName('inscription');
 Router::all("/connexion", "RegisterController@login");
 Router::all("/deconnexion", "RegisterController@logout");
@@ -18,6 +18,8 @@ Router::post("/send-email-contact", "MailerController@sendContentContactForm");
 // ------ FRONT POSTS -----
 Router::get("/articles", "Front\PostController@index");
 Router::get("/articles/{id}", "Front\PostController@show");
+//------ legal infos --------------------------------
+Router::get("/legal-infos", "LegalInfoController@showLegalInfoPage");
 
 // ------ ADMIN COMMENTS -----
 Router::get("/admin/commentaires", "Admin\CommentController@index");

@@ -62,13 +62,23 @@ class AbstractController
   public function isValid(array $data): bool
   {
     $isValid = true;
-    foreach ($data as $datum) {
-      if (null === $datum  || !isset($datum) || $datum === '') {
-        $isValid = false;
+    foreach ($data as $key => $value) {
+      // Vérifiez si le champ est le champ honeypot
+      if ($key === 'honeypot') {
+        // S'il est rempli, le formulaire est considéré comme invalide
+        if (!empty($value)) {
+          $isValid = false;
+        }
+      } else {
+        // Vérifiez les autres champs normalement
+        if ($value === null || !isset($value) || $value === '') {
+          $isValid = false;
+        }
       }
     }
     return $isValid;
   }
+
 
   public function isAdmin(User $user = null): bool
   {
@@ -96,6 +106,20 @@ class AbstractController
     if ($this->isAdminPage() && !$this->isAdmin($user)) {
       // Redirige l'utilisateur vers une page d'erreur ou d'accueil
       $this->redirect('/forbidden');
+    }
+  }
+  public function validateCaptcha($captchaResponse): bool
+  {
+    $secretKey = "6LfpGH0pAAAAANlX10w1MD_edoPWgxt1LEbSo8oF";
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse");
+    $responseKeys = json_decode($response, true);
+
+    if (intval($responseKeys["success"]) === 1) {
+      // return ['success' => true, 'message' => 'reCAPTCHA validé'];
+      return true;
+    } else {
+      // return ['success' => false, 'message' => 'reCAPTCHA non validé'];
+      return false;
     }
   }
 

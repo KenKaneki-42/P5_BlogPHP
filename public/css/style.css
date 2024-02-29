@@ -1,6 +1,19 @@
 /* #myDataTable_wrapper .row:first-child .col-sm-12 {
   display: flex;
 } */
+
+#myDataTable_length, .form-label, #myDataTable_filter  {
+  color: var(--light-color);
+}
+
+h1{
+  color: var(--text-color);
+}
+
+h3{
+  color: var(--light-color);
+}
+
 body {
   padding-top: 8.5vh;
 }
@@ -140,8 +153,8 @@ p, .txt-primary-color {
   color: #1BA098;
 }
 
-.seconday-color {
-  color: #DEB992;
+.txt-secondary-color {
+  color: var(--light-color);
 }
 
 .contrast-color{

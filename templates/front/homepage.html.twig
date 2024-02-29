@@ -3,12 +3,6 @@
 {% block title %}homepage
 {% endblock %}
 
-{% block style %}
-	{{parent()}}
-	<!-- CDN FontAwesome 5 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous">
-{% endblock %}
-
 {% block body %}
 	<section class="d-flex flex-column align-items-center py-3 bg-img-wood ">
 		<img class="profil-image profil-image-border" src="https://media.licdn.com/dms/image/C4D03AQEgxSkEJmko9A/profile-displayphoto-shrink_800_800/0/1537731189034?e=1712793600&v=beta&t=RGMpFAxoa4FPk6e5EZ21AKIyMY9dvZMYltxfT0LZ6Q4" alt="profil picture">
@@ -17,8 +11,10 @@
 				<strong>VANDERMEERSCH Sylvain</strong>
 			</p>
 			<p>Le Web Developpeur avec un MMR de folie!</p>
-      <i class="fas fa-arrow-right"></i>
-			<a href="mailto:sylvain.vandermeersch@gmail.com">CV en PDF</a>
+			<i class="fas fa-arrow-right"></i>
+			<button type="button">
+				<a href="../assets/CV_2024-02-21_Sylvain_Vandermeersch.pdf" target="_blank">CV en PDF</a>
+			</button>
 		</div>
 	</section>
 
@@ -51,38 +47,24 @@
 	</section>
 {% endblock %}
 
-{% block footer %}
-	<section class="links container mt-5">
-		<ul class="list-unstyled d-flex justify-content-center">
-			<li class="me-3">
-				<a href="https://www.linkedin.com/in/vandermeersch-sylvain-developer-back-end/" target="_blank" class="text-decoration-none">
-					<i class="fab fa-linkedin fa-2x"></i>
-				</a>
-			</li>
-			<li>
-				<a href="https://github.com/KenKaneki-42" target="_blank" class="text-decoration-none">
-					<i class="fab fa-github fa-2x"></i>
-				</a>
-			</li>
-		</ul>
-	</section>
-{% endblock %}
-
 {% block js %}
 	{{ parent() }}
+	<script src="https://www.google.com/recaptcha/api.js"></script>
 	<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-    // Analyser les paramètres d'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.get('emailSent') === 'true') {
-      var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-        keyboard: false
-      });
-      myModal.show();
-      urlParams.delete('emailSent');
-      const newUrl = window.location.pathname;
-      history.pushState({}, '', newUrl);
-    }
-    });
+		function onSubmit(token) {
+document.getElementById("contact-form").submit();
+}
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', (event) => { // Analyser les paramètres d'URL
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('emailSent') === 'true') {
+var myModal = new bootstrap.Modal(document.getElementById('successModal'), {keyboard: false});
+myModal.show();
+urlParams.delete('emailSent');
+const newUrl = window.location.pathname;
+history.pushState({}, '', newUrl);
+}
+});
 	</script>
 {% endblock %}

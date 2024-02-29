@@ -18,6 +18,7 @@
         "pecee/simple-router": "5.3.0.5",
         "twig/twig": "^3.8",
         "cocur/slugify": "^4.5",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "google/recaptcha": "^1.3"
     }
 }
