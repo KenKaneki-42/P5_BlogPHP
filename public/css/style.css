@@ -146,19 +146,31 @@ margin-right: 20px;
 }
 
 .third-color {
-  color: #6F6866;
+  color:var(--dark-color);
   }
 
 p, .txt-primary-color {
-  color: #1BA098;
+  color:var(--primary-color);
 }
 
 .txt-secondary-color {
   color: var(--light-color);
 }
 
+.bg-secondary-color{
+  background-color: var(--light-color);
+}
+
+.bg-primary-color{
+  background-color: var(--primary-color);
+}
+
 .contrast-color{
   color: #F06C9B;
+}
+
+.bg-color-white{
+  background-color: var(--bs-body-bg);
 }
 
 /* Definition custom variables  */
@@ -198,10 +210,6 @@ p, .txt-primary-color {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
-
-
-
-/* ... Autres styles de bouton personnalisés ... */
 
 /* Utilisation des variables pour personnaliser d'autres composants Bootstrap */
 .card {

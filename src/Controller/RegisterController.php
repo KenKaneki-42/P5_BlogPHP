@@ -86,7 +86,6 @@ class RegisterController extends AbstractController
     $user = $this->userRepository->findByToken($token);
 
     if (!$user) {
-      // FIXME : changement en base ok pour la validation du compte mais pourtant on a ce message d'erreur ...
       $errors[] = "L'utilisateur n'existe pas avec le token fourni.";
       return $this->render('front/errors', ['errors' => $errors]);
     }
@@ -101,7 +100,8 @@ class RegisterController extends AbstractController
     }
   }
 
-  public function forgotPassword(){
+  public function forgotPassword()
+  {
     if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
       $email = $_POST['email'];
       $user = $this->userRepository->findByEmail($email);
@@ -110,9 +110,47 @@ class RegisterController extends AbstractController
         $_SESSION['flash_message'] = "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail";
         return $this->redirect('connexion');
       }
-      $_SESSION['flash_message'] = 'Invalid email or password';
+      $_SESSION['flash_message'] = 'email non valide';
       return $this->redirect('connexion');
     }
-    return $this->render("front/forgot-password");
+    return $this->render("front/forgotPassword");
+  }
+
+  public function validationNewPassword(string $token)
+  {
+    $errors = [];
+    $user = $this->userRepository->findByToken($token);
+
+    if (!$user) {
+      $errors[] = "L'utilisateur n'existe pas avec le token fourni.";
+      return $this->render('front/errors', ['errors' => $errors]);
+    }
+
+    if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
+
+      $password = $_POST['password'];
+      $confirmPassword = $_POST['confirm-password'];
+
+      if (empty($password) || empty($confirmPassword)) {
+        $errors['password'] = 'Le mot de passe ne peut pas être vide';
+        return $this->render('front/errors', ['errors' => $errors]);
+      }
+      if ($password !== $confirmPassword) {
+        $errors['matching password'] = 'les mots de passes ne correspondent pas';
+        return $this->render('front/errors', ['errors' => $errors]);
+      }
+
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+      $user->setPassword($hashedPassword);
+
+      $this->userRepository->save($user);
+
+      // email confirmation de nouveau mot de passe
+      $this->registerHandler->sendEmailConfirmChangementPassword($user->getEmail());
+
+      $_SESSION['flash_message'] = 'une email vous a été envoyé pour confirmer le changement de mot de passe';
+      return $this->redirect('connexion');
+    }
+    return $this->render("front/newPassword", ["token" => $token]);
   }
 }

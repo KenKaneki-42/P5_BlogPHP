@@ -9,10 +9,15 @@ Router::setDefaultNamespace("App\Controller");
 Router::get("/homepage", "HomepageController@homepage");
 //------ Authentication
 Router::all("/inscription", "RegisterController@register")->setName('inscription');
+Router::all("/inscription-confirmation/{token}", "RegisterController@validationToken");
+
 Router::all("/connexion", "RegisterController@login");
 Router::all("/deconnexion", "RegisterController@logout");
-Router::all("/inscription-confirmation/{token}", "RegisterController@validationToken");
-Router::all("mot-de-passe-oublié", "RegisterController@fogotPassword");
+
+Router::all("/mot-de-passe-oublie", "RegisterController@forgotPassword");
+// TODO: token forgot password
+Router::all("/mot-de-passe-oublie/{token}", "RegisterController@validationNewPassword");
+
 // ---- CONTACT EMAIL ---- //
 // un controller ou un handler mail ou les deux?
 Router::post("/send-email-contact", "MailerController@sendContentContactForm");
