@@ -49,7 +49,10 @@ class  CommentController extends AbstractController
 
       if (!empty($validationErrors)) {
         // render error page or same form with indicate which field isn't adapt
-        return $this->render('admin/post/errors', ['errors' => $validationErrors]);
+        foreach ( $validationErrors as $error ) {
+          $this->addMessageFlash('flash_message', $error );
+        }
+        return $this->redirect($route);
       }
       $comment =  new Comment($_POST);
       $comment->setUserId($userId);

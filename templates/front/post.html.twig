@@ -1,51 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<section class="container txt-secondary-color">
-	<h1>{{post.title}}</h1>
-	<h4>{{post.tagline}}</h4>
-	<p>{{ post.content|raw  }}</p>
+	<section class="container txt-secondary-color">
+		<h1>{{post.title}}</h1>
+		<h4>{{post.tagline}}</h4>
+		<p>{{ post.content|raw  }}</p>
 
-	<p>
-		<em>le
-			{{ post.createdAt|date("Y-m-d à H:i") }}</em>
-		<br/>
-
-		{# <em> #}
-		<div class="d-flex">
-			<h3>Commentaire(s)</h3>
-			{% include 'front/modalCreateComment.html.twig' %}
-		</div>
-		<br/>
-		<div class="container d-flex justify-content-center">
-			<div
-				class="container-cards">
-				{# <a href="/posts/{{ post.id }}">Commentaires</a> #}
-        {# commentaires : {{ comments }} #}
-				{% if comments is not empty %}
-					{% for comment in comments %}
-						<div class="comment-card {% if loop.index is even %}even{% else %}odd{% endif %}">
-							<p>
-								{{ commentUsers[loop.index0].firstname }}
-								{{ commentUsers[loop.index0].lastname }}
-							</p>
-							<p>
-								{{ comment.content }}
-							</p>
-							<p class='text-end'>
-								le
-								{{ comment.createdAt|date("Y-m-d à H:i") }}
-							</p>
-						</div>
-					{% endfor %}
+		<p>
+			<em>
+				{% if post.updatedAt %}
+          modifié le :
+					{{ post.updatedAt|date("Y-m-d à H:i") }}
 				{% else %}
-					<p>Aucun commentaire pour le moment.</p>
+        crée le :
+					{{ post.createdAt|date("Y-m-d à H:i") }}
 				{% endif %}
+			</em>
+			<br/>
+
+			{# <em> #}
+			<div class="d-flex">
+				<h3>Commentaire(s)</h3>
+				{% include 'front/modalCreateComment.html.twig' %}
 			</div>
-		</div>
-		{# </em> #}
-	</p>
-</section>
+			<br/>
+			<div class="container d-flex justify-content-center">
+				<div class="container-cards">
+					{# <a href="/posts/{{ post.id }}">Commentaires</a> #}
+					{# commentaires : {{ comments }} #}
+						{% if comments is not empty %}
+							{% for comment in comments %}
+								<div class="comment-card {% if loop.index is even %}even{% else %}odd{% endif %}"> <p>
+									{{ commentUsers[loop.index0].firstname }}
+									{{ commentUsers[loop.index0].lastname }}
+								</p>
+								<p>
+									{{ comment.content }}
+								</p>
+								<p class='text-end'>
+									le
+									{{ comment.createdAt|date("Y-m-d à H:i") }}
+								</p>
+							</div>
+						{% endfor %}
+					{% else %}
+						<p>Aucun commentaire pour le moment.</p>
+					{% endif %}
+				</div>
+			</div>
+			{# </em> #}
+		</p>
+	</section>
 {% endblock %}
 
 {% block modal %}{% endblock %}

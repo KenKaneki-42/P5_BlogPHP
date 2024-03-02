@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Core\Component;
 
@@ -44,7 +45,6 @@ class AbstractController
     }
   }
 
-  // TODO redirect 302
   public function redirect(string $url): void
   {
     header('Location:' . $url);
@@ -126,5 +126,10 @@ class AbstractController
   //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
   public function success($key, $message): void
   {
+  }
+
+  public function addMessageFlash(string $key, string $message): void
+  {
+    $_SESSION[$key] = $message;
   }
 }

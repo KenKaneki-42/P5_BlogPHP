@@ -10,7 +10,7 @@ class ErrorController extends AbstractController
   public function notFound()
   {
     $errors = [
-      '404 not found'
+      '404 Not found'
     ];
 
     return $this->render("front/errors", ['errors' => $errors]);

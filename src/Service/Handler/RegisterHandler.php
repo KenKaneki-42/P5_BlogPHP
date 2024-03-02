@@ -73,6 +73,7 @@ class RegisterHandler extends MailerConfig
       //Attachments
       // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
       // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+      // Vérifiez si HTTPS est utilisé, sinon utilisez HTTP
       $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH_CONFIRMATION_INSCRIPTION, $token);
       $body = sprintf("<p>Bonjour, afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $confirmationUrl);
       //Content
@@ -93,8 +94,9 @@ class RegisterHandler extends MailerConfig
     try {
       $this->mail->setFrom(self::SENDER, 'SVDM');
       $this->mail->addAddress($recipient);
-      $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH_RESET_PASSWORD, $token);
-      $body = sprintf("<p>Bonjour, afin de confirmer la reinitialisation du mot de passe, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $confirmationUrl);
+      $url = $this->getRequestUrl(self::PATH_RESET_PASSWORD) . $token;
+      // $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH_RESET_PASSWORD, $token);
+      $body = sprintf("<p>Bonjour, afin de confirmer la reinitialisation du mot de passe, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $url);
       //Content
       $this->mail->isHTML(true);
       $this->mail->Subject = 'Demande de reinitialisation de mot de passe';
@@ -123,5 +125,20 @@ class RegisterHandler extends MailerConfig
     } catch (Exception $e) {
       echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
     }
+  }
+
+  public function getRequestUrl(string $path): string
+  {
+    // Vérifiez si HTTPS est utilisé, sinon utilisez HTTP
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+    // Récupérez le nom de l'hôte à partir de la variable SERVER
+    $hostName = $_SERVER['HTTP_HOST'];
+
+    // Construisez l'URL de base
+    $baseUrl = $protocol . $hostName;
+
+    // Affichez l'URL de base
+    return $baseUrl . "/" . $path . "/";
   }
 }

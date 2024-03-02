@@ -46,7 +46,7 @@ class RegisterController extends AbstractController
       $this->registerHandler->sendEmailConfirmation($email, $newUser->getToken());
 
       $_SESSION['flash_message'] = 'Please confirm your email by clicking on the confirmation link sent to your email address.';
-      return $this->redirect('connexion');
+      return $this->redirect('/connexion');
     }
     return $this->render("front/register");
   }
@@ -69,7 +69,7 @@ class RegisterController extends AbstractController
         }
       }
       $_SESSION['flash_message'] = 'Invalid email or password';
-      return $this->redirect('connexion');
+      return $this->redirect('/connexion');
     }
     return $this->render("front/login");
   }
@@ -77,7 +77,7 @@ class RegisterController extends AbstractController
   public function logout()
   {
     session_destroy();
-    return $this->redirect('connexion');
+    return $this->redirect('/connexion');
   }
 
   public function validationToken(string $token)
@@ -107,11 +107,9 @@ class RegisterController extends AbstractController
       $user = $this->userRepository->findByEmail($email);
       if ($user) {
         $this->registerHandler->sendEmailResetPassword($email, $user->getToken());
-        $_SESSION['flash_message'] = "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail";
-        return $this->redirect('connexion');
       }
-      $_SESSION['flash_message'] = 'email non valide';
-      return $this->redirect('connexion');
+      $_SESSION['flash_message'] = "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail";
+      return $this->redirect('/connexion');
     }
     return $this->render("front/forgotPassword");
   }
@@ -149,7 +147,7 @@ class RegisterController extends AbstractController
       $this->registerHandler->sendEmailConfirmChangementPassword($user->getEmail());
 
       $_SESSION['flash_message'] = 'une email vous a été envoyé pour confirmer le changement de mot de passe';
-      return $this->redirect('connexion');
+      return $this->redirect('/connexion');
     }
     return $this->render("front/newPassword", ["token" => $token]);
   }

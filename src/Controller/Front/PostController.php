@@ -6,12 +6,9 @@ use Core\component\AbstractController;
 use App\Repository\PostRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
-use Core\database\ConnectionDb; // Import the ConnectionDb class
-use Core\Router;
 
 class PostController extends AbstractController
 {
-
   protected PostRepository $postRepository;
   protected CommentRepository $commentRepository;
   protected UserRepository $userRepository;
@@ -32,24 +29,26 @@ class PostController extends AbstractController
   public function show(int $id)
   {
     $post = $this->postRepository->findById($id, true);
-    // $comments = $this->commentRepository->findByPostId($id);
-    $comments = $this->commentRepository->findValidatedByPostId($id);
 
-    // retrieve username from the comment by userId associate with the comment
-    foreach ($comments as $comment) {
-      $userId = $comment->getUserId();
-      $user = $this->userRepository->findById($userId);
-      $commentUsers[] = [
-        'firstname' => $user->getFirstname(),
-        'lastname' => $user->getLastname(),
-      ];
+    if ($post) {
+      $comments = $this->commentRepository->findValidatedByPostId($id);
+      $commentUsers = [];
+      // retrieve username from the comment by userId associate with the comment
+      foreach ($comments as $comment) {
+        $userId = $comment->getUserId();
+        $user = $this->userRepository->findById($userId);
+        $commentUsers[] = [
+          'firstname' => $user->getFirstname(),
+          'lastname' => $user->getLastname(),
+        ];
+      }
+
+      return $this->render("front/post", [
+        'post' => $post,
+        'comments' => $comments,
+        'commentUsers' => $commentUsers
+      ]);
     }
-
-
-    return $this->render("front/post", [
-      'post' => $post,
-      'comments' => $comments,
-      'commentUsers' => $commentUsers
-    ]);
+    return $this->redirect("/not-found");
   }
 }
