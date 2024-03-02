@@ -4,7 +4,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "Core\\": "config/"
+            "Core\\": "config/",
+            "Core\\Component\\": "config/Component/"
         }
     },
     "authors": [
