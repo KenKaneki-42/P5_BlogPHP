@@ -11,7 +11,7 @@
 
 ## Description
 
-BlogPhp is a web application for article blogging with administrator and user management. The goal is to provide a platform for article and comment publication, with moderation features.
+BlogPhp is a web application for article blogging with administrator and user management. The goal is to provide a platform for articles and comments publication, with moderation features.
 
 ## Main Features
 
