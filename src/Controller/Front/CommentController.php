@@ -8,10 +8,7 @@ use Core\component\AbstractController;
 use App\Service\Handler\CommentHandler;
 class  CommentController extends AbstractController
 {
-
   private CommentRepository $commentRepository;
-  // private UserRepository $userRepository;
-  // private PostRepository $postRepository;
 
   private CommentHandler $commentHandler;
   public function __construct()
@@ -21,23 +18,7 @@ class  CommentController extends AbstractController
     $this->commentHandler = new CommentHandler;
   }
 
-  public function index(int $postId): void
-  {
-    // TODO : $this->isAdmin();
-    // $posts = $this->commentRepository->getAll(10);
-    // $this->render('home/index.html.twig', ['posts' => $posts]);
-  }
-
-  public function show(int $id): void
-  {
-    // $post = $this->commentRepository->findById($id);
-    // fetch all comments link to the previous post
-    // $comments = $this->getComments($id);
-
-    // $this->render('post/show.html.twig', ['post' => $post, 'comments' => $comments]);
-  }
-
-  public function create(int $postId)
+  public function create(int $postId): void
   {
     $route = sprintf('/articles/%s', $postId);
 
@@ -48,46 +29,17 @@ class  CommentController extends AbstractController
       $validationErrors = $this->commentHandler->validateCommentData($content, $postId, $userId);
 
       if (!empty($validationErrors)) {
-        // render error page or same form with indicate which field isn't adapt
         foreach ( $validationErrors as $error ) {
           $this->addMessageFlash('flash_message', $error );
         }
-        return $this->redirect($route);
+        $this->redirect($route);
       }
       $comment =  new Comment($_POST);
       $comment->setUserId($userId);
       $this->commentRepository->flush($comment);
-      // TODO add success message for creation popup
-      return $this->redirect($route); // to modify
+      $this->addMessageFlash('flash_message', 'Votre commentaire est soumis à la validation');
+      $this->redirect($route);
     }
-    return $this->redirect($route);
-  }
-
-  public function update(string $id, Comment $comment): void
-  {
-    return;
-  }
-
-
-  public function delete(int $id): void
-  {
+    $this->redirect($route);
   }
 }
-// function addComment(string $post, array $input)
-// {
-//   $author = null;
-//   $comment = null;
-//   if (!empty($input['author']) && !empty($input['comment'])) {
-//     $author = $input['author'];
-//     $comment = $input['comment'];
-//   } else {
-//     die('Les données du formulaire sont invalides.');
-//   }
-
-//   $success = createComment($post, $author, $comment);
-//   if (!$success) {
-//     die('Impossible d\'ajouter le commentaire !');
-//   } else {
-//     header('Location: index.php?action=post&id=' . $post);
-//   }
-// }

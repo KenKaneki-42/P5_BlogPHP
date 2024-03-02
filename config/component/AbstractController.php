@@ -21,7 +21,6 @@ class AbstractController
     }
     try {
       $loader = new FilesystemLoader(TEMPLATES_DIR . '/');
-      // $loader = new FilesystemLoader(dirname(dirname(__DIR__)) . '/templates');
       $this->twig = new Environment($loader, ["debug" => true]);
     } catch (\Exception $e) {
       throw new \RuntimeException("Error initializing Twig: " . $e->getMessage());

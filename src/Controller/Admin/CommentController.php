@@ -35,9 +35,6 @@ class CommentController extends AbstractController
     ]);
   }
 
-  //TODO: faire un test pour vérifier que l'utilisateur est bien connecté?
-  //TODO: faire un test pour vérifier que l'utilisateur est bien admin?
-  //TODO: utiliser la request HTTP pour récupérer l'objet en sérialisant et déserialisant?
   public function changeStatus(int $commentId, string $status)
   {
     if ($this->isSubmitted('moderateComment') && $this->isValid($_POST)) {
