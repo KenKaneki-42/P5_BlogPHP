@@ -20,13 +20,13 @@ class PostController extends AbstractController
     $this->userRepository = new UserRepository;
   }
 
-  public function index()
+  public function index(): string
   {
     $posts = $this->postRepository->getAll(100);
     return $this->render("front/posts", ['posts' => $posts]);
   }
 
-  public function show(int $id)
+  public function show(int $id): ?string
   {
     $post = $this->postRepository->findById($id, true);
 

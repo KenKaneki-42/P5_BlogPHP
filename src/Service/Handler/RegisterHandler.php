@@ -83,7 +83,6 @@ class RegisterHandler extends MailerConfig
       $this->mail->AltBody = strip_tags($body);
 
       $this->mail->send();
-      //TODO historiser l'envoie du mail?
     } catch (Exception $e) {
       echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
     }

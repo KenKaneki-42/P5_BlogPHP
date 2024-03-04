@@ -55,7 +55,7 @@ class PostController extends AbstractController
     $this->render('admin/post/show', ['post' => $post, 'comments' => $comments]);
   }
 
-  public function add()
+  public function add() : string
   {
     if ($this->isSubmitted('submitPost') && $this->isValid($_POST)) {
       $title = $_POST['title'] ?? '';
@@ -71,14 +71,12 @@ class PostController extends AbstractController
 
       $post = new Post($_POST);
       $this->postRepository->persistCreate($post);
-      // TODO add success message for creation popup
-
-      // return $this->redirect('admin_post_index');  Route not found: "/admin/admin_post_index/"
+      $this->addMessageFlash("flash_message", "Article crée avec succès");
       return $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/new');
   }
-  public function edit(int $id)
+  public function edit(int $id) : string
   {
     $post = $this->postRepository->findById($id);
 
@@ -98,7 +96,7 @@ class PostController extends AbstractController
         return $this->render('admin/post/errors', ['errors' => $validationErrors]);
       }
       $this->postRepository->persistUpdate($post, $_POST);
-      // TODO add success message for creation popup
+      $this->addMessageFlash("flash_message", "Article modifié avec succès");
 
       return $this->redirect('/admin/articles');
     }

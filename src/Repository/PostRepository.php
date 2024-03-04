@@ -137,8 +137,6 @@ class PostRepository
     $post->setTitle($data['title']);
     $post->setContent($data['content']);
     $post->setTagline($data['tagline']);
-    // $post->setUserId($data['userId']);
-    // TODO  replace me
     $post->setUserId($_SESSION['user_id']);
     $post->setUpdatedAt(new \DateTime());
     $post->setSlug(strtolower(str_replace(' ', '-', $post->getTitle())));

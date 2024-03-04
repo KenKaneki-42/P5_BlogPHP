@@ -27,13 +27,27 @@ class CommentController extends AbstractController
   public function index()
   {
     $csrfToken = bin2hex(random_bytes(32));
-    // TODO: Find a better way to do this
     $comments = $this->commentRepository->findAll(1000);
     return $this->render("/admin/comment/index", [
       "comments" => $comments,
       "csrf_token" => $csrfToken
     ]);
   }
+
+  // V2 with pagination
+  // public function index(int $page = 1)
+  // {
+  //     $limit = 10;
+  //     $offset = ($page - 1) * $limit;
+  //     $csrfToken = bin2hex(random_bytes(32));
+  //     $comments = $this->commentRepository->findAll($limit, $offset);
+
+  //     return $this->render("/admin/comment/index", [
+  //       "comments" => $comments,
+  //       "csrf_token" => $csrfToken,
+  //       "currentPage" => $page
+  //     ]);
+  // }
 
   public function changeStatus(int $commentId, string $status)
   {

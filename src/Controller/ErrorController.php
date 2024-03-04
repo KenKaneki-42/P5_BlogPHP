@@ -7,7 +7,7 @@ use Core\component\AbstractController;
 class ErrorController extends AbstractController
 {
 
-  public function notFound()
+  public function notFound() : string
   {
     $errors = [
       '404 Not found'
@@ -15,7 +15,7 @@ class ErrorController extends AbstractController
 
     return $this->render("front/errors", ['errors' => $errors]);
   }
-  public function forbidden()
+  public function forbidden() : string
   {
     $errors = [
       '403 Forbidden'

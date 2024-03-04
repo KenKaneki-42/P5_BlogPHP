@@ -27,7 +27,7 @@ class AbstractController
     }
   }
 
-  public function render($template, array $data = [])
+  public function render($template, array $data = []) : string
   {
     if (!$this->twig) {
       throw new \RuntimeException("Twig environment is not initialized.");
@@ -44,7 +44,7 @@ class AbstractController
     }
   }
 
-  public function redirect(string $url): void
+  public function redirect(string $url): mixed
   {
     header('Location:' . $url);
     exit();
@@ -120,11 +120,6 @@ class AbstractController
       // return ['success' => false, 'message' => 'reCAPTCHA non validé'];
       return false;
     }
-  }
-
-  //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
-  public function success($key, $message): void
-  {
   }
 
   public function addMessageFlash(string $key, string $message): void

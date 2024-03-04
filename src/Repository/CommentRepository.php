@@ -27,6 +27,26 @@ class CommentRepository
     $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $comments ?: null;
   }
+  // V2 with pagination
+  // public function findAll(int $limit, int $offset): ?array
+  // {
+  //     try {
+  //         $statement = $this->connection->prepare(
+  //           "SELECT * FROM comment ORDER BY created_at DESC LIMIT :limit OFFSET :offset"
+  //         );
+
+  //         $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+  //         $statement->bindValue(':offset', $offset, PDO::PARAM_INT);
+  //         $statement->execute();
+
+  //         $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
+  //         return $comments ?: null;
+  //     } catch (PDOException $e) {
+  //         // Log l'erreur ou affiche un message d'erreur générique à l'utilisateur
+  //         // error_log($e->getMessage());
+  //         return null; // Ou gérer l'erreur d'une manière qui convient à votre application
+  //     }
+  // }
 
   public function findById(int $id): ?Comment
   {

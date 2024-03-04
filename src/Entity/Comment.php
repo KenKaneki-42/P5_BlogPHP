@@ -58,22 +58,22 @@ class Comment extends AbstractEntity
   {
     $this->status = $status;
   }
-  public function getCreatedAt()
+  public function getCreatedAt() : mixed
   {
     return $this->createdAt;
   }
 
-  public function setCreatedAt($createdAt): void
+  public function setCreatedAt( mixed $createdAt): void
   {
     $this->createdAt = $createdAt;
   }
 
-  public function getPublishedAt()
+  public function getPublishedAt() : mixed
   {
     return $this->publishedAt;
   }
 
-  public function setPublishedAt($publishedAt): void
+  public function setPublishedAt( mixed $publishedAt): void
   {
     $this->publishedAt = $publishedAt;
   }

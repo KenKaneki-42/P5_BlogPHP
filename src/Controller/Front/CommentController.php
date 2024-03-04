@@ -13,7 +13,6 @@ class  CommentController extends AbstractController
   private CommentHandler $commentHandler;
   public function __construct()
   {
-    parent::__construct();
     $this->commentRepository = new CommentRepository;
     $this->commentHandler = new CommentHandler;
   }
