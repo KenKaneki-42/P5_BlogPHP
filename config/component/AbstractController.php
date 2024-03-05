@@ -110,8 +110,8 @@ class AbstractController
   }
   public function validateCaptcha($captchaResponse): bool
   {
-    $secretKey = "6LfpGH0pAAAAANlX10w1MD_edoPWgxt1LEbSo8oF";
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse");
+    $secretKeyCaptcha = $_ENV['RECAPTCHA_SECRET_KEY'];
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKeyCaptcha&response=$captchaResponse");
     $responseKeys = json_decode($response, true);
 
     if (intval($responseKeys["success"]) === 1) {

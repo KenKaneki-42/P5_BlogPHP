@@ -5,9 +5,10 @@
 1. [Description](#description)
 2. [Main Features](#main-features)
 3. [Technologies Used](#technologies-used)
-4. [Installation](#installation)
-5. [Contributing](#contributing)
-6. [FAQ](#faq)
+4. [Library](#library)
+5. [Installation](#installation)
+6. [Contributing](#contributing)
+7. [FAQ](#faq)
 
 ## Description
 
@@ -28,6 +29,14 @@ BlogPhp is a web application for article blogging with administrator and user ma
 - HTML
 - CSS
 - JavaScript
+
+## Library
+- cocur/slugify
+- pecee/simple-router
+- phpmailer/phpmailer
+- psr/container
+- twig/twig
+- vlucas/phpdotenv
 
 ## Installation
 
