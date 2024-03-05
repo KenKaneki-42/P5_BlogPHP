@@ -8,9 +8,6 @@ use App\Repository\UserRepository;
 
 class MailerHandler extends MailerConfig
 {
-  // const PROTOCOLE = 'http';
-  // const HOST = '127.0.0.1';
-  // const PORT = '8000';
   const PATH = 'send-email-contact';
   const CONTACT_EMAIL = 'sylvain.vandermeersch@gmail.com';
 
