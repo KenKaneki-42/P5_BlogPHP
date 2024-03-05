@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Core\Component;
@@ -9,6 +10,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use App\Entity\User;
+use Core\Exception\RedirectException;
 
 class AbstractController
 {
@@ -27,7 +29,7 @@ class AbstractController
     }
   }
 
-  public function render($template, array $data = []) : string
+  public function render(string $template, array $params = []): string
   {
     if (!$this->twig) {
       throw new \RuntimeException("Twig environment is not initialized.");
@@ -35,7 +37,7 @@ class AbstractController
 
     try {
       $this->twig->addGlobal("session", $_SESSION);
-      return $this->twig->render($template . ".html.twig", $data);
+      return $this->twig->render($template . ".html.twig", $params);
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     } catch (\Exception $e) {
@@ -44,10 +46,9 @@ class AbstractController
     }
   }
 
-  public function redirect(string $url): mixed
+  protected function redirect(string $url): void
   {
-    header('Location:' . $url);
-    exit();
+    throw new RedirectException($url);
   }
 
   public function isSubmitted($submitButton): bool
