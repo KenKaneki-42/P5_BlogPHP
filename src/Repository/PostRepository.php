@@ -186,7 +186,7 @@ class PostRepository
     }
   }
 
-  public function delete($idPost): void
+  public function delete(int $idPost): void
   {
     $sql = "DELETE FROM post
             WHERE id = :id";
