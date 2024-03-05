@@ -27,6 +27,7 @@ class CommentRepository
     $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $comments ?: null;
   }
+
   // V2 with pagination
   // public function findAll(int $limit, int $offset): ?array
   // {
@@ -42,8 +43,8 @@ class CommentRepository
   //         $comments = $statement->fetchAll(PDO::FETCH_ASSOC);
   //         return $comments ?: null;
   //     } catch (PDOException $e) {
-  //         // Log l'erreur ou affiche un message d'erreur générique à l'utilisateur
-  //         // error_log($e->getMessage());
+          // Log l'erreur ou affiche un message d'erreur générique à l'utilisateur
+          // error_log($e->getMessage());
   //         return null; // Ou gérer l'erreur d'une manière qui convient à votre application
   //     }
   // }

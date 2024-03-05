@@ -62,8 +62,4 @@ class CommentController extends AbstractController
     }
   }
 
-  // public function show(int $id):?array {
-  //   $comment = $this->commentRepository->findById($id);
-  //   return $comment;
-  // }
 }

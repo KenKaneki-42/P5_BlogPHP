@@ -115,10 +115,8 @@ class AbstractController
     $responseKeys = json_decode($response, true);
 
     if (intval($responseKeys["success"]) === 1) {
-      // return ['success' => true, 'message' => 'reCAPTCHA validé'];
       return true;
     } else {
-      // return ['success' => false, 'message' => 'reCAPTCHA non validé'];
       return false;
     }
   }

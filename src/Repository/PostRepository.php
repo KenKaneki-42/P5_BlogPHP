@@ -13,7 +13,6 @@ class PostRepository
 
   public function __construct()
   {
-    // $this->connection = $connectionDb->getConnection();
     $this->connection = ConnectionDb::getConnection();
   }
 
@@ -123,7 +122,6 @@ class PostRepository
     if (!$result) {
       throw new RuntimeException("Error during execution of SQL update statement.");
     }
-    // pop up de valitation?
   }
 
   public function persistUpdate(Post $post, array $data): void
@@ -198,13 +196,5 @@ class PostRepository
     if (!$result) {
       throw new RuntimeException("Error during execution of SQL delete statement.");
     }
-
-    // if ($result) {
-    //   // Succès
-    //   echo "<script>alert('Suppression réussie'); setTimeout(function(){ location.reload(); }, 1000);</script>";
-    // } else {
-    //   // Échec
-    //   echo "<script>alert('Échec de la suppression');</script>";
-    // }
   }
 }

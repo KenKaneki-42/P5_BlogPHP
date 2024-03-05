@@ -1,0 +1,20 @@
+{
+  "name": "BlogSVDM",
+  "short_name": "Bsvdm",
+  "start_url": "/homepage",
+  "display": "standalone",
+  "background_color": "#051722 ",
+  "description": "BlogPhp is a web application for article blogging with administrator and user management. The goal is to provide a platform for articles and comments publication, with moderation features.",
+  "icons": [
+    {
+      "src": "chemin/vers/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "chemin/vers/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

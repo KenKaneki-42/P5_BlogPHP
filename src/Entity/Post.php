@@ -1,5 +1,7 @@
 <?php
-// declare(strict_types=1);
+
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
@@ -63,17 +65,17 @@ class Post extends AbstractEntity
     $this->tagline = $tagline;
   }
 
-  public function getCreatedAt() : mixed
+  public function getCreatedAt(): mixed
   {
     return $this->createdAt;
   }
 
-  public function setCreatedAt( mixed $createdAt): void
+  public function setCreatedAt(mixed $createdAt): void
   {
     $this->createdAt = $createdAt;
   }
 
-  public function getUpdatedAt() : mixed
+  public function getUpdatedAt(): mixed
   {
     return $this->updatedAt;
   }
