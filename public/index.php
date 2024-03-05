@@ -1,6 +1,7 @@
 <?php
 
 use Core\Router;
+use Core\Exception\RedirectException;
 // use Core\component;
 // use Core\Security\CookieAuth;
 
@@ -19,7 +20,12 @@ session_start();
 // $cookieAuth->AuthWithCookie();
 
 // Start the routing
-Router::start();
+try {
+  Router::start();
+} catch (RedirectException $e) {
+  header('Location: ' . $e->getUrl());
+  exit();
+}
 
 if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['flash_message'])) {
   unset($_SESSION['flash_message']);
