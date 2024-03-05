@@ -6,6 +6,7 @@ use Core\component\AbstractController;
 use App\Repository\UserRepository;
 use App\Entity\User;
 use App\Service\Handler\RegisterHandler;
+use App\Service\UserDataValidator;
 
 class RegisterController extends AbstractController
 {
@@ -34,9 +35,7 @@ class RegisterController extends AbstractController
       $newUser->setLastName($lastName);
       $newUser->setPassword($hashedPassword);
       $newUser->setEmail($email);
-
-      $validationErrors = $this->registerHandler->validateUserData($lastName, $firstName, $password, $_POST['confirm-password'], $email);
-
+      $validationErrors = UserDataValidator::validateUserData($lastName, $firstName, $password, $_POST['confirm-password'], $email);
       if (!empty($validationErrors)) {
         // render error page or same form with indicate which field isn't adapt
         return $this->render('front/errors', ['errors' => $validationErrors]);

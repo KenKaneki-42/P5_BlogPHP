@@ -8,9 +8,9 @@ use App\Repository\UserRepository;
 
 class RegisterHandler extends MailerConfig
 {
-  const PROTOCOLE = 'http';
-  const HOST = '127.0.0.1';
-  const PORT = '8000';
+  // const PROTOCOLE = 'http';
+  // const HOST = '127.0.0.1';
+  // const PORT = '8000';
   const PATH_CONFIRMATION_INSCRIPTION = 'inscription-confirmation';
   const PATH_RESET_PASSWORD = 'mot-de-passe-oublie';
   const SENDER = 'sylvain.vandermeersch@gmail.com';
@@ -18,42 +18,6 @@ class RegisterHandler extends MailerConfig
   public function __construct()
   {
     parent::__construct();
-  }
-
-  public function validateUserData(string $lastName, string $firstName, string $password, string $confirmedPassword, string $email)
-  {
-    $errors = [];
-
-    if (!isset($lastName) || empty($lastName)) {
-      $errors['lastName'] = 'Le nom ne peut pas être vide.';
-    }
-    if (!isset($firstName) || empty($firstName)) {
-      $errors['firstName'] = 'Le prénom ne peut pas être vide.';
-    }
-    if (!isset($password) || empty($password)) {
-      $errors['password'] = 'Le mot de passe ne peut pas être vide';
-    }
-    if (!isset($confirmedPassword) || empty($confirmedPassword)) {
-      $errors['confirmedPassword'] = 'La confirmation du mot de passe ne peut pas être vide';
-    }
-    if ($password !== $confirmedPassword) {
-      $errors['matching password'] = 'les mots de passes ne correspondent pas';
-    }
-
-    if (empty($email)) {
-      $errors['email'] = 'L\'adresse email ne peut pas être vide.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = 'L\'adresse email n\'est pas valide.';
-    }
-
-    $userRepository = new UserRepository;
-    if ($userRepository->emailExists($email) > 0) {
-      $errors['email'] = "L'email existe déjà en base de donnée";
-    }
-
-    //check if the email already exist in database
-
-    return $errors;
   }
 
   public function sendEmailConfirmation(string $recipient, string $token)
@@ -74,7 +38,8 @@ class RegisterHandler extends MailerConfig
       // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
       // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
       // Vérifiez si HTTPS est utilisé, sinon utilisez HTTP
-      $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH_CONFIRMATION_INSCRIPTION, $token);
+      // $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH_CONFIRMATION_INSCRIPTION, $token);
+      $confirmationUrl = $this->buildUrl(self::PATH_CONFIRMATION_INSCRIPTION, $token);
       $body = sprintf("<p>Bonjour, afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $confirmationUrl);
       //Content
       $this->mail->isHTML(true);                                  //Set email format to HTML
