@@ -103,10 +103,6 @@ class AbstractController
 
   public function checkAdminAccess(User $user = null): void
   {
-    // if ($this->isAdminPage() && !$this->isAdmin($user)) {
-    //   // Redirige l'utilisateur vers une page d'erreur ou d'accueil
-    //   $this->redirect('/forbidden');
-    // }
     if ($this->isAdminPage() && !$this->isAdmin($user)) {
       throw new \Core\Exception\ForbiddenAccessException("Accès interdit.");
     }
