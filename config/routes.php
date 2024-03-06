@@ -45,4 +45,9 @@ Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete"
 
 // ----- ERRORS -----
 Router::get('/not-found', "ErrorController@notFound");
+Router::get('/error', "ErrorController@error");
 Router::get('/forbidden', 'ErrorController@forbidden');
+
+Router::get("/test-error", function() {
+  throw new \Exception("Ceci est une erreur de test.");
+});
