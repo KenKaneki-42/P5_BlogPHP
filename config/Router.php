@@ -26,6 +26,18 @@ class Router extends SimpleRouter
     /* Load external routes file */
     require_once '../config/routes.php';
 
+    // Global handler errors
+    self::error(function (\Exception $exception) {
+      if ($exception instanceof \Pecee\SimpleRouter\Exceptions\NotFoundHttpException) {
+          response()->redirect('/not-found');
+      } elseif ($exception instanceof \Core\Exception\ForbiddenAccessException) {
+          response()->redirect('/forbidden');
+      } else {
+          response()->redirect('/error');
+      }
+  });
+
+
     // Do initial stuff
     parent::start();
   }
