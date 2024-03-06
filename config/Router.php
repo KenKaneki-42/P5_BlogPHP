@@ -27,7 +27,7 @@ class Router extends SimpleRouter
     require_once '../config/routes.php';
 
     // Global handler errors
-    self::error(function (\Exception $exception) {
+    self::error(function (\Pecee\Http\Request $request, \Exception $exception) {
       if ($exception instanceof \Pecee\SimpleRouter\Exceptions\NotFoundHttpException) {
           response()->redirect('/not-found');
       } elseif ($exception instanceof \Core\Exception\ForbiddenAccessException) {
