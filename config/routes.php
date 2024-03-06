@@ -25,7 +25,7 @@ Router::post("/send-email-contact", "MailerController@sendContentContactForm");
 
 // ----- FRONT POSTS -----
 Router::get("/articles", "Front\PostController@index");
-Router::get("/articles/{id}", "Front\PostController@show");
+Router::get("/articles/{id}", "Front\PostController@show")->where(['id' => '[0-9]+']);
 
 // -----  FRONT COMMENTS -----
 Router::all("/articles/{id}/commentaires", "Front\CommentController@index")->where(['id' => '[0-9]+']);
@@ -38,7 +38,7 @@ Router::all("/admin/commentaire/{id}/{status}/{csrfToken}", "Admin\CommentContro
 
 // ----- ADMIN POSTS -----
 Router::get("/admin/articles", "Admin\PostController@index")->setName('admin_post_index');
-Router::get("/admin/articles/{id}", "Admin\PostController@show");
+Router::get("/admin/articles/{id}", "Admin\PostController@show")->where(['id' => '[0-9]+']);
 Router::all("/admin/nouvelle-article", "Admin\PostController@add");
 Router::all("/admin/post/edit/{id}", "Admin\PostController@edit")->where(['id' => '[0-9]+']);
 Router::all("/admin/post/delete/{id}/{csrfToken}", "Admin\PostController@delete")->where(['id' => '[0-9]+']);
