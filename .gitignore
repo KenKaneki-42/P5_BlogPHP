@@ -3,3 +3,5 @@
 /config/Mailer/MailerConfig.php
 /config/serviceContainer.php
 .env
+/draft.php
+.vscode/
