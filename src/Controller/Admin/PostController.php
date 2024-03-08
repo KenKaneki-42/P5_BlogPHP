@@ -31,7 +31,7 @@ class PostController extends AbstractController
     }
     $this->checkAdminAccess($user);
   }
-  public function index()
+  public function index(): string
   {
     $csrfToken = bin2hex(random_bytes(32));
     $posts = $this->postRepository->getAll(100);

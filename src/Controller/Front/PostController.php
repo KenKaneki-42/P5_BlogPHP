@@ -26,29 +26,30 @@ class PostController extends AbstractController
     return $this->render("front/posts", ['posts' => $posts]);
   }
 
-  public function show(int $id): ?string
+  public function show(int $id): string
   {
     $post = $this->postRepository->findById($id, true);
 
-    if ($post) {
-      $comments = $this->commentRepository->findValidatedByPostId($id);
-      $commentUsers = [];
-      // retrieve username from the comment by userId associate with the comment
-      foreach ($comments as $comment) {
-        $userId = $comment->getUserId();
-        $user = $this->userRepository->findById($userId);
-        $commentUsers[] = [
-          'firstname' => $user->getFirstname(),
-          'lastname' => $user->getLastname(),
-        ];
-      }
-
-      return $this->render("front/post", [
-        'post' => $post,
-        'comments' => $comments,
-        'commentUsers' => $commentUsers
-      ]);
+    if (!$post) {
+      $this->redirect("/not-found");
     }
-    return $this->redirect("/not-found");
+
+    $comments = $this->commentRepository->findValidatedByPostId($id);
+    $commentUsers = [];
+
+    foreach ($comments as $comment) {
+      $userId = $comment->getUserId();
+      $user = $this->userRepository->findById($userId);
+      $commentUsers[] = [
+        'firstname' => $user->getFirstname(),
+        'lastname' => $user->getLastname(),
+      ];
+    }
+
+    return $this->render("front/post", [
+      'post' => $post,
+      'comments' => $comments,
+      'commentUsers' => $commentUsers
+    ]);
   }
 }
