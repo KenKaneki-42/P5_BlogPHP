@@ -9,6 +9,7 @@ namespace Core;
 
 //Call Router Library
 use Pecee\SimpleRouter\SimpleRouter;
+use Core\Exception\RedirectException;
 
 class Router extends SimpleRouter
 {
@@ -28,15 +29,17 @@ class Router extends SimpleRouter
 
     // Global handler errors
     self::error(function (\Pecee\Http\Request $request, \Exception $exception) {
-      if ($exception instanceof \Pecee\SimpleRouter\Exceptions\NotFoundHttpException) {
+      if (!$exception instanceof RedirectException){
+        if ($exception instanceof \Pecee\SimpleRouter\Exceptions\NotFoundHttpException) {
           response()->redirect('/not-found');
-      } elseif ($exception instanceof \Core\Exception\ForbiddenAccessException) {
+        } elseif ($exception instanceof \Core\Exception\ForbiddenAccessException) {
           response()->redirect('/forbidden');
-      } else {
+        } else {
           response()->redirect('/error');
+        }
       }
-  });
 
+    });
 
     // Do initial stuff
     parent::start();
