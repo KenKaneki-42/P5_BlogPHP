@@ -10,16 +10,16 @@ class UserDataValidator
   {
     $errors = [];
 
-    if (!isset($lastName) || empty($lastName)) {
+    if (empty($lastName)) {
       $errors['lastName'] = 'Le nom ne peut pas être vide.';
     }
-    if (!isset($firstName) || empty($firstName)) {
+    if (empty($firstName)) {
       $errors['firstName'] = 'Le prénom ne peut pas être vide.';
     }
-    if (!isset($password) || empty($password)) {
+    if (empty($password)) {
       $errors['password'] = 'Le mot de passe ne peut pas être vide';
     }
-    if (!isset($confirmedPassword) || empty($confirmedPassword)) {
+    if (empty($confirmedPassword)) {
       $errors['confirmedPassword'] = 'La confirmation du mot de passe ne peut pas être vide';
     }
     if ($password !== $confirmedPassword) {
