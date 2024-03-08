@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front;
 
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Repository\PostRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;

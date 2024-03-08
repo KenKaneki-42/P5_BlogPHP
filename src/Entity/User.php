@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 
 class User extends AbstractEntity
 {

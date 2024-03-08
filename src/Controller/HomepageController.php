@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Repository\PostRepository;
 
 class HomepageController extends AbstractController

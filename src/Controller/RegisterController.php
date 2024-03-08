@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Repository\UserRepository;
 use App\Entity\User;
 use App\Service\Handler\RegisterHandler;

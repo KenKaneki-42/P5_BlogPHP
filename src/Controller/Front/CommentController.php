@@ -4,7 +4,7 @@ namespace App\Controller\Front;
 
 use App\Repository\CommentRepository;
 use App\Entity\Comment;
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Service\Handler\CommentHandler;
 class  CommentController extends AbstractController
 {
@@ -29,14 +29,14 @@ class  CommentController extends AbstractController
 
       if (!empty($validationErrors)) {
         foreach ( $validationErrors as $error ) {
-          $this->addMessageFlash('flash_message', $error );
+          $this->addMessageFlash('warning', $error );
         }
         $this->redirect($route);
       }
       $comment =  new Comment($_POST);
       $comment->setUserId($userId);
       $this->commentRepository->flush($comment);
-      $this->addMessageFlash('flash_message', 'Votre commentaire est soumis à la validation');
+      $this->addMessageFlash('info', 'Votre commentaire est soumis à la validation');
       $this->redirect($route);
     }
     $this->redirect($route);

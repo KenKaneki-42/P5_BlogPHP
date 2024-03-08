@@ -6,7 +6,7 @@ use App\Entity\Comment;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 
 class CommentFixtures extends AbstractFixturesFactory
 

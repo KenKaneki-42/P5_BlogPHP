@@ -10,7 +10,6 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use App\Entity\User;
-use Core\Exception\RedirectException;
 
 class AbstractController
 {
