@@ -58,15 +58,24 @@
 					</ul>
 				</div>
 			</nav>
+      {# <pre>{{ dump(session) }}</pre> #}
+
 		{% endblock %}
 
-    {% if session.flash_message %}
-        <div class=" container alert alert-info" role="alert">
-            {{ session.flash_message }}
-        </div>
+    {% if flashMessages is defined %}
+        {% for type, messages in flashMessages %}
+            {% for message in messages %}
+            <div class="alert-container">
+                <div class="alert alert-{{ type }} alert-custom" role="alert">
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 
-		{% block body %}{% endblock %}
+		{% block body %}
+    {% endblock %}
 
 		{% block footer %}
 			<footer class="mt-4 text-center">
