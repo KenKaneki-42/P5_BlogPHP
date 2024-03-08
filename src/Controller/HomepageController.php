@@ -18,6 +18,6 @@ class HomepageController extends AbstractController
 
   public function homepage(): ?string
   {
-    return $this->render('front/homepage');
+    return $this->render('front/homepage', ['recaptchaPublicKey' => $_ENV['RECAPTCHA_PUBLIC_KEY']]);
   }
 }
