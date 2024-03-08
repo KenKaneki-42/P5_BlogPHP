@@ -3,8 +3,6 @@
 use Core\Router;
 use Core\Exception\RedirectException;
 use Dotenv\Dotenv;
-// use Core\component;
-// use Core\Security\CookieAuth;
 
 //Autoload
 require "../vendor/autoload.php";
