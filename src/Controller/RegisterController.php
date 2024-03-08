@@ -144,8 +144,7 @@ class RegisterController extends AbstractController
 
       // email confirmation de nouveau mot de passe
       $this->registerHandler->sendEmailConfirmChangementPassword($user->getEmail());
-
-      $_SESSION['flash_message'] = 'une email vous a été envoyé pour confirmer le changement de mot de passe';
+      $this->addMessageFlash('flash_message','un email vous a été envoyé pour confirmer le changement de mot de passe');
       return $this->redirect('/connexion');
     }
     return $this->render("front/newPassword", ["token" => $token]);
