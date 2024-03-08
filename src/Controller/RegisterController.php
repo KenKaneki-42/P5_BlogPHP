@@ -21,7 +21,7 @@ class RegisterController extends AbstractController
     $this->registerHandler = new RegisterHandler();
   }
 
-  public function register()
+  public function register(): string
   {
     if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
       $firstName = $_POST['firstname'];
@@ -44,13 +44,13 @@ class RegisterController extends AbstractController
 
       $this->registerHandler->sendEmailConfirmation($email, $newUser->getToken());
 
-      $_SESSION['flash_message'] = 'Merci de confirmer votre inscription en cliquant sur le lien de confirmation envoyé par email.';
+      $this->addMessageFlash("info", "Merci de confirmer votre inscription en cliquant sur le lien de confirmation envoyé par email.");
       return $this->redirect('/connexion');
     }
     return $this->render("front/register");
   }
 
-  public function login()
+  public function login(): string
   {
     if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
       $email = $_POST['email'];
@@ -64,22 +64,29 @@ class RegisterController extends AbstractController
           $_SESSION['user_lastname'] = $user->getLastName();
           $_SESSION['user_email'] = $user->getEmail();
           $_SESSION['user_role'] = $user->getRole();
+          $this->addMessageFlash('info', 'authentification réussie');
           return $this->redirect('/homepage');
         }
       }
-      $_SESSION['flash_message'] = 'Invalid email or password';
+      $this->addMessageFlash('warning', 'email ou mot de passe invalide');
       return $this->redirect('/connexion');
     }
     return $this->render("front/login");
   }
 
-  public function logout()
+  public function logout(): string
   {
-    session_destroy();
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_firstname']);
+    unset($_SESSION['user_lastname']);
+    unset($_SESSION['user_email']);
+    unset($_SESSION['user_role']);
+
+    $this->addMessageFlash('info', 'déconnexion réussie');
     return $this->redirect('/connexion');
   }
 
-  public function validationToken(string $token)
+  public function validationToken(string $token): string
   {
     $errors = [];
     $user = $this->userRepository->findByToken($token);
@@ -89,17 +96,19 @@ class RegisterController extends AbstractController
       return $this->render('front/errors', ['errors' => $errors]);
     }
 
-    // Vérification de l'existence de l'utilisateur et de la validité du token
-    if (($user->getIsValidated() === false) && ($user->getToken() === $token)) {
+    if (!$user->getIsValidated() && $user->getToken() === $token) {
       $user->setIsValidated(true);
       $this->userRepository->save($user);
-      // Redirection vers une page de confirmation ou de connexion
-
-      return $this->redirect("connexion");
+      $this->addMessageFlash('success', 'Votre compte a été validé avec succès. Vous pouvez maintenant vous connecter.');
+      return $this->redirect("/connexion");
+    } else {
+      $this->addMessageFlash('info', 'Votre compte est déjà validé ou le token ne correspond pas. Veuillez vous connecter.');
+      return $this->redirect("/connexion");
     }
   }
 
-  public function forgotPassword()
+
+  public function forgotPassword(): string
   {
     if ($this->isSubmitted('submit') && $this->isValid($_POST)) {
       $email = $_POST['email'];
@@ -107,13 +116,13 @@ class RegisterController extends AbstractController
       if ($user) {
         $this->registerHandler->sendEmailResetPassword($email, $user->getToken());
       }
-      $_SESSION['flash_message'] = "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail";
+      $this->addMessageFlash("info", "Merci de confirmer l'email en cliquant sur le lien de confirmation envoyé à votre adresse mail");
       return $this->redirect('/connexion');
     }
     return $this->render("front/forgotPassword");
   }
 
-  public function validationNewPassword(string $token)
+  public function validationNewPassword(string $token): string
   {
     $errors = [];
     $user = $this->userRepository->findByToken($token);
@@ -142,9 +151,8 @@ class RegisterController extends AbstractController
 
       $this->userRepository->save($user);
 
-      // email confirmation de nouveau mot de passe
       $this->registerHandler->sendEmailConfirmChangementPassword($user->getEmail());
-      $this->addMessageFlash('flash_message','un email vous a été envoyé pour confirmer le changement de mot de passe');
+      $this->addMessageFlash('info', 'un email vous a été envoyé pour confirmer le changement de mot de passe');
       return $this->redirect('/connexion');
     }
     return $this->render("front/newPassword", ["token" => $token]);

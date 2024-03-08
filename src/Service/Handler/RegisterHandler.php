@@ -16,7 +16,7 @@ class RegisterHandler extends MailerConfig
     parent::__construct();
   }
 
-  public function sendEmailConfirmation(string $recipient, string $token)
+  public function sendEmailConfirmation(string $recipient, string $token): void
   {
     $confirmationUrl = $this->buildUrl(self::PATH_CONFIRMATION_INSCRIPTION, $token);
     $body = sprintf("<p>Bonjour, pour confirmer votre inscription, cliquez sur le lien : <strong>%s</strong></p>", $confirmationUrl);
@@ -24,7 +24,7 @@ class RegisterHandler extends MailerConfig
     $this->setupAndSendEmail('Confirmation de demande de création de compte', $body, $recipient);
   }
 
-  public function sendEmailResetPassword(string $recipient, string $token)
+  public function sendEmailResetPassword(string $recipient, string $token): void
   {
     $url = $this->getRequestUrl(self::PATH_RESET_PASSWORD) . $token;
     $body = sprintf("<p>Bonjour, afin de confirmer la réinitialisation du mot de passe, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $url);

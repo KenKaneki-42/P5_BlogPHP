@@ -23,9 +23,7 @@ class PostController extends AbstractController
     $this->commentRepository = new CommentRepository;
     $this->userRepository = new UserRepository;
     $this->postHandler = new PostHandler;
-    // middleware avec le router mais pas avec simpleRouter pour protéger les routes
-    // ici on veut protéger toutes les méthodes pour les utilisateurs qui ont le role administrative
-    // pose un soucis pour les tests ? inversion de dépendance?
+
     if (isset($_SESSION['user_email'])) {
       $user = $this->userRepository->findByEmail($_SESSION['user_email']);
     }
@@ -71,7 +69,7 @@ class PostController extends AbstractController
 
       $post = new Post($_POST);
       $this->postRepository->persistCreate($post);
-      $this->addMessageFlash("flash_message", "Article crée avec succès");
+      $this->addMessageFlash("success", "Article crée avec succès");
       $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/new');

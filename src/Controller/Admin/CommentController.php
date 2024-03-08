@@ -24,9 +24,10 @@ class CommentController extends AbstractController
     $this->checkAdminAccess($user);
   }
 
-  public function index()
+  public function index(): string
   {
     $csrfToken = bin2hex(random_bytes(32));
+    $_SESSION['csrf_token'] = $csrfToken;
     $comments = $this->commentRepository->findAll(1000);
     return $this->render("/admin/comment/index", [
       "comments" => $comments,
@@ -34,32 +35,21 @@ class CommentController extends AbstractController
     ]);
   }
 
-  // V2 with pagination
-  // public function index(int $page = 1)
-  // {
-  //     $limit = 10;
-  //     $offset = ($page - 1) * $limit;
-  //     $csrfToken = bin2hex(random_bytes(32));
-  //     $comments = $this->commentRepository->findAll($limit, $offset);
-
-  //     return $this->render("/admin/comment/index", [
-  //       "comments" => $comments,
-  //       "csrf_token" => $csrfToken,
-  //       "currentPage" => $page
-  //     ]);
-  // }
-
-  public function changeStatus(int $commentId, string $status)
+  public function changeStatus(int $commentId, string $status): string
   {
     if ($this->isSubmitted('moderateComment') && $this->isValid($_POST)) {
       $comment = $this->commentRepository->findbyId($commentId);
-      // pouruqoi user id et post ID sont nulls ici?
-      $comment->setStatus($status);
-      $comment->setModerate(true);
-      $this->commentRepository->update($comment);
-      // $this->commentRepository->save($comment);
-      $this->redirect("/admin/commentaires");
+      if ($comment) {
+        $comment->setStatus($status);
+        $comment->setModerate(true);
+        $this->commentRepository->update($comment);
+        return $this->redirect("/admin/commentaires");
+      } else {
+        $this->addMessageFlash("error", "Le commentaire spécifié n'existe pas.");
+        return $this->redirect("/admin/commentaires");
+      }
     }
+    $this->addMessageFlash("error", "Une erreur est survenue lors de la soumission du formulaire.");
+    return $this->redirect("/admin/commentaires");
   }
-
 }

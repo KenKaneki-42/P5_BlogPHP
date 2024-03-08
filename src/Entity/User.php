@@ -26,7 +26,6 @@ class User extends AbstractEntity
   {
     $this->createdAt = new DateTime();
     $this->updatedAt = new DateTime();
-    // $this->role = [];
     parent::__construct($data);
   }
 

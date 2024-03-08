@@ -24,6 +24,7 @@ class AbstractController
     try {
       $loader = new FilesystemLoader(TEMPLATES_DIR . '/');
       $this->twig = new Environment($loader, ["debug" => true]);
+      $this->twig->addExtension(new \Twig\Extension\DebugExtension());
     } catch (\Exception $e) {
       throw new \RuntimeException("Error initializing Twig: " . $e->getMessage());
     }
@@ -35,20 +36,30 @@ class AbstractController
       throw new \RuntimeException("Twig environment is not initialized.");
     }
 
+    $this->twig->addGlobal("session", $_SESSION);
+    if (isset($_SESSION['flashMessages'])) {
+      $this->twig->addGlobal("flashMessages", $_SESSION['flashMessages']);
+    }
+
     try {
-      $this->twig->addGlobal("session", $_SESSION);
-      return $this->twig->render($template . ".html.twig", $params);
+      $content = $this->twig->render($template . ".html.twig", $params);
+
+      if (isset($_SESSION['flashMessages'])) {
+        unset($_SESSION['flashMessages']);
+      }
+
+      return $content;
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     } catch (\Exception $e) {
-      // Gérez d'autres erreurs ici (par exemple, journalisez-la ou lancez une nouvelle exception)
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     }
   }
 
-  protected function redirect(string $url): void
+  protected function redirect(string $url): string
   {
-    throw new RedirectException($url);
+    header("Location: " . $url);
+    exit();
   }
 
   public function isSubmitted($submitButton): bool
@@ -79,7 +90,6 @@ class AbstractController
     return $isValid;
   }
 
-
   public function isAdmin(User $user = null): bool
   {
     $isAdmin = false;
@@ -104,7 +114,7 @@ class AbstractController
   public function checkAdminAccess(User $user = null): void
   {
     if ($this->isAdminPage() && !$this->isAdmin($user)) {
-      throw new \Core\Exception\ForbiddenAccessException("Accès interdit.");
+      $this->redirect('/forbidden');
     }
   }
   public function validateCaptcha($captchaResponse): bool
@@ -120,8 +130,11 @@ class AbstractController
     }
   }
 
-  public function addMessageFlash(string $key, string $message): void
+  public function addMessageFlash(string $type, string $message): void
   {
-    $_SESSION[$key] = $message;
+    if (!isset($_SESSION['flashMessages'][$type])) {
+      $_SESSION['flashMessages'][$type] = [];
+    }
+    $_SESSION['flashMessages'][$type][] = $message;
   }
 }

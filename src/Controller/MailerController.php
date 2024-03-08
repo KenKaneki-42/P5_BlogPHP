@@ -16,11 +16,11 @@ class MailerController extends AbstractController
     $this->mailerHandler = new MailerHandler;
   }
 
-  public function sendContentContactForm()
+  public function sendContentContactForm(): string
   {
     if ($this->isSubmitted('submitContactForm')) {
       $errors = [];
-      if(!isset($_POST["checkbox-legal-infos"])){
+      if (!isset($_POST["checkbox-legal-infos"])) {
         $errors["checkbox-legal-infos"] = "Vous devez accepter les informations légales";
       }
       // Validation form
@@ -39,7 +39,7 @@ class MailerController extends AbstractController
         $message = $_POST['message'];
 
         $this->mailerHandler->sendEmailContact($senderEmail, $message);
-        $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
+        $this->addMessageFlash('success', 'Votre email a bien été envoyé');
         return $this->redirect("/homepage?emailSent=true");
       }
 
