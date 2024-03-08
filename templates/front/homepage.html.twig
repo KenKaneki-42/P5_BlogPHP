@@ -52,19 +52,19 @@
 	<script src="https://www.google.com/recaptcha/api.js"></script>
 	<script>
 		function onSubmit(token) {
-document.getElementById("contact-form").submit();
-}
+      document.getElementById("contact-form").submit();
+    }
 	</script>
 	<script>
 		document.addEventListener('DOMContentLoaded', (event) => { // Analyser les paramètres d'URL
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('emailSent') === 'true') {
-var myModal = new bootstrap.Modal(document.getElementById('successModal'), {keyboard: false});
-myModal.show();
-urlParams.delete('emailSent');
-const newUrl = window.location.pathname;
-history.pushState({}, '', newUrl);
-}
-});
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('emailSent') === 'true') {
+        var myModal = new bootstrap.Modal(document.getElementById('successModal'), {keyboard: false});
+        myModal.show();
+        urlParams.delete('emailSent');
+        const newUrl = window.location.pathname;
+        history.pushState({}, '', newUrl);
+      }
+    });
 	</script>
 {% endblock %}
