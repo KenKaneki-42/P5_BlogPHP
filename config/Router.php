@@ -9,7 +9,6 @@ namespace Core;
 
 //Call Router Library
 use Pecee\SimpleRouter\SimpleRouter;
-use Core\Exception\RedirectException;
 
 class Router extends SimpleRouter
 {
@@ -19,27 +18,11 @@ class Router extends SimpleRouter
    * @throws \Pecee\SimpleRouter\Exceptions\HttpException
    * @throws \Pecee\SimpleRouter\Exceptions\NotFoundHttpException
    */
+
   public static function start(): void
   {
-
-    require_once '../config/helpers.php';
-
     /* Load external routes file */
-    require_once '../config/routes.php';
-
-    // Global handler errors
-    self::error(function (\Pecee\Http\Request $request, \Exception $exception) {
-      if (!$exception instanceof RedirectException){
-        if ($exception instanceof \Pecee\SimpleRouter\Exceptions\NotFoundHttpException) {
-          response()->redirect('/not-found');
-        } elseif ($exception instanceof \Core\Exception\ForbiddenAccessException) {
-          response()->redirect('/forbidden');
-        } else {
-          response()->redirect('/error');
-        }
-      }
-
-    });
+    Routes::loadRoutes();
 
     // Do initial stuff
     parent::start();
