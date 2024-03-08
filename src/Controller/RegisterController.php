@@ -44,7 +44,7 @@ class RegisterController extends AbstractController
 
       $this->registerHandler->sendEmailConfirmation($email, $newUser->getToken());
 
-      $_SESSION['flash_message'] = 'Please confirm your email by clicking on the confirmation link sent to your email address.';
+      $_SESSION['flash_message'] = 'Merci de confirmer votre inscription en cliquant sur le lien de confirmation envoyé par email.';
       return $this->redirect('/connexion');
     }
     return $this->render("front/register");
