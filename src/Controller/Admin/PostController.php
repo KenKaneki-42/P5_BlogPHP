@@ -72,7 +72,7 @@ class PostController extends AbstractController
       $post = new Post($_POST);
       $this->postRepository->persistCreate($post);
       $this->addMessageFlash("flash_message", "Article crée avec succès");
-      return $this->redirect('/admin/articles');
+      $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/new');
   }
@@ -98,11 +98,11 @@ class PostController extends AbstractController
       $this->postRepository->persistUpdate($post, $_POST);
       $this->addMessageFlash("flash_message", "Article modifié avec succès");
 
-      return $this->redirect('/admin/articles');
+      $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/edit', ['post' => $post]);
   }
-  public function delete(int $id, string $csrfToken)
+  public function delete(int $id, string $csrfToken) : void
   {
     $post = $this->postRepository->findById($id);
     // retrieve comments that are linked to the post
@@ -120,8 +120,8 @@ class PostController extends AbstractController
         // Delete the post after deleting associated comments
         $this->postRepository->delete($post->getId());
       }
-      return $this->redirect('/admin/articles');
+      $this->redirect('/admin/articles');
     }
-    return $this->redirect('/not-found');
+    $this->redirect('/not-found');
   }
 }
