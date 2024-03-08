@@ -37,11 +37,9 @@ class MailerController extends AbstractController
       if (empty($errors)) {
         $senderEmail = $_POST['email'];
         $message = $_POST['message'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
 
         $this->mailerHandler->sendEmailContact($senderEmail, $message);
-
+        $_SESSION['flash_message'] = 'Votre email a bien été envoyé';
         return $this->redirect("/homepage?emailSent=true");
       }
 
