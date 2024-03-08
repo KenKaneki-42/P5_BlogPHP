@@ -18,20 +18,13 @@ $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 //Starting session
-session_start();
-
-//Autolog if user remember
-// $cookieAuth = new CookieAuth();
-// $cookieAuth->AuthWithCookie();
+if(session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 
 // Start the routing
 try {
   Router::start();
-} catch (RedirectException $e) {
-  header('Location: ' . $e->getUrl());
-  exit();
-}
-
-if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['flash_message'])) {
-  unset($_SESSION['flash_message']);
+} catch (\Exception $e) {
+  echo $e->getMessage();
 }
