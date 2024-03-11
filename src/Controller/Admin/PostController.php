@@ -94,7 +94,7 @@ class PostController extends AbstractController
         return $this->render('admin/post/errors', ['errors' => $validationErrors]);
       }
       $this->postRepository->persistUpdate($post, $_POST);
-      $this->addMessageFlash("flash_message", "Article modifié avec succès");
+      $this->addMessageFlash("info", "Article modifié avec succès");
 
       $this->redirect('/admin/articles');
     }
@@ -118,6 +118,7 @@ class PostController extends AbstractController
         // Delete the post after deleting associated comments
         $this->postRepository->delete($post->getId());
       }
+      $this->addMessageFlash('info', 'Article et commentaires liés supprimés');
       $this->redirect('/admin/articles');
     }
     $this->redirect('/not-found');
