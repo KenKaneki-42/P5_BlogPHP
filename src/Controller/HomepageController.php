@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Repository\PostRepository;
 
 class HomepageController extends AbstractController
@@ -16,15 +16,8 @@ class HomepageController extends AbstractController
     $this->postRepository = new PostRepository();
   }
 
-  public function homepage()
+  public function homepage(): ?string
   {
-    $posts = $this->postRepository->getAll(5);
-
-    // check if emailSent is set
-    $emailSent = isset($_GET['emailSent']) && $_GET['emailSent'] === 'true';
-    return $this->render("front/homepage", [
-      'posts' => $posts,
-      'emailSent' => $emailSent
-    ]);
+    return $this->render('front/homepage', ['recaptchaPublicKey' => $_ENV['RECAPTCHA_PUBLIC_KEY']]);
   }
 }

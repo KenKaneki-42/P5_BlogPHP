@@ -1,8 +1,8 @@
 <?php
 
 use Core\Router;
-// use Core\component;
-// use Core\Security\CookieAuth;
+use Core\Exception\RedirectException;
+use Dotenv\Dotenv;
 
 //Autoload
 require "../vendor/autoload.php";
@@ -11,16 +11,18 @@ define("CONFIG_DIR", realpath(dirname(__DIR__)) . "/config");
 define("TEMPLATES_DIR", realpath(dirname(__DIR__)) . "/templates");
 define("ROOT_DIR", dirname(__DIR__));
 
-//Starting session
-session_start();
+// .env
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
 
-//Autolog if user remember
-// $cookieAuth = new CookieAuth();
-// $cookieAuth->AuthWithCookie();
+//Starting session
+if(session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 
 // Start the routing
-Router::start();
-
-if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['flash_message'])) {
-  unset($_SESSION['flash_message']);
+try {
+  Router::start();
+} catch (\Exception $e) {
+  echo $e->getMessage();
 }

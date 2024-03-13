@@ -11,7 +11,7 @@ class LegalInfoController extends AbstractController
     parent::__construct();
   }
 
-  public function showLegalInfoPage()
+  public function showLegalInfoPage() : string
   {
     return $this->render('front/legalInformations');
   }

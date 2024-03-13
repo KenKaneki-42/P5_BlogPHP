@@ -13,7 +13,6 @@ class PostRepository
 
   public function __construct()
   {
-    // $this->connection = $connectionDb->getConnection();
     $this->connection = ConnectionDb::getConnection();
   }
 
@@ -123,7 +122,6 @@ class PostRepository
     if (!$result) {
       throw new RuntimeException("Error during execution of SQL update statement.");
     }
-    // pop up de valitation?
   }
 
   public function persistUpdate(Post $post, array $data): void
@@ -137,8 +135,6 @@ class PostRepository
     $post->setTitle($data['title']);
     $post->setContent($data['content']);
     $post->setTagline($data['tagline']);
-    // $post->setUserId($data['userId']);
-    // TODO  replace me
     $post->setUserId($_SESSION['user_id']);
     $post->setUpdatedAt(new \DateTime());
     $post->setSlug(strtolower(str_replace(' ', '-', $post->getTitle())));
@@ -188,7 +184,7 @@ class PostRepository
     }
   }
 
-  public function delete($idPost): void
+  public function delete(int $idPost): void
   {
     $sql = "DELETE FROM post
             WHERE id = :id";
@@ -200,13 +196,5 @@ class PostRepository
     if (!$result) {
       throw new RuntimeException("Error during execution of SQL delete statement.");
     }
-
-    // if ($result) {
-    //   // Succès
-    //   echo "<script>alert('Suppression réussie'); setTimeout(function(){ location.reload(); }, 1000);</script>";
-    // } else {
-    //   // Échec
-    //   echo "<script>alert('Échec de la suppression');</script>";
-    // }
   }
 }

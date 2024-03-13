@@ -8,82 +8,49 @@ use App\Repository\UserRepository;
 
 class RegisterHandler extends MailerConfig
 {
-  const PROTOCOLE = 'http';
-  const HOST = '127.0.0.1';
-  const PORT = '8000';
-  const PATH = 'inscription-confirmation';
+  const PATH_CONFIRMATION_INSCRIPTION = 'inscription-confirmation';
+  const PATH_RESET_PASSWORD = 'mot-de-passe-oublie';
 
   public function __construct()
   {
     parent::__construct();
   }
 
-  public function validateUserData(string $lastName, string $firstName, string $password, string $confirmedPassword, string $email)
+  public function sendEmailConfirmation(string $recipient, string $token): void
   {
-    $errors = [];
+    $confirmationUrl = $this->buildUrl(self::PATH_CONFIRMATION_INSCRIPTION, $token);
+    $body = sprintf("<p>Bonjour, pour confirmer votre inscription, cliquez sur le lien : <strong>%s</strong></p>", $confirmationUrl);
 
-    if (!isset($lastName) || empty($lastName)) {
-      $errors['lastName'] = 'Le nom ne peut pas être vide.';
-    }
-    if (!isset($firstName) || empty($firstName)) {
-      $errors['firstName'] = 'Le prénom ne peut pas être vide.';
-    }
-    if (!isset($password) || empty($password)) {
-      $errors['password'] = 'Le mot de passe ne peut pas être vide';
-    }
-    if (!isset($confirmedPassword) || empty($confirmedPassword)) {
-      $errors['confirmedPassword'] = 'La confirmation du mot de passe ne peut pas être vide';
-    }
-    if ($password !== $confirmedPassword) {
-      $errors['matching password'] = 'les mots de passes ne correspondent pas';
-    }
-
-    if (empty($email)) {
-      $errors['email'] = 'L\'adresse email ne peut pas être vide.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = 'L\'adresse email n\'est pas valide.';
-    }
-
-    $userRepository = new UserRepository;
-    if ($userRepository->emailExists($email) > 0) {
-      $errors['email'] = "L'email existe déjà en base de donnée";
-    }
-
-    //check if the email already exist in database
-
-    return $errors;
+    $this->setupAndSendEmail('Confirmation de demande de création de compte', $body, $recipient);
   }
 
-  public function sendEmailConfirmation(string $recipient, string $token)
+  public function sendEmailResetPassword(string $recipient, string $token): void
   {
-    //Create an instance; passing `true` enables exceptions
+    $url = $this->getRequestUrl(self::PATH_RESET_PASSWORD) . $token;
+    $body = sprintf("<p>Bonjour, afin de confirmer la réinitialisation du mot de passe, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $url);
 
-    try {
-      //Recipients
-      $this->mail->setFrom('sylvain.vandermeersch@gmail.com', 'Dono');
-      $this->mail->addAddress($recipient);     //Add a recipient
+    $this->setupAndSendEmail('Demande de réinitialisation de mot de passe', $body, $recipient);
+  }
 
-      // $this->mail->addAddress('ellen@example.com');               //Name is optional
-      // $this->mail->addReplyTo('info@example.com', 'Information');
-      // $this->mail->addCC('cc@example.com');
-      // $this->mail->addBCC('bcc@example.com');
+  public function sendEmailConfirmChangementPassword(string $recipient): void
+  {
+    $body = "<p>Bonjour, votre mot de passe à bien été modifié</p>";
 
-      //Attachments
-      // $this->mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-      // $this->mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-      $confirmationUrl = sprintf('%s://%s:%s/%s/%s', self::PROTOCOLE, self::HOST, self::PORT, self::PATH, $token);
-      $body = sprintf("<p>Bonjour, afin de confirmer votre inscription, merci de cliquer sur le lien suivant: <strong> %s </strong></p>", $confirmationUrl);
-      http: //127.0.0.1/
-      //Content
-      $this->mail->isHTML(true);                                  //Set email format to HTML
-      $this->mail->Subject = 'Confirmation de demande de création de compte';
-      $this->mail->Body    = $body;
-      $this->mail->AltBody = strip_tags($body);
+    $this->setupAndSendEmail('Confirmation de réinitialisation de mot de passe', $body, $recipient);
+  }
 
-      $this->mail->send();
-      //TODO historiser l'envoie du mail?
-    } catch (Exception $e) {
-      echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
-    }
+  public function getRequestUrl(string $path): string
+  {
+    // Vérifiez si HTTPS est utilisé, sinon utilisez HTTP
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+    // Récupérez le nom de l'hôte à partir de la variable SERVER
+    $hostName = $_SERVER['HTTP_HOST'];
+
+    // Construisez l'URL de base
+    $baseUrl = $protocol . $hostName;
+
+    // Affichez l'URL de base
+    return $baseUrl . "/" . $path . "/";
   }
 }

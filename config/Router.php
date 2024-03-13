@@ -18,13 +18,11 @@ class Router extends SimpleRouter
    * @throws \Pecee\SimpleRouter\Exceptions\HttpException
    * @throws \Pecee\SimpleRouter\Exceptions\NotFoundHttpException
    */
+
   public static function start(): void
   {
-
-    require_once '../config/helpers.php';
-
     /* Load external routes file */
-    require_once '../config/routes.php';
+    Routes::loadRoutes();
 
     // Do initial stuff
     parent::start();

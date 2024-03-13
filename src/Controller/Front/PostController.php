@@ -2,16 +2,13 @@
 
 namespace App\Controller\Front;
 
-use Core\component\AbstractController;
+use Core\Component\AbstractController;
 use App\Repository\PostRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
-use Core\database\ConnectionDb; // Import the ConnectionDb class
-use Core\Router;
 
 class PostController extends AbstractController
 {
-
   protected PostRepository $postRepository;
   protected CommentRepository $commentRepository;
   protected UserRepository $userRepository;
@@ -23,19 +20,23 @@ class PostController extends AbstractController
     $this->userRepository = new UserRepository;
   }
 
-  public function index()
+  public function index(): string
   {
     $posts = $this->postRepository->getAll(100);
     return $this->render("front/posts", ['posts' => $posts]);
   }
 
-  public function show(int $id)
+  public function show(int $id): string
   {
     $post = $this->postRepository->findById($id, true);
-    // $comments = $this->commentRepository->findByPostId($id);
-    $comments = $this->commentRepository->findValidatedByPostId($id);
 
-    // retrieve username from the comment by userId associate with the comment
+    if (!$post) {
+      $this->redirect("/not-found");
+    }
+
+    $comments = $this->commentRepository->findValidatedByPostId($id);
+    $commentUsers = [];
+
     foreach ($comments as $comment) {
       $userId = $comment->getUserId();
       $user = $this->userRepository->findById($userId);
@@ -44,7 +45,6 @@ class PostController extends AbstractController
         'lastname' => $user->getLastname(),
       ];
     }
-
 
     return $this->render("front/post", [
       'post' => $post,

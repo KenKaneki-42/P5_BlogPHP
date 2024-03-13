@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Component;
 
 use Twig\Loader\FilesystemLoader;
@@ -20,34 +22,42 @@ class AbstractController
     }
     try {
       $loader = new FilesystemLoader(TEMPLATES_DIR . '/');
-      // $loader = new FilesystemLoader(dirname(dirname(__DIR__)) . '/templates');
       $this->twig = new Environment($loader, ["debug" => true]);
+      $this->twig->addExtension(new \Twig\Extension\DebugExtension());
     } catch (\Exception $e) {
       throw new \RuntimeException("Error initializing Twig: " . $e->getMessage());
     }
   }
 
-  public function render($template, array $data = [])
+  public function render(string $template, array $params = []): string
   {
     if (!$this->twig) {
       throw new \RuntimeException("Twig environment is not initialized.");
     }
 
+    $this->twig->addGlobal("session", $_SESSION);
+    if (isset($_SESSION['flashMessages'])) {
+      $this->twig->addGlobal("flashMessages", $_SESSION['flashMessages']);
+    }
+
     try {
-      $this->twig->addGlobal("session", $_SESSION);
-      return $this->twig->render($template . ".html.twig", $data);
+      $content = $this->twig->render($template . ".html.twig", $params);
+
+      if (isset($_SESSION['flashMessages'])) {
+        unset($_SESSION['flashMessages']);
+      }
+
+      return $content;
     } catch (LoaderError | RuntimeError | SyntaxError $e) {
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     } catch (\Exception $e) {
-      // Gérez d'autres erreurs ici (par exemple, journalisez-la ou lancez une nouvelle exception)
       throw new \RuntimeException("Error rendering template: " . $e->getMessage());
     }
   }
 
-  // TODO redirect 302
-  public function redirect(string $url): void
+  protected function redirect(string $url): string
   {
-    header('Location:' . $url);
+    header("Location: " . $url);
     exit();
   }
 
@@ -79,7 +89,6 @@ class AbstractController
     return $isValid;
   }
 
-
   public function isAdmin(User $user = null): bool
   {
     $isAdmin = false;
@@ -104,27 +113,27 @@ class AbstractController
   public function checkAdminAccess(User $user = null): void
   {
     if ($this->isAdminPage() && !$this->isAdmin($user)) {
-      // Redirige l'utilisateur vers une page d'erreur ou d'accueil
       $this->redirect('/forbidden');
     }
   }
   public function validateCaptcha($captchaResponse): bool
   {
-    $secretKey = "6LfpGH0pAAAAANlX10w1MD_edoPWgxt1LEbSo8oF";
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse");
+    $secretKeyCaptcha = $_ENV['RECAPTCHA_SECRET_KEY'];
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKeyCaptcha&response=$captchaResponse");
     $responseKeys = json_decode($response, true);
 
     if (intval($responseKeys["success"]) === 1) {
-      // return ['success' => true, 'message' => 'reCAPTCHA validé'];
       return true;
     } else {
-      // return ['success' => false, 'message' => 'reCAPTCHA non validé'];
       return false;
     }
   }
 
-  //TODO faire passer une clé en session ( success) et faire passer un message en valeur) exemple: 1er tableau clé et 2 eme message
-  public function success($key, $message): void
+  public function addMessageFlash(string $type, string $message): void
   {
+    if (!isset($_SESSION['flashMessages'][$type])) {
+      $_SESSION['flashMessages'][$type] = [];
+    }
+    $_SESSION['flashMessages'][$type][] = $message;
   }
 }

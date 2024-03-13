@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 
 class User extends AbstractEntity
 {
@@ -24,7 +26,6 @@ class User extends AbstractEntity
   {
     $this->createdAt = new DateTime();
     $this->updatedAt = new DateTime();
-    // $this->role = [];
     parent::__construct($data);
   }
 
@@ -113,15 +114,8 @@ class User extends AbstractEntity
     return $this->createdAt;
   }
 
-  public function setCreatedAt($createdAt): void
+  public function setCreatedAt(DateTime $createdAt): void
   {
-    if (!$createdAt instanceof DateTime) {
-      if (is_string($createdAt)) {
-        $createdAt = new DateTime($createdAt);
-      } else {
-        throw  new \InvalidArgumentException('Invalid value provided for createdAt');
-      }
-    }
     $this->createdAt = $createdAt;
   }
 
@@ -130,15 +124,8 @@ class User extends AbstractEntity
     return $this->updatedAt;
   }
 
-  public function setUpdatedAt($updatedAt): void
+  public function setUpdatedAt(DateTime $updatedAt): void
   {
-    if (!$updatedAt instanceof DateTime) {
-      if (is_string($updatedAt)) {
-        $updatedAt = new DateTime($updatedAt);
-      } else {
-        throw  new \InvalidArgumentException('Invalid value provided for createdAt');
-      }
-    }
     $this->updatedAt = $updatedAt;
   }
 

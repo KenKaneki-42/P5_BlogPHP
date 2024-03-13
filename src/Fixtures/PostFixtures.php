@@ -5,7 +5,7 @@ namespace App\Fixtures;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use Core\component\ConsoleIO;
+use Core\Component\ConsoleIO;
 use Cocur\Slugify\Slugify;
 
 class PostFixtures extends AbstractFixturesFactory

@@ -71,9 +71,9 @@ class CommentRepository
   }
 
   public function findValidatedByPostId(int $postId): array
-{
+  {
     $statement = $this->connection->prepare(
-        "SELECT
+      "SELECT
             id,
             content,
             moderate,
@@ -93,7 +93,7 @@ class CommentRepository
     $comments = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Comment::class);
 
     return $comments ?: [];
-}
+  }
 
 
   public function save(Comment $comment): void
@@ -173,7 +173,7 @@ class CommentRepository
     }
   }
 
-  public function delete($idComment): void
+  public function delete(int $idComment): void
   {
     $sql = "DELETE FROM comment
             WHERE id = :id";

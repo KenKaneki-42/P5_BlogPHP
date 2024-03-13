@@ -24,10 +24,10 @@ class CommentController extends AbstractController
     $this->checkAdminAccess($user);
   }
 
-  public function index()
+  public function index(): string
   {
     $csrfToken = bin2hex(random_bytes(32));
-    // TODO: Find a better way to do this
+    $_SESSION['csrf_token'] = $csrfToken;
     $comments = $this->commentRepository->findAll(1000);
     return $this->render("/admin/comment/index", [
       "comments" => $comments,
@@ -35,24 +35,23 @@ class CommentController extends AbstractController
     ]);
   }
 
-  //TODO: faire un test pour vérifier que l'utilisateur est bien connecté?
-  //TODO: faire un test pour vérifier que l'utilisateur est bien admin?
-  //TODO: utiliser la request HTTP pour récupérer l'objet en sérialisant et déserialisant?
-  public function changeStatus(int $commentId, string $status)
+  public function changeStatus(int $commentId, string $status): string
   {
     if ($this->isSubmitted('moderateComment') && $this->isValid($_POST)) {
       $comment = $this->commentRepository->findbyId($commentId);
-      // pouruqoi user id et post ID sont nulls ici?
-      $comment->setStatus($status);
-      $comment->setModerate(true);
-      $this->commentRepository->update($comment);
-      // $this->commentRepository->save($comment);
-      $this->redirect("/admin/commentaires");
+      if ($comment) {
+        $comment->setStatus($status);
+        $comment->setModerate(true);
+        $this->commentRepository->update($comment);
+        $statusTranslated = ($status === "refused") ? "refusé" : "accepté";
+        $this->addMessageFlash('info', 'Commentaire est ' . $statusTranslated);
+        return $this->redirect("/admin/commentaires");
+      } else {
+        $this->addMessageFlash("error", "Le commentaire spécifié n'existe pas.");
+        return $this->redirect("/admin/commentaires");
+      }
     }
+    $this->addMessageFlash("error", "Une erreur est survenue lors de la soumission du formulaire.");
+    return $this->redirect("/admin/commentaires");
   }
-
-  // public function show(int $id):?array {
-  //   $comment = $this->commentRepository->findById($id);
-  //   return $comment;
-  // }
 }

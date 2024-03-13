@@ -1,10 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<h1>Erreurs</h1>
-	<ul>
-		{% for field, error in errors %}
-			<li>{{ error }}</li>
-		{% endfor %}
-	</ul>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<div class="card mt-5">
+					<div class="card-header">
+						<h1 class="card-title text-center">Erreurs</h1>
+					</div>
+					<div class="card-body">
+						<ul class="list-group">
+							{% for field, error in errors %}
+								<li class="list-group-item">{{ error }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

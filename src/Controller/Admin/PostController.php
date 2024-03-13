@@ -23,15 +23,13 @@ class PostController extends AbstractController
     $this->commentRepository = new CommentRepository;
     $this->userRepository = new UserRepository;
     $this->postHandler = new PostHandler;
-    // middleware avec le router mais pas avec simpleRouter pour protéger les routes
-    // ici on veut protéger toutes les méthodes pour les utilisateurs qui ont le role administrative
-    // pose un soucis pour les tests ? inversion de dépendance?
+
     if (isset($_SESSION['user_email'])) {
       $user = $this->userRepository->findByEmail($_SESSION['user_email']);
     }
     $this->checkAdminAccess($user);
   }
-  public function index()
+  public function index(): string
   {
     $csrfToken = bin2hex(random_bytes(32));
     $posts = $this->postRepository->getAll(100);
@@ -55,7 +53,7 @@ class PostController extends AbstractController
     $this->render('admin/post/show', ['post' => $post, 'comments' => $comments]);
   }
 
-  public function add()
+  public function add() : string
   {
     if ($this->isSubmitted('submitPost') && $this->isValid($_POST)) {
       $title = $_POST['title'] ?? '';
@@ -71,14 +69,12 @@ class PostController extends AbstractController
 
       $post = new Post($_POST);
       $this->postRepository->persistCreate($post);
-      // TODO add success message for creation popup
-
-      // return $this->redirect('admin_post_index');  Route not found: "/admin/admin_post_index/"
-      return $this->redirect('/admin/articles');
+      $this->addMessageFlash("success", "Article crée avec succès");
+      $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/new');
   }
-  public function edit(int $id)
+  public function edit(int $id) : string
   {
     $post = $this->postRepository->findById($id);
 
@@ -98,13 +94,13 @@ class PostController extends AbstractController
         return $this->render('admin/post/errors', ['errors' => $validationErrors]);
       }
       $this->postRepository->persistUpdate($post, $_POST);
-      // TODO add success message for creation popup
+      $this->addMessageFlash("info", "Article modifié avec succès");
 
-      return $this->redirect('/admin/articles');
+      $this->redirect('/admin/articles');
     }
     return $this->render('admin/post/edit', ['post' => $post]);
   }
-  public function delete(int $id, string $csrfToken)
+  public function delete(int $id, string $csrfToken) : void
   {
     $post = $this->postRepository->findById($id);
     // retrieve comments that are linked to the post
@@ -122,8 +118,9 @@ class PostController extends AbstractController
         // Delete the post after deleting associated comments
         $this->postRepository->delete($post->getId());
       }
-      return $this->redirect('/admin/articles');
+      $this->addMessageFlash('info', 'Article et commentaires liés supprimés');
+      $this->redirect('/admin/articles');
     }
-    return $this->redirect('/not-found');
+    $this->redirect('/not-found');
   }
 }
