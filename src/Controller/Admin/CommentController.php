@@ -43,6 +43,8 @@ class CommentController extends AbstractController
         $comment->setStatus($status);
         $comment->setModerate(true);
         $this->commentRepository->update($comment);
+        $statusTranslated = ($status === "refused") ? "refusé" : "accepté";
+        $this->addMessageFlash('info', 'Commentaire est ' . $statusTranslated);
         return $this->redirect("/admin/commentaires");
       } else {
         $this->addMessageFlash("error", "Le commentaire spécifié n'existe pas.");
