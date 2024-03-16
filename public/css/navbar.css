@@ -60,3 +60,8 @@
 .active-link {
   color: var(--light-color);
 }
+
+.navbar-toggler-icon{
+
+  background-color: var(--light-color);
+}
