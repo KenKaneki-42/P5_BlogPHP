@@ -162,4 +162,9 @@ class User extends AbstractEntity
     $hashedToken = hash('sha256', $randomBytes);
     return $hashedToken;
   }
+
+  public function getAuthor(): string
+  {
+    return $this->firstname . '' . $this->lastname;
+  }
 }

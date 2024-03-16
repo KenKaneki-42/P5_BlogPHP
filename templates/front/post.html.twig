@@ -9,7 +9,7 @@
 		<p>
 			<em>
 				{% if post.updatedAt %}
-					modifié le :
+					Modifié le :
 					{{ post.updatedAt|date("Y-m-d à H:i") }}
 				{% else %}
 					crée le :
@@ -17,13 +17,14 @@
 				{% endif %}
 			</em>
 			<br/>
+      Rédigé par : {{ author }}
 
 			<div class="d-flex">
 				<h3>Commentaire(s)</h3>
 				{% include 'front/modalCreateComment.html.twig' %}
 			</div>
 			<br/>
-      
+
 			<div class="container d-flex justify-content-center">
 				<div class="container-cards">
 					{% if comments is not empty %}
