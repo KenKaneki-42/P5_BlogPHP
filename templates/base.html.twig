@@ -58,8 +58,6 @@
 					</ul>
 				</div>
 			</nav>
-      {# <pre>{{ dump(session) }}</pre> #}
-
 		{% endblock %}
 
     {% if flashMessages is defined %}
@@ -108,46 +106,60 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	{# <script>
-		        // JavaScript pour ajouter les classes active-link et selected-link au lien cliqué
-		        document.querySelectorAll('.nav-item a').forEach(link => {
-		          link.addEventListener('click', function() {
-		            // Supprimer la classe active-link de tous les liens
-		            document.querySelectorAll('.nav-item').forEach(item => {
-		              item.classList.remove('active-link');
-		            });
-		            // Ajouter la classe active-link au parent du lien cliqué
-		            this.parentNode.classList.add('active-link');
-		          });
-		        });
-		        </script> #}
 
 	<script>
-		document.addEventListener('DOMContentLoaded', function () { // Récupérer l'ID ou la classe du lien actif depuis le stockage local
-const activeLinkId = localStorage.getItem('activeLinkId');
+		document.addEventListener('DOMContentLoaded', function () { // Retrieve active link ID or class from local storage
+      const activeLinkId = localStorage.getItem('activeLinkId');
+      // Apply the active-link class to the corresponding link
+      if (activeLinkId) {
+      const activeLink = document.getElementById(activeLinkId);
+        if (activeLink) {
+          activeLink.classList.add('active-link');
+        }
+      }
 
-// Appliquer la classe active-link au lien correspondant
-if (activeLinkId) {
-const activeLink = document.getElementById(activeLinkId);
-if (activeLink) {
-activeLink.classList.add('active-link');
-}
-}
-
-// Ajouter un gestionnaire d'événement pour chaque lien
-document.querySelectorAll('.nav-item a').forEach(link => {
-link.addEventListener('click', function () { // Supprimer la classe active-link de tous les liens
-document.querySelectorAll('.nav-item a').forEach(link => {
-link.classList.remove('active-link');
-});
-
-// Ajouter la classe active-link au lien cliqué
-this.classList.add('active-link');
-
-// Stocker l'ID ou la classe du lien actif dans le stockage local
-localStorage.setItem('activeLinkId', this.id); // Vous pouvez utiliser un autre attribut unique du lien pour l'identifier
-});
-});
-});
+      // Add an event handler for each link
+      document.querySelectorAll('.nav-item a').forEach(link => {
+        link.addEventListener('click', function () { // Delete the active-link class from all links
+          document.querySelectorAll('.nav-item a').forEach(link => {
+          link.classList.remove('active-link');
+          });
+          // Add the active-link class to the clicked link
+          this.classList.add('active-link');
+          // Store the ID or class of the active link in local storage
+          localStorage.setItem('activeLinkId', this.id);
+        });
+      });
+    });
 	</script>
+
+  <script>
+  //  handle scrolling for navbar with JQuery
+  $(document).ready(function(){
+    var prevScrollpos = window.pageYOffset;
+    $(window).scroll(function() {
+      var currentScrollPos = window.pageYOffset;
+      if (prevScrollpos > currentScrollPos) {
+        $(".navbar").css("top", "0");
+      } else {
+        $(".navbar").css("top", "-56px");
+      }
+      prevScrollpos = currentScrollPos;
+    });
+  });
+  </script>
+
+  <script>
+  // fadeout alert messages
+    document.addEventListener('DOMContentLoaded', (event) => {
+      setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert-container');
+        alerts.forEach(alert => {
+            alert.style.display = 'none';
+        });
+      }, 3500);
+    });
+  </script>
+
+
 {% endblock %}</body></html>
