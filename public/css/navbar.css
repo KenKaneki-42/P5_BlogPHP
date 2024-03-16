@@ -27,7 +27,6 @@
   text-decoration: none;
 }
 
-
 .nav-link {
   color: var(--text-color);
 }
@@ -62,6 +61,5 @@
 }
 
 .navbar-toggler-icon{
-
   background-color: var(--light-color);
 }
