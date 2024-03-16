@@ -16,20 +16,23 @@ class PostRepository
     $this->connection = ConnectionDb::getConnection();
   }
 
-  public function getAll(int $limit): ?array
+  public function getAll(int $limit = 0): ?array
   {
-    $statement = $this->connection->prepare(
-      "SELECT
-        id,
-        title,
-        content,
-        tagline,
-        user_id as userId,
-        updated_at as updatedAt,
-        created_at as createdAt
-      FROM post ORDER BY created_at DESC LIMIT :limit"
-    );
-    $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $query = "SELECT
+                id,
+                title,
+                content,
+                tagline,
+                user_id as userId,
+                updated_at as updatedAt,
+                created_at as createdAt
+              FROM post ORDER BY created_at DESC";
+
+    if ($limit > 0) {
+      $query .= " LIMIT " . (int)$limit;
+    }
+
+    $statement = $this->connection->prepare($query);
     $statement->execute();
 
     $posts = $statement->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);

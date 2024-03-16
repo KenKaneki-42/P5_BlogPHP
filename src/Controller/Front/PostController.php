@@ -33,6 +33,7 @@ class PostController extends AbstractController
     if (!$post) {
       $this->redirect("/not-found");
     }
+    $author = $this->userRepository->findById($post->getUserId())->getAuthor();
 
     $comments = $this->commentRepository->findValidatedByPostId($id);
     $commentUsers = [];
@@ -48,6 +49,7 @@ class PostController extends AbstractController
 
     return $this->render("front/post", [
       'post' => $post,
+      'author' => $author,
       'comments' => $comments,
       'commentUsers' => $commentUsers
     ]);

@@ -9,7 +9,24 @@
   z-index: 1000;
   color: var(--primary-color);
   background-color: var(--background-color);
+  transition: top 0.5s;
 }
+
+.navbar-brand {
+  padding: 6px;
+  color: var(--primary-color);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+  color: var(--bright-color);
+  text-decoration: none;
+}
+
 
 .nav-link {
   color: var(--text-color);
@@ -19,36 +36,32 @@
   color: var(--light-color);
 }
 
-/* Styles pour l'animation du soulignement */
+/* Underline animation styles */
 .nav-item a::after {
   content: '';
   display: block;
   width: 0%;
   height: 2px;
-  background-color: var(--light-color); /* Couleur du soulignement */
-  transition: width 0.4s ease; /* Animation de la progression */
+  background-color: var(--light-color); /* Underline color */
+  transition: width 0.4s ease; /* Progress animation */
 }
 
-/* Lorsque le lien est survolé ou reçoit le focus */
+/* When the link is hovered over or receives focus */
 .nav-item a:hover::after,
 .nav-item a:focus::after {
-  width: 100%; /* Soulignement complet lors du survol ou du clic */
+  width: 100%; /* Full underlining on hover or click */
 }
 
-/* Pour le lien actif */
+/* For the active link */
 .nav-item.active-link a::after {
-  width: 100%; /* Soulignement complet pour le lien actif */
+  width: 100%; /* Full underlining for active link */
 }
 
 .active-link {
   color: var(--light-color);
 }
 
-/* .nav-item .active-link::after{
-  content: '';
-  display: block;
-  width: 100%;
-  height: 2px;
+.navbar-toggler-icon{
+
   background-color: var(--light-color);
-  transition: width 0.4s ease;
-} */
+}
