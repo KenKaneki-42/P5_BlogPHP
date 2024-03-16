@@ -12,6 +12,22 @@
   transition: top 0.5s;
 }
 
+.navbar-brand {
+  padding: 6px;
+  color: var(--primary-color);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+  color: var(--bright-color);
+  text-decoration: none;
+}
+
+
 .nav-link {
   color: var(--text-color);
 }
