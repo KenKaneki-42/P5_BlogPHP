@@ -15,13 +15,19 @@ class UserRepository
     $this->connection = ConnectionDb::getConnection();
   }
 
-  public function getAll(int $limit): ?array
+  public function getAll(int $limit = 0): ?array
   {
-    $statement = $this->connection->prepare(
-      "SELECT * FROM user ORDER BY created_at DESC LIMIT :limit"
-    );
 
-    $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $query = "SELECT * FROM user ORDER BY created_at DESC";
+    if ($limit > 0) {
+      $query.= " LIMIT :limit";
+    }
+    $statement = $this->connection->prepare($query);
+
+    if ($limit > 0) {
+      $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+    }
+
     $statement->execute();
     $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 
